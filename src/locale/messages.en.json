@@ -1,0 +1,29 @@
+{
+  "locale": "en-US",
+  "translations": {
+    "header.search-placeholder": "Search",
+    "general.view-all": "View all",
+    "sites.profile": "Profile",
+    "user.settings": "Account Settings",
+    "user.faq": "Need Help?",
+    "user.logout": "Sign Out",
+    "user.form.login-title": "Please sign in",
+    "user.form.email": "Email address",
+    "user.form.password": "Password",
+    "user.form.remember": "Remember me",
+    "user.form.login": "Sign in",
+    "user.form.register": "Sign up",
+    "user.form.forgot-password": "Forgot password",
+    "sites.wall": "Wall",
+    "sites.friends": "Friends",
+    "sites.edit-profile": "Edit profile",
+    "profile.about": "About",
+    "profile.from": "From",
+    "profile.joined": "Joined",
+    "profile.friends": "Friends",
+    "profile.media": "Media",
+    "profile.posts": "Posts",
+    "user.form.registration-title": "Please sign up",
+    "user.form.name": "Name"
+  }
+}

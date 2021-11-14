@@ -7,16 +7,13 @@ import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {HomeComponent} from './components/home/home.component';
 import {ProfileComponent} from './components/profile/profile.component';
-import { LogoutComponent } from './components/logout/logout.component';
-import {AuthService} from "./services/auth.service";
-import {AuthGuard} from "./guards/auth.guard";
-import {AuthAdminGuard} from "./guards/auth-admin.guard";
+import {LogoutComponent} from './components/logout/logout.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {JWTInterceptor} from "./interceptors/jwt-interceptor.service";
 import {ReactiveFormsModule} from "@angular/forms";
-import { HeaderComponent } from './components/header/header.component';
-import { WallComponent } from './components/wall/wall.component';
-import { MenuComponent } from './components/menu/menu.component';
+import {HeaderComponent} from './components/header/header.component';
+import {WallComponent} from './components/wall/wall.component';
+import {MenuComponent} from './components/menu/menu.component';
 
 @NgModule({
   declarations: [

@@ -8,7 +8,7 @@
 
   <div class="search-bar" [ngClass]="isToggleSearchBar ? 'search-bar-show' : ''">
     <form class="search-form d-flex align-items-center" method="POST" action="#">
-      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <input type="text" name="query" i18n-placeholder="@@header.search-placeholder" placeholder="Search">
       <button type="submit" title="Search"><i class="bi bi-search"></i></button>
     </form>
   </div>
@@ -32,7 +32,7 @@
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
           <li class="dropdown-header">
             You have 4 new notifications
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2" i18n="@@general.view-all">View all</span></a>
           </li>
           <li>
             <hr class="dropdown-divider">
@@ -100,7 +100,7 @@
         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
           <li class="dropdown-header">
             You have 3 new messages
-            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2" i18n="@@general.view-all">View all</span></a>
           </li>
           <li>
             <hr class="dropdown-divider">
@@ -171,7 +171,7 @@
           <li>
             <a class="dropdown-item d-flex align-items-center" routerLink="/profile">
               <i class="bi bi-person"></i>
-              <span>Profile</span>
+              <span i18n="@@sites.profile">Profile</span>
             </a>
           </li>
           <li>
@@ -181,7 +181,7 @@
           <li>
             <a class="dropdown-item d-flex align-items-center" href="" (click)="$event.preventDefault();">
               <i class="bi bi-gear"></i>
-              <span>Account Settings</span>
+              <span i18n="@@user.settings">Account Settings</span>
             </a>
           </li>
           <li>
@@ -191,7 +191,7 @@
           <li>
             <a class="dropdown-item d-flex align-items-center" href="" (click)="$event.preventDefault();">
               <i class="bi bi-question-circle"></i>
-              <span>Need Help?</span>
+              <span i18n="@@user.faq">Need Help?</span>
             </a>
           </li>
           <li>
@@ -201,7 +201,7 @@
           <li>
             <a class="dropdown-item d-flex align-items-center" routerLink="/logout">
               <i class="bi bi-box-arrow-right"></i>
-              <span>Sign Out</span>
+              <span i18n="@@user.logout">Sign Out</span>
             </a>
           </li>
 
