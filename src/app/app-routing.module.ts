@@ -7,6 +7,7 @@ import {LoginComponent} from "./components/login/login.component";
 import {AuthGuard} from "./guards/auth.guard";
 import {NoAuthGuard} from "./guards/noauth.guard";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {AccountConfirmationComponent} from "./components/account-confirmation/account-confirmation.component";
 
 const routes: Routes = [
   { path: '', component: WallComponent, canActivate: [AuthGuard] },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [NoAuthGuard] },
   { path: 'logout', component: LogoutComponent },
+  { path: 'confirm-account', component: AccountConfirmationComponent, canActivate: [NoAuthGuard] },
   // { path: 'wall', component: WallComponent },
   //{ path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
   //{ path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },

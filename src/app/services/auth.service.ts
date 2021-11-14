@@ -37,7 +37,11 @@ export class AuthService {
   }
 
   register(user: User): Observable<any> {
-    return this.http.post(environment.baseUrl + 'auth/registration', user);
+    return this.http.post(environment.baseUrl + 'auth/register', user);
+  }
+
+  confirmUser(token: string): Observable<any> {
+    return this.http.post(environment.baseUrl + 'auth/confirm', { token: token });
   }
 
   getCurrentUser(): Observable<User> {

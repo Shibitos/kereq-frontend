@@ -1,0 +1,7 @@
+@import "../menu/menu.component";
+
+@media(min-width: 992px) {
+  .auth-wrapper {
+    margin-left: -$menu-offset-left;
+  }
+}

@@ -14,6 +14,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {WallComponent} from './components/wall/wall.component';
 import {MenuComponent} from './components/menu/menu.component';
+import { AccountConfirmationComponent } from './components/account-confirmation/account-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {MenuComponent} from './components/menu/menu.component';
     LogoutComponent,
     HeaderComponent,
     WallComponent,
-    MenuComponent
+    MenuComponent,
+    AccountConfirmationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-register',
@@ -10,30 +11,36 @@ import {Router} from "@angular/router";
 })
 export class RegistrationComponent implements OnInit {
 
-  registerForm: FormGroup; //TODO: validation, captcha
+  registrationForm: FormGroup; //TODO: validation, captcha
+  success: boolean = false;
 
   constructor(
     public fb: FormBuilder,
     public authService: AuthService,
     public router: Router
   ) {
-    this.registerForm = this.fb.group({
-      login: [''],
-      email: [''],
-      firstName: [''],
-      lastName: [''],
-      password: ['']
-    })
+    this.registrationForm = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      country: ['', Validators.required]
+    });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.success = false;
+  }
 
   registerUser() {
-    this.authService.register(this.registerForm.value).subscribe((res: any) => { //TODO: error handling
-      if (res) {
-        this.registerForm.reset();
-        this.router.navigate(['']);
-      }
-    })
+    this.authService.register(this.registrationForm.value).pipe(first())
+      .subscribe(
+        data => {
+          this.registrationForm.reset();
+          this.success = true;
+        },
+        error => {
+        });
   }
 }

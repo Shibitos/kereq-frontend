@@ -1,18 +1,42 @@
-<div class="auth-wrapper">
-  <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="registerUser()">
-    <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@user.form.registration-title">Please sign up</h3>
-    <div class="form-group">
-      <label i18n="@@user.form.name">Name</label>
-      <input type="text" class="form-control" formControlName="name" i18n-placeholder="@@user.form.name" placeholder="Name" required>
+<div class="auth-wrapper row justify-content-center">
+  <div class="col-md-4">
+    <div *ngIf="!success">
+      <form [formGroup]="registrationForm" (ngSubmit)="registerUser()">
+        <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@user.form.registration-title">Please sign up</h3>
+        <div class="form-group">
+          <label i18n="@@user.form.email">Email address</label>
+          <input type="email" class="form-control" formControlName="email" i18n-placeholder="@@user.form.email" placeholder="Email address" required>
+        </div>
+        <div class="form-group">
+          <label i18n="@@user.form.password">Password</label>
+          <input type="password" class="form-control" formControlName="password" i18n-placeholder="@@user.form.password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+          <label i18n="@@user.form.confirm-password">Confirm password</label>
+          <input type="password" class="form-control" formControlName="confirmPassword" i18n-placeholder="@@user.form.confirm-password" placeholder="Confirm password" required>
+        </div>
+        <div class="form-group">
+          <label i18n="@@user.form.first-name">First name</label>
+          <input type="text" class="form-control" formControlName="firstName" i18n-placeholder="@@user.form.first-name" placeholder="First name" required autofocus>
+        </div>
+        <div class="form-group">
+          <label i18n="@@user.form.last-name">Last name</label>
+          <input type="text" class="form-control" formControlName="lastName" i18n-placeholder="@@user.form.last-name" placeholder="Last name" required>
+        </div>
+        <div class="form-group">
+          <label i18n="@@user.form.country">Country</label>
+          <input type="text" class="form-control" formControlName="country" i18n-placeholder="@@user.form.country" placeholder="Country" required>
+        </div>
+        <button type="submit" class="btn btn-block btn-primary mt-2" i18n="@@user.form.register">Sign up</button>
+      </form>
+      <a routerLink="/login"><span i18n="@@user.form.already-registered">Already have an account?</span></a>
     </div>
-    <div class="form-group">
-      <label i18n="@@user.form.email">Email address</label>
-      <input type="email" class="form-control" formControlName="email" i18n-placeholder="@@user.form.email" placeholder="Email address" required>
+    <div *ngIf="success">
+      <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@general.congratulations">Congratulations!</h3>
+      <p i18n="@@user.form.success">
+        You have succesfully registered! Confirm your account by clicking activation link sent to your email address.
+      </p>
+      <a routerLink="/login"><span i18n="@@sites.login">Login</span></a>
     </div>
-    <div class="form-group">
-      <label i18n="@@user.form.password">Password</label>
-      <input type="password" class="form-control" formControlName="password" i18n-placeholder="@@user.form.password" placeholder="Password" required>
-    </div>
-    <button type="submit" class="btn btn-block btn-primary" i18n="@@user.form.register">Sign up</button>
-  </form>
+  </div>
 </div>
