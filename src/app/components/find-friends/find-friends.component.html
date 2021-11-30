@@ -1,0 +1,62 @@
+<div class="col-12 card-container">
+  <div class="card">
+    <div class="card-body pt-4">
+      <h2 i18n="@@find-friends.my-ad">My poster</h2>
+      <div *ngIf="myAdLoaded">
+        <div *ngIf="myAd">
+          {{ myAd.description }}<br>
+          <p>
+            Age: {{ myAd.minAge ? myAd.minAge : 'any' }} - {{ myAd.maxAge ? myAd.maxAge : 'any' }}<br>
+            Gender: {{ myAd.gender ? myAd.gender : 'any' }}
+          </p>
+        </div>
+        <p *ngIf="!myAd">
+          You have no ad.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 card-container">
+  <div class="card">
+    <div class="card-body pt-4">
+      <h2 i18n="@@find-friends.browse-ads">Browse posters</h2>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="browseAdsLoaded && !browseAdsList" class="card-body">
+  <h4 i18n="@@find-friends.no-posters-available" class="text-secondary">No posters available at moment</h4>
+</div>
+
+<div
+  infinite-scroll
+  [infiniteScrollDistance]="distance"
+  [infiniteScrollThrottle]="throttle"
+  (scrolled)="onScroll()"
+  *ngIf="browseAdsLoaded && browseAdsList"
+>
+  <div class="col-12 card-container" *ngFor="let ad of browseAdsList; let i = index">
+    <div class="card">
+      <div class="card-body pt-4 row">
+        <div class="col-auto">
+          <img src="assets/img/default-avatar.png" class="rounded-circle">
+        </div>
+        <div class="col-10">
+          <h2>{{ ad.user.firstName }} {{ ad.user.lastName }}</h2>
+          <p [innerHTML]="ad.description"></p><br>
+          <p>
+            Age: {{ ad.minAge ? ad.minAge : 'any' }} - {{ ad.maxAge ? ad.maxAge : 'any' }}<br>
+            Gender: {{ ad.gender ? ad.gender : 'any' }}
+          </p>
+          <button type="submit"
+                  class="btn btn-block btn-primary mt-2"
+                  i18n="@@user.invite" (click)="invite(i)">Invite to friends</button>
+          <button type="submit" class="btn btn-block btn-secondary mt-2 mx-2"
+                  i18n="@@general.hide" (click)="hide(i)">Hide</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -15,6 +15,9 @@ import {HeaderComponent} from './components/header/header.component';
 import {WallComponent} from './components/wall/wall.component';
 import {MenuComponent} from './components/menu/menu.component';
 import { AccountConfirmationComponent } from './components/account-confirmation/account-confirmation.component';
+import { FindFriendsComponent } from './components/find-friends/find-friends.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 @NgModule({
   declarations: [
@@ -27,13 +30,16 @@ import { AccountConfirmationComponent } from './components/account-confirmation/
     HeaderComponent,
     WallComponent,
     MenuComponent,
-    AccountConfirmationComponent
+    AccountConfirmationComponent,
+    FindFriendsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    InfiniteScrollModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true }
