@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {Friendship} from "../models/friendship.model";
 import {Page} from "../tools/page";
+import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,9 @@ export class UserService {
 
   removeFriend(userId: number): Observable<any> {
     return this.http.delete(environment.baseUrl + this.friendsUrl + 'friend/' + userId);
+  }
+
+  getUser(userId: number): Observable<User> {
+    return this.http.get<User>(environment.baseUrl + 'profile/' + userId);
   }
 }

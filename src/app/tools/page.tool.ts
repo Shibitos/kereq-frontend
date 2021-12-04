@@ -8,7 +8,7 @@ export class PageTool<T> {
   page: Page;
   stopLoading = false;
 
-  constructor(private loadFunc: (p: Page) => Observable<any>, private container: T[], pageSize?: number) {
+  constructor(private loadFunc: (p: Page) => Observable<any>, private container: T[], pageSize?: number) { //TODO: hide func there? load more button not hiding after hiding all
     this.page = new Page();
     if (pageSize !== undefined) {
       this.page.pageSize = pageSize;

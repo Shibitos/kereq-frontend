@@ -14,6 +14,7 @@ import {FriendsComponent} from "./components/friends/friends.component";
 const routes: Routes = [
   { path: '', component: WallComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [NoAuthGuard] },
   { path: 'logout', component: LogoutComponent },

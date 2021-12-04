@@ -4,7 +4,7 @@
     <div class="card-body pt-4 d-flex align-items-center">
       <img src="assets/img/default-avatar.png" alt="Profile" class="pull-left rounded-circle">
       <div class="ps-2">
-        <h2>{{ loggedUser.firstName }} {{ loggedUser.lastName }}</h2>
+        <h2>{{ user.firstName }} {{ user.lastName }}</h2>
         <a href="" (click)="$event.preventDefault()">
           <i class="bi bi-pencil-square"></i>
           <span i18n="@@sites.edit-profile">Edit profile</span>
@@ -22,8 +22,8 @@
         <div class="card-body pt-4">
           <h2 i18n="@@profile.about">About</h2>
           <p>
-            <span i18n="@@profile.from">From</span>: {{ loggedUser.country }}<br>
-            <span i18n="@@profile.joined">Joined</span>: {{ loggedUser.joinDate  | date: "dd/MM/yyyy HH:MM:ss" }}
+            <span i18n="@@profile.from">From</span>: {{ user.country }}<br>
+            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:MM:ss" }}
           </p>
         </div>
       </div>

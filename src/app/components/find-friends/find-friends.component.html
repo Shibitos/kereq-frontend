@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<div *ngIf="browseAdsPageTool.loaded && !browseAdsList" class="card-body">
+<div *ngIf="browseAdsPageTool.loaded && !browseAdsList.length" class="card-body">
   <h4 i18n="@@find-friends.no-posters-available" class="text-secondary">No posters available at moment</h4>
 </div>
 
@@ -41,10 +41,14 @@
     <div class="card">
       <div class="card-body pt-4 row">
         <div class="col-auto">
-          <img src="assets/img/default-avatar.png" class="rounded-circle">
+          <a [routerLink]="'/profile/' + ad.user.id">
+            <img src="assets/img/default-avatar.png" class="rounded-circle">
+          </a>
         </div>
         <div class="col-10">
-          <h2>{{ ad.user.firstName }} {{ ad.user.lastName }}</h2>
+          <a [routerLink]="'/profile/' + ad.user.id">
+            <h2>{{ ad.user.firstName }} {{ ad.user.lastName }}</h2>
+          </a>
           <p [innerHTML]="ad.description"></p><br>
           <p>
             Age: {{ ad.minAge ? ad.minAge : 'any' }} - {{ ad.maxAge ? ad.maxAge : 'any' }}<br>

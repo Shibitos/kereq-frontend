@@ -41,7 +41,8 @@
             "styles": [
               "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles/variables.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js",
@@ -114,7 +115,8 @@
             "styles": [
               "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles/variables.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js",

@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div *ngIf="invitationsPageTool.loaded && !invitationsList" class="card-body">
+<div *ngIf="invitationsPageTool.loaded && !invitationsList.length" class="card-body">
   <h4 i18n="@@friends.no-invitations" class="text-secondary">No invitations at moment</h4>
 </div>
 
@@ -16,10 +16,14 @@
       <div class="card">
         <div class="card-body pt-4 row">
           <div class="col-auto">
-            <img src="assets/img/default-avatar.png" class="rounded-circle">
+            <a [routerLink]="'/profile/' + invitation.user.id">
+              <img src="assets/img/default-avatar.png" class="rounded-circle">
+            </a>
           </div>
           <div class="col-8">
-            <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
+            <a [routerLink]="'/profile/' + invitation.user.id">
+              <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
+            </a>
             <button type="submit"
                     class="btn btn-primary mt-2"
                     i18n="@@friends.accept" (click)="acceptInvitation(i)">Accept</button>
@@ -45,7 +49,7 @@
   </div>
 </div>
 
-<div *ngIf="friendsPageTool.loaded && !friendsList" class="card-body">
+<div *ngIf="friendsPageTool.loaded && !friendsList.length" class="card-body">
   <h4 i18n="@@friends.no-friends" class="text-secondary">No friends at moment</h4>
 </div>
 
@@ -54,10 +58,14 @@
     <div class="card">
       <div class="card-body pt-4 row">
         <div class="col-auto">
-          <img src="assets/img/default-avatar.png" class="rounded-circle">
+          <a [routerLink]="'/profile/' + friend.friend.id">
+            <img src="assets/img/default-avatar.png" class="rounded-circle">
+          </a>
         </div>
         <div class="col-8">
-          <h2>{{ friend.friend.firstName }} {{ friend.friend.lastName }}</h2>
+          <a [routerLink]="'/profile/' + friend.friend.id">
+            <h2>{{ friend.friend.firstName }} {{ friend.friend.lastName }}</h2>
+          </a>
           <button type="submit" class="btn btn-secondary mt-2 mx-2"
                   i18n="@@friends.remove" (click)="removeFriend(i)">Remove</button>
         </div>
