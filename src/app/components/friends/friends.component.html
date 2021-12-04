@@ -1,0 +1,62 @@
+<div class="col-12 card-container">
+  <div class="card">
+    <div class="card-body pt-4">
+      <h2 i18n="@@friends.invitations">Invitations</h2>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="invitationsPageTool.loaded && !invitationsList" class="card-body">
+  <h4 i18n="@@friends.no-invitations" class="text-secondary">No invitations at moment</h4>
+</div>
+
+<div *ngIf="invitationsPageTool.loaded && invitationsList" class="row row-cols-2">
+  <div *ngFor="let invitation of invitationsList; let i = index">
+    <div class="col card-container">
+      <div class="card">
+        <div class="card-body pt-4 row">
+          <div class="col-auto">
+            <img src="assets/img/default-avatar.png" class="rounded-circle">
+          </div>
+          <div class="col-10">
+            <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
+            <button type="submit"
+                    class="btn btn-block btn-primary mt-2"
+                    i18n="@@friends.accept" (click)="acceptInvitation(i)">Accept</button>
+            <button type="submit" class="btn btn-block btn-secondary mt-2 mx-2"
+                    i18n="@@friends.reject" (click)="rejectInvitation(i)">Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+
+<div class="col-12 card-container">
+  <div class="card">
+    <div class="card-body pt-4">
+      <h2 i18n="@@friends.friends">Friends</h2>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="friendsPageTool.loaded && !friendsList" class="card-body">
+  <h4 i18n="@@friends.no-friends" class="text-secondary">No friends at moment</h4>
+</div>
+
+<div *ngIf="friendsPageTool.loaded && friendsList" class="row row-cols-2">
+  <div class="col card-container" *ngFor="let friend of friendsList; let i = index">
+    <div class="card">
+      <div class="card-body pt-4 row">
+        <div class="col-auto">
+          <img src="assets/img/default-avatar.png" class="rounded-circle">
+        </div>
+        <div class="col-10">
+          <h2>{{ friend.friend.firstName }} {{ friend.friend.lastName }}</h2>
+          <button type="submit" class="btn btn-block btn-secondary mt-2 mx-2"
+                  i18n="@@friends.remove" (click)="removeFriend(i)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,8 @@ import {AuthService} from "../../services/auth.service";
 import {FindFriendsAd} from "../../models/find-friends-ad.model";
 import {FindFriendsService} from "../../services/find-friends.service";
 import {UserService} from "../../services/user.service";
+import {PageTool} from "../../tools/page.tool";
+import {Page} from "../../tools/page";
 
 @Component({
   selector: 'app-find-friends',
@@ -16,12 +18,8 @@ export class FindFriendsComponent implements OnInit {
   loggedUser: User;
   myAd: FindFriendsAd;
   myAdLoaded: boolean = false;
-  browseAdsList: FindFriendsAd[];
-  browseAdsLoaded: boolean = false;
-  throttle = 0;
-  distance = 2;
-  page = 0;
-  stopLoading = false;
+  browseAdsList: FindFriendsAd[] = [];
+  browseAdsPageTool: PageTool<FindFriendsAd>;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -37,26 +35,7 @@ export class FindFriendsComponent implements OnInit {
     }, error => {
       this.myAdLoaded = true;
     });
-    this.findFriendsService.browseAds(this.page).subscribe(a => {
-      if (!a.empty) {
-        this.browseAdsList = a.content;
-      } else {
-        this.stopLoading = true;
-      }
-      this.browseAdsLoaded = true;
-    });
-  }
-
-  onScroll(): void {
-    if (!this.stopLoading) {
-      this.findFriendsService.browseAds(++this.page).subscribe(a => {
-        if (a.empty) {
-          this.stopLoading = true;
-        } else {
-          this.browseAdsList.push(...a.content);
-        }
-      });
-    }
+    this.browseAdsPageTool = new PageTool<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList);
   }
 
   hide(index: number): void {
@@ -66,7 +45,7 @@ export class FindFriendsComponent implements OnInit {
   invite(index: number): void {
     let ad = this.browseAdsList[index];
     if (ad.user.id) {
-      this.userService.inviteFriend(Number(ad.user.id)).subscribe(a => {
+      this.userService.inviteFriend(ad.user.id).subscribe(a => {
         this.hide(index);
       }, error => {
 

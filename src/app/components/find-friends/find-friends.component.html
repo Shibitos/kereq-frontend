@@ -26,16 +26,16 @@
   </div>
 </div>
 
-<div *ngIf="browseAdsLoaded && !browseAdsList" class="card-body">
+<div *ngIf="browseAdsPageTool.loaded && !browseAdsList" class="card-body">
   <h4 i18n="@@find-friends.no-posters-available" class="text-secondary">No posters available at moment</h4>
 </div>
 
 <div
   infinite-scroll
-  [infiniteScrollDistance]="distance"
-  [infiniteScrollThrottle]="throttle"
-  (scrolled)="onScroll()"
-  *ngIf="browseAdsLoaded && browseAdsList"
+  [infiniteScrollDistance]="browseAdsPageTool.distance"
+  [infiniteScrollThrottle]="browseAdsPageTool.throttle"
+  (scrolled)="browseAdsPageTool.loadMore()"
+  *ngIf="browseAdsPageTool.loaded && browseAdsList"
 >
   <div class="col-12 card-container" *ngFor="let ad of browseAdsList; let i = index">
     <div class="card">

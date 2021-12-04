@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {FindFriendsAd} from "../models/find-friends-ad.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
+import {Page} from "../tools/page";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class FindFriendsService {
     return this.http.delete(environment.baseUrl + this.ffUrl + 'ad');
   }
 
-  browseAds(page: number): Observable<any> {
-    return this.http.get<FindFriendsAd>(environment.baseUrl + this.ffUrl + 'browse?page=' + page);
+  browseAds(page: Page): Observable<any> {
+    return this.http.get<FindFriendsAd>(environment.baseUrl + this.ffUrl + 'browse?p=' + page.pageNumber);
   }
 }

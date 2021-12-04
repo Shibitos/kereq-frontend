@@ -18,6 +18,7 @@ import { AccountConfirmationComponent } from './components/account-confirmation/
 import { FindFriendsComponent } from './components/find-friends/find-friends.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { FriendsComponent } from './components/friends/friends.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     WallComponent,
     MenuComponent,
     AccountConfirmationComponent,
-    FindFriendsComponent
+    FindFriendsComponent,
+    FriendsComponent
   ],
   imports: [
     BrowserModule,

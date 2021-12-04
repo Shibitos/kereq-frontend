@@ -9,6 +9,7 @@ import {NoAuthGuard} from "./guards/noauth.guard";
 import {ProfileComponent} from "./components/profile/profile.component";
 import {AccountConfirmationComponent} from "./components/account-confirmation/account-confirmation.component";
 import {FindFriendsComponent} from "./components/find-friends/find-friends.component";
+import {FriendsComponent} from "./components/friends/friends.component";
 
 const routes: Routes = [
   { path: '', component: WallComponent, canActivate: [AuthGuard] },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'confirm-account', component: AccountConfirmationComponent, canActivate: [NoAuthGuard] },
   { path: 'find-friends', component: FindFriendsComponent, canActivate: [AuthGuard] },
+  { path: 'friends', component: FriendsComponent, canActivate: [AuthGuard] },
   // { path: 'wall', component: WallComponent },
   //{ path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
   //{ path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },
