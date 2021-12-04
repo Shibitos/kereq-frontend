@@ -8,7 +8,7 @@ export class PageTool<T> {
   page: Page;
   stopLoading = false;
 
-  constructor(private loadFunc: (p: Page) => Observable<any>, private container: T[], pageSize?: number) { //TODO: hide func there? load more button not hiding after hiding all
+  constructor(private loadFunc: (p: Page, param?: number) => Observable<any>, private container: T[], pageSize?: number) { //TODO: hide func there? load more button not hiding after hiding all
     this.page = new Page();
     if (pageSize !== undefined) {
       this.page.pageSize = pageSize;
@@ -30,10 +30,10 @@ export class PageTool<T> {
     });
   }
 
-  loadMore(): void {
+  loadMore(param?: number): void {
     if (!this.stopLoading) {
       this.page.pageNumber += 1;
-      this.loadFunc(this.page).subscribe(a => {
+      this.loadFunc(this.page, param).subscribe(a => {
         if (a.empty) {
           this.stopLoading = true;
         } else {

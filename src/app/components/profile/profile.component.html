@@ -5,7 +5,7 @@
       <img src="assets/img/default-avatar.png" alt="Profile" class="pull-left rounded-circle">
       <div class="ps-2">
         <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-        <a href="" (click)="$event.preventDefault()">
+        <a href="" (click)="$event.preventDefault()" *ngIf="isOwner()">
           <i class="bi bi-pencil-square"></i>
           <span i18n="@@sites.edit-profile">Edit profile</span>
         </a>
@@ -33,12 +33,33 @@
       <div class="card h-100">
         <div class="card-body pt-4">
           <h2 i18n="@@profile.friends">Friends</h2>
-          <p>
-            Lorem ipsum dolores sit amet.
-          </p>
-          <a routerLink="/friends">
-            <span i18n="@@general.view-all">View all</span> <!-- TODO: change to "find new" when count == 0 -->
-          </a>
+          <div *ngIf="friendsLoaded && !friendsList.length">
+            <div *ngIf="isOwner()">
+              <span i18n="@@profile.no-friends-owner">You have no friends at moment</span><br>
+              <a routerLink="/find-friends" i18n="@@profile.find-friends">Click here to find some</a>
+            </div>
+            <div *ngIf="!isOwner()">
+              <span i18n="@@profile.no-friends">This user has no friends at moment</span><br>
+            </div>
+          </div>
+          <div *ngIf="friendsLoaded && friendsList.length">
+            <div class="row row-cols-4">
+              <div class="col" *ngFor="let friend of friendsList">
+                <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
+                  <div class="image-overlay-container">
+                    <img src="assets/img/default-avatar.png" class="img-thumbnail">
+                    <div class="image-overlay"></div>
+                  </div>
+                  {{ friend.friend.firstName }} {{ friend.friend.lastName }}
+                </a>
+              </div>
+            </div>
+            <div class="mt-2">
+              <a routerLink="/friends">
+                <span i18n="@@general.view-all">View all</span> <!-- TODO: change to "find new" when count == 0 -->
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

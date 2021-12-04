@@ -41,12 +41,15 @@
     <div class="card">
       <div class="card-body pt-4 row">
         <div class="col-auto">
-          <a [routerLink]="'/profile/' + ad.user.id">
-            <img src="assets/img/default-avatar.png" class="rounded-circle">
+          <a [routerLink]="'/profile/' + ad.user.id" class="profile-link">
+            <div class="image-overlay-container">
+              <img src="assets/img/default-avatar.png" class="rounded-circle">
+              <div class="image-overlay"></div>
+            </div>
           </a>
         </div>
         <div class="col-10">
-          <a [routerLink]="'/profile/' + ad.user.id">
+          <a [routerLink]="'/profile/' + ad.user.id" class="profile-link">
             <h2>{{ ad.user.firstName }} {{ ad.user.lastName }}</h2>
           </a>
           <p [innerHTML]="ad.description"></p><br>

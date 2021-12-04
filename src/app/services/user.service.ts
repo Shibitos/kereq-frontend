@@ -21,11 +21,11 @@ export class UserService {
     return this.http.post(environment.baseUrl + this.friendsUrl + 'invite/' + userId, null);
   }
 
-  getFriends(page: Page): Observable<Friendship[]> {
-    return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + 'friends' + '?p=' + page.pageNumber + '&l=' + page.pageSize);
+  getFriends(page: Page, userId?: number): Observable<any> {
+    return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + 'friends' + (userId ? ('/' + userId) : '') + '?p=' + page.pageNumber + '&l=' + page.pageSize);
   }
 
-  getInvitations(page: Page): Observable<Friendship[]> {
+  getInvitations(page: Page): Observable<any> {
     return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + 'invitations' + '?p=' + page.pageNumber + '&l=' + page.pageSize);
   }
 

@@ -12,16 +12,20 @@
 
 <div *ngIf="invitationsPageTool.loaded && invitationsList" class="row row-cols-md-2 row-cols-sm-1">
   <div *ngFor="let invitation of invitationsList; let i = index">
-    <div class="card-container col">
+    <div class="card-container">
       <div class="card">
         <div class="card-body pt-4 row">
           <div class="col-auto">
-            <a [routerLink]="'/profile/' + invitation.user.id">
-              <img src="assets/img/default-avatar.png" class="rounded-circle">
+            <a [routerLink]="'/profile/' + invitation.user.id" class="profile-link">
+              <div class="image-overlay-container">
+                <img src="assets/img/default-avatar.png" class="rounded-circle">
+                <div class="image-overlay"></div>
+              </div>
             </a>
+
           </div>
           <div class="col-8">
-            <a [routerLink]="'/profile/' + invitation.user.id">
+            <a [routerLink]="'/profile/' + invitation.user.id" class="profile-link">
               <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
             </a>
             <button type="submit"
@@ -53,17 +57,20 @@
   <h4 i18n="@@friends.no-friends" class="text-secondary">No friends at moment</h4>
 </div>
 
-<div *ngIf="friendsPageTool.loaded && friendsList" class="row row-cols-2">
-  <div class="col card-container" *ngFor="let friend of friendsList; let i = index">
+<div *ngIf="friendsPageTool.loaded && friendsList" class="row row-cols-md-2 row-cols-sm-1">
+  <div class="card-container" *ngFor="let friend of friendsList; let i = index">
     <div class="card">
       <div class="card-body pt-4 row">
         <div class="col-auto">
-          <a [routerLink]="'/profile/' + friend.friend.id">
-            <img src="assets/img/default-avatar.png" class="rounded-circle">
+          <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
+            <div class="image-overlay-container">
+              <img src="assets/img/default-avatar.png" class="rounded-circle">
+              <div class="image-overlay"></div>
+            </div>
           </a>
         </div>
         <div class="col-8">
-          <a [routerLink]="'/profile/' + friend.friend.id">
+          <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
             <h2>{{ friend.friend.firstName }} {{ friend.friend.lastName }}</h2>
           </a>
           <button type="submit" class="btn btn-secondary mt-2 mx-2"
