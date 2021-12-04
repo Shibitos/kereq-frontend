@@ -6,6 +6,23 @@
   </div>
 </div>
 
+<div *ngIf="!invitationsPageTool.loaded" class="row row-cols-md-2 row-cols-sm-1">
+  <div *ngFor="let item of [].constructor(4)">
+    <div class="card-container">
+      <div class="card">
+        <div class="card-body pt-4 row">
+          <content-loader viewBox="0 0 380 80">
+            <svg:rect x="0" y="0" rx="3" ry="3" width="100%" height="10px" />
+            <svg:rect x="20px" y="20px" rx="3" ry="3" width="100%" height="10px" />
+            <svg:rect x="20px" y="40px" rx="3" ry="3" width="100%" height="10px" />
+            <svg:rect x="20px" y="60px" rx="3" ry="3" width="100%" height="10px" />
+          </content-loader>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="invitationsPageTool.loaded && !invitationsList.length" class="card-body">
   <h4 i18n="@@friends.no-invitations" class="text-secondary">No invitations at moment</h4>
 </div>
@@ -49,6 +66,23 @@
   <div class="card">
     <div class="card-body pt-4">
       <h2 i18n="@@friends.friends">Friends</h2>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!friendsPageTool.loaded" class="row row-cols-md-2 row-cols-sm-1">
+  <div *ngFor="let item of [].constructor(8)">
+    <div class="card-container">
+      <div class="card">
+        <div class="card-body pt-4 row">
+          <content-loader viewBox="0 0 380 80">
+            <svg:rect x="0" y="0" rx="3" ry="3" width="100%" height="10px" />
+            <svg:rect x="20px" y="20px" rx="3" ry="3" width="100%" height="10px" />
+            <svg:rect x="20px" y="40px" rx="3" ry="3" width="100%" height="10px" />
+            <svg:rect x="20px" y="60px" rx="3" ry="3" width="100%" height="10px" />
+          </content-loader>
+        </div>
+      </div>
     </div>
   </div>
 </div>

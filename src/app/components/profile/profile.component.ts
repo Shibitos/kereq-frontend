@@ -15,8 +15,9 @@ import {Perspective} from "../../enums/perspective.enum";
 export class ProfileComponent implements OnInit {
 
   user: User;
-  friendsLoaded: boolean = false;
+  userLoaded: boolean = false;
   friendsList: Friendship[] = [];
+  friendsLoaded: boolean = false;
   perspective: Perspective;
 
 
@@ -30,13 +31,17 @@ export class ProfileComponent implements OnInit {
         this.perspective = Perspective.OTHER_USER;
         this.userService.getUser(paramsId['id']).subscribe(u => {
           this.user = u;
+          this.userLoaded = true;
           this.loadFull();
         });
       } else {
         this.perspective = Perspective.OWNER;
         this.authService.currentUser.subscribe(u => {
-          this.user = u;
-          this.loadFull();
+          if (!this.userLoaded) {
+            this.user = u;
+            this.userLoaded = true;
+            this.loadFull();
+          }
         });
       }
     });
@@ -58,6 +63,7 @@ export class ProfileComponent implements OnInit {
   }
 
   clear(): void {
+    this.userLoaded = false;
     this.friendsList = [];
     this.friendsLoaded = false;
   }

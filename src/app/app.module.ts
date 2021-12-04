@@ -19,6 +19,7 @@ import { FindFriendsComponent } from './components/find-friends/find-friends.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import { FriendsComponent } from './components/friends/friends.component';
+import {ContentLoaderModule} from "@ngneat/content-loader";
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { FriendsComponent } from './components/friends/friends.component';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    ContentLoaderModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true }

@@ -32,7 +32,7 @@ export class AuthService {
     if (this.getToken() !== null) {
       this.getCurrentUser().subscribe((user: User) => {
         this.currentUserSubject.next(user);
-      });
+      }, () => {});
     }
   }
 

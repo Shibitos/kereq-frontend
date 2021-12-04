@@ -17,17 +17,19 @@ export class PageTool<T> {
   }
 
   init() {
-    this.loadFunc(this.page).subscribe(a => {
-      if (!a.empty) {
-        this.container.push(...a.content);
-        if (a.totalPages <= (this.page.pageNumber + 1)) {
+    setTimeout(() => {
+      this.loadFunc(this.page).subscribe(a => {
+        if (!a.empty) {
+          this.container.push(...a.content);
+          if (a.totalPages <= (this.page.pageNumber + 1)) {
+            this.stopLoading = true;
+          }
+        } else {
           this.stopLoading = true;
         }
-      } else {
-        this.stopLoading = true;
-      }
-      this.loaded = true;
-    });
+        this.loaded = true;
+      });
+    }, 4000);
   }
 
   loadMore(param?: number): void {

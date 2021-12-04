@@ -3,7 +3,8 @@
   <div class="card">
     <div class="card-body pt-4 d-flex align-items-center">
       <img src="assets/img/default-avatar.png" alt="Profile" class="pull-left rounded-circle">
-      <div class="ps-2">
+      <list-content-loader *ngIf="!userLoaded"></list-content-loader>
+      <div class="ps-2" *ngIf="userLoaded">
         <h2>{{ user.firstName }} {{ user.lastName }}</h2>
         <a href="" (click)="$event.preventDefault()" *ngIf="isOwner()">
           <i class="bi bi-pencil-square"></i>
@@ -21,7 +22,8 @@
       <div class="card h-100">
         <div class="card-body pt-4">
           <h2 i18n="@@profile.about">About</h2>
-          <p>
+          <list-content-loader *ngIf="!userLoaded"></list-content-loader>
+          <p *ngIf="userLoaded">
             <span i18n="@@profile.from">From</span>: {{ user.country }}<br>
             <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:MM:ss" }}
           </p>
@@ -33,6 +35,20 @@
       <div class="card h-100">
         <div class="card-body pt-4">
           <h2 i18n="@@profile.friends">Friends</h2>
+
+          <div *ngIf="!friendsLoaded">
+            <div class="row row-cols-4">
+              <div class="col" *ngFor="let item of [].constructor(8)">
+                <content-loader viewBox="0 0 40 40">
+
+                  <svg:rect x="5" y="0" rx="3" ry="3" width="30" height="30" />
+                  <svg:rect x="0" y="31" rx="3" ry="3" width="19" height="4" />
+                  <svg:rect x="21" y="31" rx="3" ry="3" width="19" height="4" />
+                </content-loader>
+              </div>
+            </div>
+          </div>
+
           <div *ngIf="friendsLoaded && !friendsList.length">
             <div *ngIf="isOwner()">
               <span i18n="@@profile.no-friends-owner">You have no friends at moment</span><br>
@@ -42,6 +58,7 @@
               <span i18n="@@profile.no-friends">This user has no friends at moment</span><br>
             </div>
           </div>
+
           <div *ngIf="friendsLoaded && friendsList.length">
             <div class="row row-cols-4">
               <div class="col" *ngFor="let friend of friendsList">
