@@ -20,6 +20,9 @@ export class PageTool<T> {
     this.loadFunc(this.page).subscribe(a => {
       if (!a.empty) {
         this.container.push(...a.content);
+        if (a.totalPages <= (this.page.pageNumber + 1)) {
+          this.stopLoading = true;
+        }
       } else {
         this.stopLoading = true;
       }
@@ -30,12 +33,14 @@ export class PageTool<T> {
   loadMore(): void {
     if (!this.stopLoading) {
       this.page.pageNumber += 1;
-      console.log(this.page);
       this.loadFunc(this.page).subscribe(a => {
         if (a.empty) {
           this.stopLoading = true;
         } else {
           this.container.push(...a.content);
+          if (a.totalPages <= (this.page.pageNumber + 1)) {
+            this.stopLoading = true;
+          }
         }
       });
     }

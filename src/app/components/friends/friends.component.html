@@ -10,26 +10,31 @@
   <h4 i18n="@@friends.no-invitations" class="text-secondary">No invitations at moment</h4>
 </div>
 
-<div *ngIf="invitationsPageTool.loaded && invitationsList" class="row row-cols-2">
+<div *ngIf="invitationsPageTool.loaded && invitationsList" class="row row-cols-md-2 row-cols-sm-1">
   <div *ngFor="let invitation of invitationsList; let i = index">
-    <div class="col card-container">
+    <div class="card-container col">
       <div class="card">
         <div class="card-body pt-4 row">
           <div class="col-auto">
             <img src="assets/img/default-avatar.png" class="rounded-circle">
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
             <button type="submit"
-                    class="btn btn-block btn-primary mt-2"
+                    class="btn btn-primary mt-2"
                     i18n="@@friends.accept" (click)="acceptInvitation(i)">Accept</button>
-            <button type="submit" class="btn btn-block btn-secondary mt-2 mx-2"
+            <button type="submit" class="btn btn-secondary mt-2 mx-2"
                     i18n="@@friends.reject" (click)="rejectInvitation(i)">Reject</button>
           </div>
         </div>
       </div>
     </div>
-    </div>
+  </div>
+</div>
+
+<div class="col-3 mx-auto mb-4 text-center" *ngIf="invitationsPageTool.loaded && !invitationsPageTool.stopLoading">
+  <button type="submit" class="btn btn-primary mx-auto"
+          i18n="@@general.load-more" (click)="invitationsPageTool.loadMore()">Load more</button>
 </div>
 
 <div class="col-12 card-container">
@@ -51,12 +56,17 @@
         <div class="col-auto">
           <img src="assets/img/default-avatar.png" class="rounded-circle">
         </div>
-        <div class="col-10">
+        <div class="col-8">
           <h2>{{ friend.friend.firstName }} {{ friend.friend.lastName }}</h2>
-          <button type="submit" class="btn btn-block btn-secondary mt-2 mx-2"
+          <button type="submit" class="btn btn-secondary mt-2 mx-2"
                   i18n="@@friends.remove" (click)="removeFriend(i)">Remove</button>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<div class="col-3 mx-auto text-center" *ngIf="friendsPageTool.loaded && !friendsPageTool.stopLoading">
+  <button type="submit" class="btn btn-primary mx-auto"
+          i18n="@@general.load-more" (click)="friendsPageTool.loadMore()">Load more</button>
 </div>
