@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {FindFriendsAd} from "../models/find-friends-ad.model";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {Page} from "../tools/page";
+import {Page} from "../utils/page";
 
 @Injectable({
   providedIn: 'root'

@@ -1,65 +1,67 @@
-<div class="col-12 card-container">
-  <div class="card">
-    <div class="card-body pt-4">
-      <h2 i18n="@@friends.invitations">Invitations</h2>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="!invitationsPageTool.loaded" class="row row-cols-md-2 row-cols-sm-1">
-  <div *ngFor="let item of [].constructor(4)">
-    <div class="card-container">
-      <div class="card">
-        <div class="card-body pt-4 row">
-          <content-loader viewBox="0 0 380 80">
-            <svg:rect x="0" y="0" rx="3" ry="3" width="100%" height="10px" />
-            <svg:rect x="20px" y="20px" rx="3" ry="3" width="100%" height="10px" />
-            <svg:rect x="20px" y="40px" rx="3" ry="3" width="100%" height="10px" />
-            <svg:rect x="20px" y="60px" rx="3" ry="3" width="100%" height="10px" />
-          </content-loader>
-        </div>
+<div *ngIf="isOwner()">
+  <div class="col-12 card-container">
+    <div class="card">
+      <div class="card-body pt-4">
+        <h2 i18n="@@friends.invitations">Invitations</h2>
       </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="invitationsPageTool.loaded && !invitationsList.length" class="card-body">
-  <h4 i18n="@@friends.no-invitations" class="text-secondary">No invitations at moment</h4>
-</div>
-
-<div *ngIf="invitationsPageTool.loaded && invitationsList" class="row row-cols-md-2 row-cols-sm-1">
-  <div *ngFor="let invitation of invitationsList; let i = index">
-    <div class="card-container">
-      <div class="card">
-        <div class="card-body pt-4 row">
-          <div class="col-auto">
-            <a [routerLink]="'/profile/' + invitation.user.id" class="profile-link">
-              <div class="image-overlay-container">
-                <img src="assets/img/default-avatar.png" class="rounded-circle">
-                <div class="image-overlay"></div>
-              </div>
-            </a>
-
-          </div>
-          <div class="col-8">
-            <a [routerLink]="'/profile/' + invitation.user.id" class="profile-link">
-              <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
-            </a>
-            <button type="submit"
-                    class="btn btn-primary mt-2"
-                    i18n="@@friends.accept" (click)="acceptInvitation(i)">Accept</button>
-            <button type="submit" class="btn btn-secondary mt-2 mx-2"
-                    i18n="@@friends.reject" (click)="rejectInvitation(i)">Reject</button>
+  <div *ngIf="!invitationsPageTool.loaded" class="row row-cols-md-2 row-cols-sm-1">
+    <div *ngFor="let item of [].constructor(4)">
+      <div class="card-container">
+        <div class="card">
+          <div class="card-body pt-4 row">
+            <content-loader viewBox="0 0 380 80">
+              <svg:rect x="0" y="0" rx="3" ry="3" width="100%" height="10px" />
+              <svg:rect x="20px" y="20px" rx="3" ry="3" width="100%" height="10px" />
+              <svg:rect x="20px" y="40px" rx="3" ry="3" width="100%" height="10px" />
+              <svg:rect x="20px" y="60px" rx="3" ry="3" width="100%" height="10px" />
+            </content-loader>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="col-3 mx-auto mb-4 text-center" *ngIf="invitationsPageTool.loaded && !invitationsPageTool.stopLoading">
-  <button type="submit" class="btn btn-primary mx-auto"
-          i18n="@@general.load-more" (click)="invitationsPageTool.loadMore()">Load more</button>
+  <div *ngIf="invitationsPageTool.loaded && !invitationsList.length" class="card-body">
+    <h4 i18n="@@friends.no-invitations" class="text-secondary">No invitations at moment</h4>
+  </div>
+
+  <div *ngIf="invitationsPageTool.loaded && invitationsList" class="row row-cols-md-2 row-cols-sm-1">
+    <div *ngFor="let invitation of invitationsList; let i = index">
+      <div class="card-container">
+        <div class="card">
+          <div class="card-body pt-4 row">
+            <div class="col-auto">
+              <a [routerLink]="'/profile/' + invitation.user.id" class="profile-link">
+                <div class="image-overlay-container">
+                  <img src="assets/img/default-avatar.png" class="rounded-circle">
+                  <div class="image-overlay"></div>
+                </div>
+              </a>
+
+            </div>
+            <div class="col-8">
+              <a [routerLink]="'/profile/' + invitation.user.id" class="profile-link">
+                <h2>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</h2>
+              </a>
+              <button type="submit"
+                      class="btn btn-primary mt-2"
+                      i18n="@@friends.accept" (click)="acceptInvitation(i)">Accept</button>
+              <button type="submit" class="btn btn-secondary mt-2 mx-2"
+                      i18n="@@friends.reject" (click)="rejectInvitation(i)">Reject</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-3 mx-auto mb-4 text-center" *ngIf="invitationsPageTool.loaded && !invitationsPageTool.stopLoading">
+    <button type="submit" class="btn btn-primary mx-auto"
+            i18n="@@general.load-more" (click)="invitationsPageTool.loadMore()">Load more</button>
+  </div>
 </div>
 
 <div class="col-12 card-container">
@@ -107,7 +109,7 @@
           <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
             <h2>{{ friend.friend.firstName }} {{ friend.friend.lastName }}</h2>
           </a>
-          <button type="submit" class="btn btn-secondary mt-2 mx-2"
+          <button *ngIf="isOwner()" type="submit" class="btn btn-secondary mt-2 mx-2"
                   i18n="@@friends.remove" (click)="removeFriend(i)">Remove</button>
         </div>
       </div>

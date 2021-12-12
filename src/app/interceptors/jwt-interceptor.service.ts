@@ -1,4 +1,11 @@
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpStatusCode
+} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {AuthService} from "../services/auth.service";
 import {catchError} from "rxjs/operators";
@@ -20,7 +27,7 @@ export class JWTInterceptor implements HttpInterceptor {
       });
     }
     return next.handle(req).pipe(catchError(error => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+      if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Unauthorized) {
         this.handle401Error(req, next);
       }
 

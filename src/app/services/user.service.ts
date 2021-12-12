@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {environment} from "../../environments/environment";
 import {Observable} from "rxjs";
 import {Friendship} from "../models/friendship.model";
-import {Page} from "../tools/page";
+import {Page} from "../utils/page";
 import {User} from "../models/user.model";
 
 @Injectable({

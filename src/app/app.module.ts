@@ -20,6 +20,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import { FriendsComponent } from './components/friends/friends.component';
 import {ContentLoaderModule} from "@ngneat/content-loader";
+import {NgxFormErrorModule} from "ngx-form-error";
+import {DlDateTimeDateModule, DlDateTimePickerModule} from "angular-bootstrap-datetimepicker";
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import {ContentLoaderModule} from "@ngneat/content-loader";
     MenuComponent,
     AccountConfirmationComponent,
     FindFriendsComponent,
-    FriendsComponent
+    FriendsComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,10 @@ import {ContentLoaderModule} from "@ngneat/content-loader";
     ReactiveFormsModule,
     BrowserAnimationsModule,
     InfiniteScrollModule,
-    ContentLoaderModule
+    ContentLoaderModule,
+    NgxFormErrorModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true }

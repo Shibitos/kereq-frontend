@@ -12,6 +12,7 @@ export class AuthService {
 
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  public currentUserObject: User;
 
   constructor(private http: HttpClient, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<User>(new User());
@@ -23,6 +24,7 @@ export class AuthService {
       localStorage.setItem('access_token', res.access_token);
       this.getCurrentUser().subscribe((user: User) => {
         this.currentUserSubject.next(user);
+        this.currentUserObject = user;
         this.router.navigate(['/']);
       });
     });
@@ -32,6 +34,7 @@ export class AuthService {
     if (this.getToken() !== null) {
       this.getCurrentUser().subscribe((user: User) => {
         this.currentUserSubject.next(user);
+        this.currentUserObject = user;
       }, () => {});
     }
   }

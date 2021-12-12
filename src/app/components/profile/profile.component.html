@@ -72,7 +72,7 @@
               </div>
             </div>
             <div class="mt-2">
-              <a routerLink="/friends">
+              <a [routerLink]="'/friends' + (!isOwner() ? ('/' + user.id) : '')">
                 <span i18n="@@general.view-all">View all</span> <!-- TODO: change to "find new" when count == 0 -->
               </a>
             </div>

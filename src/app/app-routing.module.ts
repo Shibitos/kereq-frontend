@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'confirm-account', component: AccountConfirmationComponent, canActivate: [NoAuthGuard] },
   { path: 'find-friends', component: FindFriendsComponent, canActivate: [AuthGuard] },
   { path: 'friends', component: FriendsComponent, canActivate: [AuthGuard] },
+  { path: 'friends/:id', component: FriendsComponent, canActivate: [AuthGuard] },
   // { path: 'wall', component: WallComponent },
   //{ path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
   //{ path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },

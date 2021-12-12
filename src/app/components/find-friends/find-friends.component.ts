@@ -5,8 +5,8 @@ import {AuthService} from "../../services/auth.service";
 import {FindFriendsAd} from "../../models/find-friends-ad.model";
 import {FindFriendsService} from "../../services/find-friends.service";
 import {UserService} from "../../services/user.service";
-import {PageTool} from "../../tools/page.tool";
-import {Page} from "../../tools/page";
+import {PageUtil} from "../../utils/page.util";
+import {Page} from "../../utils/page";
 
 @Component({
   selector: 'app-find-friends',
@@ -19,7 +19,7 @@ export class FindFriendsComponent implements OnInit {
   myAd: FindFriendsAd;
   myAdLoaded: boolean = false;
   browseAdsList: FindFriendsAd[] = [];
-  browseAdsPageTool: PageTool<FindFriendsAd>;
+  browseAdsPageTool: PageUtil<FindFriendsAd>;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -32,10 +32,10 @@ export class FindFriendsComponent implements OnInit {
     this.findFriendsService.getMyAd().subscribe(a => {
       this.myAd = a;
       this.myAdLoaded = true;
-    }, error => {
+    }, () => {
       this.myAdLoaded = true;
     });
-    this.browseAdsPageTool = new PageTool<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList);
+    this.browseAdsPageTool = new PageUtil<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList);
   }
 
   hide(index: number): void {
