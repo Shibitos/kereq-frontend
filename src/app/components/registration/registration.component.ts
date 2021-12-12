@@ -76,7 +76,6 @@ export class RegistrationComponent implements OnInit {
       {
         validators: [MatchValidator.match('password', 'confirmPassword')]
       });
-    //this.success = false;
   }
 
   get f() {

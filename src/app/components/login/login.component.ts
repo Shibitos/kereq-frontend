@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {HttpStatusCode} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,9 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup; //TODO: validation
+  error: string;
+  loading: boolean = false;
+  submitted: boolean = false;
 
   constructor(
     public fb: FormBuilder,
@@ -28,7 +32,26 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { }
 
+  get f() {
+    return this.loginForm.controls;
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    this.loginForm.markAllAsTouched();
+    if (this.loginForm.invalid) {
+      return;
+    }
+    this.loading = true;
+    this.loginUser();
+  }
+
   loginUser() {
-    this.authService.login(this.loginForm.value);
+    this.authService.login(this.loginForm.value, this.handleError.bind(this));
+  }
+
+  handleError(errorData: any) : void {
+    this.error = $localize`:@@user.login-failed:Incorrect email or password`;
+    this.loading = false;
   }
 }

@@ -19,7 +19,7 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  login(user: User) {
+  login(user: User, handleError: (error: any) => void) {
     this.http.post(environment.baseUrl + 'auth/login', user).subscribe((res: any) => {
       localStorage.setItem('access_token', res.access_token);
       this.getCurrentUser().subscribe((user: User) => {
@@ -27,7 +27,7 @@ export class AuthService {
         this.currentUserObject = user;
         this.router.navigate(['/']);
       });
-    });
+    }, handleError);
   }
 
   checkToken() {
