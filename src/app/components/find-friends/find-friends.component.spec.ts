@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FindFriendsComponent } from './find-friends.component';
+import {FindFriendsComponent} from './find-friends.component';
 
 describe('FindFriendsComponent', () => {
   let component: FindFriendsComponent;

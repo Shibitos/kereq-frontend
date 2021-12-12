@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {HttpStatusCode} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +10,7 @@ import {HttpStatusCode} from "@angular/common/http";
 })
 export class LoginComponent implements OnInit {
 
-  loginForm: FormGroup; //TODO: validation
+  loginForm: FormGroup;
   error: string;
   loading: boolean = false;
   submitted: boolean = false;

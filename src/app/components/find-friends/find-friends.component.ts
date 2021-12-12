@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user.model";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
@@ -6,7 +6,6 @@ import {FindFriendsAd} from "../../models/find-friends-ad.model";
 import {FindFriendsService} from "../../services/find-friends.service";
 import {UserService} from "../../services/user.service";
 import {PageUtil} from "../../utils/page.util";
-import {Page} from "../../utils/page";
 
 @Component({
   selector: 'app-find-friends',

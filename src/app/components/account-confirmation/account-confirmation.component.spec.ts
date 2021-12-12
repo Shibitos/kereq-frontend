@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccountConfirmationComponent } from './account-confirmation.component';
+import {AccountConfirmationComponent} from './account-confirmation.component';
 
 describe('AccountConfirmationComponent', () => {
   let component: AccountConfirmationComponent;

@@ -14,15 +14,15 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {WallComponent} from './components/wall/wall.component';
 import {MenuComponent} from './components/menu/menu.component';
-import { AccountConfirmationComponent } from './components/account-confirmation/account-confirmation.component';
-import { FindFriendsComponent } from './components/find-friends/find-friends.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AccountConfirmationComponent} from './components/account-confirmation/account-confirmation.component';
+import {FindFriendsComponent} from './components/find-friends/find-friends.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
-import { FriendsComponent } from './components/friends/friends.component';
+import {FriendsComponent} from './components/friends/friends.component';
 import {ContentLoaderModule} from "@ngneat/content-loader";
 import {NgxFormErrorModule} from "ngx-form-error";
 import {DlDateTimeDateModule, DlDateTimePickerModule} from "angular-bootstrap-datetimepicker";
-import { LoadingComponent } from './components/loading/loading.component';
+import {LoadingComponent} from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
