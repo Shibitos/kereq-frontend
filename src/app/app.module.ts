@@ -23,6 +23,9 @@ import {ContentLoaderModule} from "@ngneat/content-loader";
 import {NgxFormErrorModule} from "ngx-form-error";
 import {DlDateTimeDateModule, DlDateTimePickerModule} from "angular-bootstrap-datetimepicker";
 import {LoadingComponent} from './components/loading/loading.component';
+import {NpnSliderModule} from "npn-slider";
+import { ModalComponent } from './components/modal/modal.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import {LoadingComponent} from './components/loading/loading.component';
     AccountConfirmationComponent,
     FindFriendsComponent,
     FriendsComponent,
-    LoadingComponent
+    LoadingComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,9 @@ import {LoadingComponent} from './components/loading/loading.component';
     ContentLoaderModule,
     NgxFormErrorModule,
     DlDateTimeDateModule,
-    DlDateTimePickerModule
+    DlDateTimePickerModule,
+    NgbModule,
+    NpnSliderModule //TODO: change for better
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true }

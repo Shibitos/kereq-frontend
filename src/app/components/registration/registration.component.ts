@@ -8,6 +8,7 @@ import {NgxFormErrorConfig} from "ngx-form-error";
 import {HttpStatusCode} from "@angular/common/http";
 import {DictionaryService} from "../../services/dictionary.service";
 import {DictionaryItem} from "../../models/dictionary-item.model";
+import {Gender} from "../../enums/gender.enum";
 
 @Component({
   selector: 'app-register',
@@ -25,7 +26,7 @@ export class RegistrationComponent implements OnInit {
 
   countries: DictionaryItem[];
   COUNTRIES_DICT_CODE: string = 'COUNTRIES'; //TODO: load once
-  genders: string[] = ['M', 'W'];
+  readonly genders : typeof Gender = Gender ;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,8 +35,8 @@ export class RegistrationComponent implements OnInit {
     private dictionaryService: DictionaryService,
     errorFormConfig: NgxFormErrorConfig
   ) {
-    errorFormConfig.updateMessages({ //TODO: form translations?
-      matching: () => `Passwords must match.`,
+    errorFormConfig.updateMessages({
+      matching: () => $localize`:@@user.form.password-match:Passwords must match.`,
       customError: (context) => context
     });
   }
@@ -69,7 +70,10 @@ export class RegistrationComponent implements OnInit {
           Validators.maxLength(40)
         ]],
         country: ['', Validators.required],
-        gender: ['M', Validators.required],
+        gender: ['M', [
+          Validators.required,
+          Validators.maxLength(1)
+        ]],
         birthDate: ['', Validators.required],
         acceptedTerms: [false, Validators.requiredTrue]
       },
@@ -111,7 +115,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   handleError(errorData: any) : void {
-    if (errorData.status == HttpStatusCode.BadRequest) { //TODO: main error if other status
+    if (errorData.status == HttpStatusCode.BadRequest) {
       if (errorData.error['data']) {
         for (let entry in errorData.error['data']) {
           let field = errorData.error['data'][entry]['field'];

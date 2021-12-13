@@ -3,17 +3,81 @@
     <div class="card-body pt-4">
       <h2 i18n="@@find-friends.my-ad">My poster</h2>
       <list-content-loader *ngIf="!myAdLoaded"></list-content-loader>
+      <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+      </div>
       <div *ngIf="myAdLoaded">
         <div *ngIf="myAd">
+<!--          TODO: sanitizing-->
           {{ myAd.description }}<br>
           <p>
             Age: {{ myAd.minAge ? myAd.minAge : 'any' }} - {{ myAd.maxAge ? myAd.maxAge : 'any' }}<br>
             Gender: {{ myAd.gender ? myAd.gender : 'any' }}
           </p>
+
+          <button type="submit" class="btn btn-primary mt-2" i18n="@@find-friends.remove-my-ad" (click)="removeMyAdModal()">Remove</button>
+          <app-modal #removeModal [modalConfig]="removeModalConfig">
+            <span i18n="@@find-friends.ad-removal-confirm">
+              Are you sure you want to remove your poster?
+            </span>
+          </app-modal>
         </div>
-        <p *ngIf="!myAd">
-          You have no ad.
-        </p>
+        <div *ngIf="!myAd" class="position-relative">
+          <app-loading *ngIf="loading"></app-loading>
+          <form [formGroup]="adForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label i18n="@@find-friends.form.description">Description</label>
+              <textarea [ngClass]="{ 'is-invalid': submitted && f['description'].errors }" class="form-control validate" formControlName="description" i18n-placeholder="@@find-friends.form.description" placeholder="Description" autofocus></textarea>
+              <div *ngIf="f['description'].touched && f['description'].errors" class="invalid-feedback">
+                <ngx-form-error [control]="f['description']"></ngx-form-error>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label i18n="@@find-friends.form.age">Age</label><br>
+              <label i18n="@@find-friends.form.age-any" for="radioAgeAny">Any</label>
+              <input type="checkbox"  id="radioAgeAny" class="form-check-input" (change)="switchAgeAny()" [checked]="ageAny"/>
+              <div class="col-lg-3 col-md-6">
+
+                <npn-slider [disabled]="ageAny ? 'true' : 'false'" [min]="1" [max]="120" (onChange)="onAgeChange($event)" [step]="1" [showStepIndicator]="true"></npn-slider>
+              </div>
+              <div *ngIf="submitted && (f['minAge'].errors || f['maxAge'].errors)" class="invalid-feedback">
+                <ngx-form-error [control]="f['minAge']"></ngx-form-error>
+                <ngx-form-error [control]="f['maxAge']"></ngx-form-error>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label i18n="@@find-friends.form.gender">Gender</label>
+              <div [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
+                <div class="form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" [value]="null" id="radioGenderAny" checked>
+                  <label class="form-check-label" for="radioGenderAny" i18n="@@user.form.gender-any">
+                    Any
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" [value]="genders.MALE" id="radioGenderMale">
+                  <label class="form-check-label" for="radioGenderMale" i18n="@@user.form.gender-male">
+                    Male
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <input class="form-check-input" type="radio" formControlName="gender" [value]="genders.FEMALE" id="radioGenderFemale">
+                  <label class="form-check-label" for="radioGenderFemale" i18n="@@user.form.gender-female">
+                    Female
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+                <ngx-form-error [control]="f['gender']"></ngx-form-error>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
+          </form>
+        </div>
+
       </div>
     </div>
   </div>
