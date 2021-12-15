@@ -64,9 +64,14 @@
           </a>
         </div>
         <div class="col-10">
-          <a [routerLink]="'/profile/' + post.user.id" class="profile-link">
-            <h2>{{ post.user.firstName }} {{ post.user.lastName }}</h2>
-          </a>
+          <div class="mb-2">
+            <a [routerLink]="'/profile/' + post.user.id" class="profile-link">
+              <h2 class="mb-0">{{ post.user.firstName }} {{ post.user.lastName }}</h2>
+            </a>
+            <span>
+              <app-async-date-format [date]="post.createdAt"></app-async-date-format>
+            </span>
+          </div>
           <p [innerHTML]="post.content"></p><br>
 
           <button type="submit" class="btn btn-secondary mt-2 mx-2"

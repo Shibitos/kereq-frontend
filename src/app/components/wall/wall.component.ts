@@ -9,6 +9,7 @@ import {first} from "rxjs/operators";
 import {HttpStatusCode} from "@angular/common/http";
 import {PostService} from "../../services/post.service";
 import {Post} from "../../models/post.model";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-wall',

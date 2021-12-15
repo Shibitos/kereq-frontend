@@ -34,7 +34,7 @@ export class PageUtil<T> {
     });
   }
 
-  loadMore(): void {
+  loadMore(): void { //TODO: think about duplicates
     if (!this.stopLoading) {
       this.page.pageNumber += 1;
       this.loadFunc(this.page, this.param).subscribe(a => {

@@ -26,6 +26,7 @@ import {LoadingComponent} from './components/loading/loading.component';
 import {NpnSliderModule} from "npn-slider";
 import {ModalComponent} from './components/modal/modal.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { AsyncDateFormatComponent } from './components/async-date-format/async-date-format.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     FindFriendsComponent,
     FriendsComponent,
     LoadingComponent,
-    ModalComponent
+    ModalComponent,
+    AsyncDateFormatComponent
   ],
   imports: [
     BrowserModule,

@@ -25,7 +25,7 @@
           <list-content-loader *ngIf="!userLoaded"></list-content-loader>
           <p *ngIf="userLoaded">
             <span i18n="@@profile.from">From</span>: {{ user.country }}<br>
-            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:MM:ss" }}
+            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:mm:ss" }}
           </p>
         </div>
       </div>
