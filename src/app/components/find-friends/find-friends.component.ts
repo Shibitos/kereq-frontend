@@ -37,8 +37,8 @@ export class FindFriendsComponent implements OnInit {
   submitted: boolean = false;
   success: boolean = false;
   ageAny: boolean = true;
-  error: string;
-  readonly genders : typeof Gender = Gender ;
+  error: string; //TODO: ng bootstrap alerts?
+  readonly genders : typeof Gender = Gender;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -77,6 +77,7 @@ export class FindFriendsComponent implements OnInit {
   }
 
   retrieveMyAd(): void {
+    this.myAdLoaded = false;
     this.findFriendsService.getMyAd().subscribe(a => {
       this.myAd = a;
       this.myAdLoaded = true;
@@ -140,7 +141,6 @@ export class FindFriendsComponent implements OnInit {
     if (!this.ageAny) {
       this.adForm.controls['minAge'].setValue(selectedValues[0]);
       this.adForm.controls['maxAge'].setValue(selectedValues[1]);
-      console.log('xD');
     }
   }
 
@@ -149,6 +149,7 @@ export class FindFriendsComponent implements OnInit {
       .subscribe(
         data => {
           this.success = true;
+          this.loading = false;
           this.retrieveMyAd();
         },
         errorData => {

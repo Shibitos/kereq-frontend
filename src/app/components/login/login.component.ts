@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
-    this.authService.login(this.loginForm.value, this.handleError.bind(this));
+    this.authService.login(this.loginForm.value, this.handleError.bind(this)); //TODO: remember me?
   }
 
   handleError(errorData: any) : void {

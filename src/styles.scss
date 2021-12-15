@@ -5,7 +5,7 @@
 }
 
 body, app-root {
-  background-color: #edf2f9 !important;
+  background-color: #edf2f9;
   color: $font-color;
 }
 
@@ -50,9 +50,3 @@ a:hover {
 }
 
 html, body { height: 100%; }
-
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
-
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';

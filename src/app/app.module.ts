@@ -53,7 +53,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     InfiniteScrollModule,
     ContentLoaderModule,
     NgxFormErrorModule,
-    DlDateTimeDateModule,
+    DlDateTimeDateModule, //TODO: ng bootstrap
     DlDateTimePickerModule,
     NgbModule,
     NpnSliderModule //TODO: change for better

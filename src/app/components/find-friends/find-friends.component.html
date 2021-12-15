@@ -8,10 +8,15 @@
       </div>
       <div *ngIf="myAdLoaded">
         <div *ngIf="myAd">
-<!--          TODO: sanitizing-->
-          {{ myAd.description }}<br>
+          <p [innerHTML]="myAd.description"></p><br>
           <p>
-            Age: {{ myAd.minAge ? myAd.minAge : 'any' }} - {{ myAd.maxAge ? myAd.maxAge : 'any' }}<br>
+            Age:
+            <!--            TODO: translations, refactor-->
+            <span *ngIf="myAd.minAge || myAd.maxAge">
+              {{ myAd.minAge ? myAd.minAge : 'any' }} - {{ myAd.maxAge ? myAd.maxAge : 'any' }}
+            </span>
+            <span *ngIf="!myAd.minAge && !myAd.maxAge">any</span>
+            <br>
             Gender: {{ myAd.gender ? myAd.gender : 'any' }}
           </p>
 
@@ -136,7 +141,13 @@
           </a>
           <p [innerHTML]="ad.description"></p><br>
           <p>
-            Age: {{ ad.minAge ? ad.minAge : 'any' }} - {{ ad.maxAge ? ad.maxAge : 'any' }}<br>
+            Age:
+<!--            TODO: translations, refactor-->
+            <span *ngIf="ad.minAge || ad.maxAge">
+              {{ ad.minAge ? ad.minAge : 'any' }} - {{ ad.maxAge ? ad.maxAge : 'any' }}
+            </span>
+            <span *ngIf="!ad.minAge && !ad.maxAge">any</span>
+            <br>
             Gender: {{ ad.gender ? ad.gender : 'any' }}
           </p>
           <button type="submit"

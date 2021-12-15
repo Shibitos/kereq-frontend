@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {User} from "../models/user.model";
 import {Router} from "@angular/router";
+import {JWTToken} from "../models/jwt-token.model";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +16,33 @@ export class AuthService {
   public currentUser: Observable<User>;
   public currentUserObject: User;
 
+  static readonly TOKEN_NAME: string = 'access_token';
+  static readonly REFRESH_TOKEN_NAME: string = 'refresh_token';
+
+
   constructor(private http: HttpClient, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<User>(new User());
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
   login(user: User, handleError: (error: any) => void) {
-    this.http.post(environment.baseUrl + 'auth/login', user).subscribe((res: any) => {
-      localStorage.setItem('access_token', res.access_token);
+    this.http.post<JWTToken>(environment.baseUrl + 'auth/login', user).subscribe((res: JWTToken) => {
+      localStorage.setItem(AuthService.TOKEN_NAME, res.access_token);
+      localStorage.setItem(AuthService.REFRESH_TOKEN_NAME, res.refresh_token);
       this.getCurrentUser().subscribe((user: User) => {
         this.currentUserSubject.next(user);
         this.currentUserObject = user;
         this.router.navigate(['/']);
       });
     }, handleError);
+  }
+
+  refreshToken() : Observable<JWTToken> {
+    const request = { 'refreshToken': this.getRefreshToken() };
+    let headers = new HttpHeaders().append("X-skip-auth", "1");
+    return this.http.post<JWTToken>(environment.baseUrl + 'auth/refresh-token', request, {headers}).pipe(tap((response: JWTToken) => {
+      this.saveTokens(response.access_token, response.refresh_token);
+    }));
   }
 
   checkToken() {
@@ -52,16 +67,27 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem(AuthService.TOKEN_NAME);
+    localStorage.removeItem(AuthService.REFRESH_TOKEN_NAME);
     this.currentUserSubject.next(new User());
   }
 
   getToken() {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem(AuthService.TOKEN_NAME);
+  }
+
+  getRefreshToken() {
+    return localStorage.getItem(AuthService.REFRESH_TOKEN_NAME);
+  }
+
+  saveTokens(accessToken: string, refreshToken: string) {
+    console.log('xD');
+    localStorage.setItem(AuthService.TOKEN_NAME, accessToken);
+    localStorage.setItem(AuthService.REFRESH_TOKEN_NAME, refreshToken);
   }
 
   get isLoggedIn(): boolean {
-    let authToken = localStorage.getItem('access_token');
+    let authToken = localStorage.getItem(AuthService.TOKEN_NAME);
     return authToken !== null;
   }
 }
