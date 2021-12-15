@@ -6,6 +6,7 @@ import {User} from "../models/user.model";
 import {Router} from "@angular/router";
 import {JWTToken} from "../models/jwt-token.model";
 import {tap} from "rxjs/operators";
+import {JWTInterceptor} from "../interceptors/jwt-interceptor.service";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,7 @@ export class AuthService {
 
   refreshToken() : Observable<JWTToken> {
     const request = { 'refreshToken': this.getRefreshToken() };
-    let headers = new HttpHeaders().append("X-skip-auth", "1");
+    let headers = new HttpHeaders().append(JWTInterceptor.HEADER_SKIP_AUTH, "1");
     return this.http.post<JWTToken>(environment.baseUrl + 'auth/refresh-token', request, {headers}).pipe(tap((response: JWTToken) => {
       this.saveTokens(response.access_token, response.refresh_token);
     }));

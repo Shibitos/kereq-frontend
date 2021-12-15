@@ -120,7 +120,7 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-2" i18n="@@user.form.register">Sign up</button>
+        <button type="submit" [disabled]="loading ? true : null" class="btn btn-primary mt-2" i18n="@@user.form.register">Sign up</button>
         <button type="button" (click)="onReset()" [disabled]="loading ? true : null" class="btn btn-warning mt-2" i18n="@@general.form.reset">Reset</button>
       </form>
       <a routerLink="/login"><span i18n="@@user.form.already-registered">Already have an account?</span></a>

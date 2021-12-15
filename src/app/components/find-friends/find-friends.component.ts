@@ -68,9 +68,6 @@ export class FindFriendsComponent implements OnInit {
           Validators.minLength(15),
           Validators.maxLength(400)
         ]]
-      },
-      {
-        validators: [MatchValidator.match('password', 'confirmPassword')]
       });
     this.retrieveMyAd();
     this.browseAdsPageTool = new PageUtil<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList);

@@ -24,7 +24,7 @@ import {NgxFormErrorModule} from "ngx-form-error";
 import {DlDateTimeDateModule, DlDateTimePickerModule} from "angular-bootstrap-datetimepicker";
 import {LoadingComponent} from './components/loading/loading.component';
 import {NpnSliderModule} from "npn-slider";
-import { ModalComponent } from './components/modal/modal.component';
+import {ModalComponent} from './components/modal/modal.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({

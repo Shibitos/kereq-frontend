@@ -9,7 +9,7 @@ import {
 import {Injectable} from "@angular/core";
 import {AuthService} from "../services/auth.service";
 import {catchError, filter, switchMap, take} from "rxjs/operators";
-import {Observable, throwError, from, firstValueFrom, BehaviorSubject, Subject, EMPTY} from "rxjs";
+import {BehaviorSubject, Observable, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {JWTToken} from "../models/jwt-token.model";
 
@@ -18,13 +18,14 @@ export class JWTInterceptor implements HttpInterceptor {
 
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   private isRefreshing: boolean = false;
+  static readonly HEADER_SKIP_AUTH: string = "X-skip-auth";
 
   constructor(private router: Router, private authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) : Observable<HttpEvent<any>> {
     let authToken = this.authService.getToken();
-    if (authToken && req.headers.get("X-skip-auth") != '1') {
-      req = this.addToken(req, authToken);
+    if (authToken && req.headers.get(JWTInterceptor.HEADER_SKIP_AUTH) != '1') {
+      req = JWTInterceptor.addToken(req, authToken);
     }
     return next.handle(req).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === HttpStatusCode.Unauthorized) {
@@ -43,7 +44,7 @@ export class JWTInterceptor implements HttpInterceptor {
         switchMap((response: JWTToken) => {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(response.access_token);
-          return next.handle(this.addToken(request, response.access_token));
+          return next.handle(JWTInterceptor.addToken(request, response.access_token));
         }),
         catchError((err) => {
           this.logout();
@@ -55,12 +56,12 @@ export class JWTInterceptor implements HttpInterceptor {
         filter(token => token != null),
         take(1),
         switchMap(jwt => {
-          return next.handle(this.addToken(request, jwt));
+          return next.handle(JWTInterceptor.addToken(request, jwt));
         }));
     }
   }
 
-  private addToken(request: HttpRequest<any>, token: string) {
+  private static addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
         'Authorization': `Bearer ${token}`

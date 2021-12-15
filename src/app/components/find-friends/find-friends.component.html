@@ -79,7 +79,7 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
+            <button type="submit" [disabled]="loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
           </form>
         </div>
 
