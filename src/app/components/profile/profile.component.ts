@@ -9,6 +9,8 @@ import {Perspective} from "../../enums/perspective.enum";
 import {Post} from "../../models/post.model";
 import {PageUtil} from "../../utils/page.util";
 import {PostService} from "../../services/post.service";
+import {BehaviorSubject, Subject} from "rxjs";
+import {filter, takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +18,9 @@ import {PostService} from "../../services/post.service";
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+
+  private currentUserSubject: BehaviorSubject<User> = new BehaviorSubject<User>(new User());
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   user: User;
   userLoaded: boolean = false;
@@ -31,44 +36,44 @@ export class ProfileComponent implements OnInit {
               private userService: UserService,
               private postService: PostService,
               private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.params.subscribe(params => {
+  }
+
+  ngOnInit(): void {
+    this.clear();
+    this.currentUserSubject.pipe(
+      filter((user: any) => user.id),
+      takeUntil(this.unsubscribe$)
+    ).subscribe((user: User) => {
+      this.user = user;
+      this.authService.currentUser.pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
+        if (this.user.id == user.id) this.perspective = Perspective.OWNER;
+          this.loadFull();
+          this.userLoaded = true;
+      });
+    });
+    this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       this.clear();
       if (params['id']) {
-        this.perspective = Perspective.OTHER_USER;
-        this.userService.getUser(params['id']).subscribe(u => {
-          this.user = u;
-          this.userLoaded = true;
-          this.loadFull();
-        }).add(() => {
-          this.authService.currentUser.subscribe(u => {
-            if (u.id == this.user.id) {
-              this.perspective = Perspective.OWNER; //TODO: refactor
-            }
-          });
+        this.userService.getUser(params['id']).subscribe((user: User) => {
+          this.currentUserSubject.next(user);
         });
       } else {
-        this.perspective = Perspective.OWNER;
-        this.authService.currentUser.subscribe(u => {
-          if (!this.userLoaded && u.id) {
-            this.user = u;
-            this.userLoaded = true;
-            this.loadFull();
-          }
+        this.authService.currentUser.subscribe((user: User) => {
+          this.currentUserSubject.next(user);
         });
       }
     });
   }
 
-  ngOnInit(): void {
-
-    if (this.user.id == this.authService.currentUserObject.id) this.perspective = Perspective.OWNER;
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   loadFull(): void {
-    this.userService.getFriends(new Page(8), this.user.id).subscribe(a => {
-        if (!a.empty) {
-          this.friendsList.push(...a.content);
-        }
+    this.userService.getFriends(new Page(8), this.user.id).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
+        this.friendsList = [];
+        this.friendsList.push(...a.content);
         this.friendsLoaded = true;
       },
       () => {
@@ -78,9 +83,13 @@ export class ProfileComponent implements OnInit {
   }
 
   clear(): void {
+    this.perspective = Perspective.OTHER_USER;
     this.userLoaded = false;
     this.friendsList = [];
     this.friendsLoaded = false;
+    if (this.browsePostsPageTool) {
+      this.browsePostsPageTool.reset();
+    }
   }
 
   isOwner(): boolean {

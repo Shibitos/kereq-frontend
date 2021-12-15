@@ -20,14 +20,13 @@ export class AuthService {
   static readonly TOKEN_NAME: string = 'access_token';
   static readonly REFRESH_TOKEN_NAME: string = 'refresh_token';
 
-
   constructor(private http: HttpClient, private router: Router) {
     this.currentUserSubject = new BehaviorSubject<User>(new User());
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  login(user: User, handleError: (error: any) => void) {
-    this.http.post<JWTToken>(environment.baseUrl + 'auth/login', user).subscribe((res: JWTToken) => {
+  login(user: User): Observable<JWTToken> {
+    return this.http.post<JWTToken>(environment.baseUrl + 'auth/login', user).pipe(tap((res: JWTToken) => {
       localStorage.setItem(AuthService.TOKEN_NAME, res.access_token);
       localStorage.setItem(AuthService.REFRESH_TOKEN_NAME, res.refresh_token);
       this.getCurrentUser().subscribe((user: User) => {
@@ -35,10 +34,10 @@ export class AuthService {
         this.currentUserObject = user;
         this.router.navigate(['/']);
       });
-    }, handleError);
+    }));
   }
 
-  refreshToken() : Observable<JWTToken> {
+  refreshToken(): Observable<JWTToken> {
     const request = { 'refreshToken': this.getRefreshToken() };
     let headers = new HttpHeaders().append(JWTInterceptor.HEADER_SKIP_AUTH, "1");
     return this.http.post<JWTToken>(environment.baseUrl + 'auth/refresh-token', request, {headers}).pipe(tap((response: JWTToken) => {

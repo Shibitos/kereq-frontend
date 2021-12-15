@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {Subject,takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,8 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   loginForm: FormGroup;
   error: string;
@@ -31,6 +34,11 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { }
 
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   get f() {
     return this.loginForm.controls;
   }
@@ -46,7 +54,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
-    this.authService.login(this.loginForm.value, this.handleError.bind(this)); //TODO: remember me?
+    this.authService.login(this.loginForm.value).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {}, this.handleError.bind(this)); //TODO: remember me?
   }
 
   handleError(errorData: any) : void {

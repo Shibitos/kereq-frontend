@@ -34,6 +34,13 @@ export class PageUtil<T> {
     });
   }
 
+  reset() {
+    this.loaded = false;
+    this.container.length = 0;
+    this.page.pageNumber = 0;
+    this.stopLoading = false;
+  }
+
   loadMore(): void { //TODO: think about duplicates
     if (!this.stopLoading) {
       this.page.pageNumber += 1;
