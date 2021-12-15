@@ -31,4 +31,8 @@ export class PostService {
   browsePosts(page: Page): Observable<any> {
     return this.http.get<Post>(environment.baseUrl + this.postsUrl + 'browse?p=' + page.pageNumber);
   }
+
+  getUserPosts(page: Page, userId?: number): Observable<any> {
+    return this.http.get<Post>(environment.baseUrl + this.postsUrl + 'posts/' + userId + '?p=' + page.pageNumber);
+  }
 }

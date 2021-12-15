@@ -21,7 +21,6 @@ export class AsyncDateFormatComponent implements OnInit {
       const formattedDate = formatDate(this.date, 'dd/MM/yyyy HH:mm:ss', 'en_US');
       const now = new Date();
       const wrappedDate = new Date(this.date);
-      console.log(+now - +wrappedDate);
       if ((+now - +wrappedDate) > JUST_NOW_TIME) {
         observer.next(formattedDate);
         return;

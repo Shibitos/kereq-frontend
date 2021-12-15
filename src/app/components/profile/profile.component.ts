@@ -6,6 +6,9 @@ import {UserService} from "../../services/user.service";
 import {Page} from "../../utils/page";
 import {Friendship} from "../../models/friendship.model";
 import {Perspective} from "../../enums/perspective.enum";
+import {Post} from "../../models/post.model";
+import {PageUtil} from "../../utils/page.util";
+import {PostService} from "../../services/post.service";
 
 @Component({
   selector: 'app-profile',
@@ -20,10 +23,13 @@ export class ProfileComponent implements OnInit {
   friendsLoaded: boolean = false;
   perspective: Perspective;
 
+  browsePostsList: Post[] = [];
+  browsePostsPageTool: PageUtil<Post>;
 
   constructor(private router: Router,
               private authService: AuthService,
               private userService: UserService,
+              private postService: PostService,
               private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => {
       this.clear();
@@ -68,6 +74,7 @@ export class ProfileComponent implements OnInit {
       () => {
         this.friendsLoaded = true;
       });
+    this.browsePostsPageTool = new PageUtil<Post>(this.postService.getUserPosts.bind(this.postService), this.browsePostsList, this.user.id);
   }
 
   clear(): void {
@@ -79,5 +86,4 @@ export class ProfileComponent implements OnInit {
   isOwner(): boolean {
     return this.perspective == Perspective.OWNER;
   }
-
 }

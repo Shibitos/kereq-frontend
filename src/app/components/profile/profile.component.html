@@ -101,3 +101,23 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="browsePostsPageTool.loaded && !browsePostsList.length" class="card-body">
+  <h4 i18n="@@posts.no-posts-available" class="text-secondary">No posts available at moment</h4>
+</div>
+
+<div
+  infinite-scroll
+  [infiniteScrollDistance]="browsePostsPageTool.distance"
+  [infiniteScrollThrottle]="browsePostsPageTool.throttle"
+  (scrolled)="browsePostsPageTool.loadMore()"
+  *ngIf="browsePostsPageTool.loaded && browsePostsList"
+>
+  <div class="col-12 card-container" *ngFor="let post of browsePostsList; let i = index">
+    <div class="card">
+      <div class="card-body pt-4 position-relative">
+        <app-post [post]="post"></app-post>
+      </div>
+    </div>
+  </div>
+</div>

@@ -54,29 +54,9 @@
 >
   <div class="col-12 card-container" *ngFor="let post of browsePostsList; let i = index">
     <div class="card">
-      <div class="card-body pt-4 row">
-        <div class="col-auto">
-          <a [routerLink]="'/profile/' + post.user.id" class="profile-link">
-            <div class="image-overlay-container">
-              <img src="assets/img/default-avatar.png" class="rounded-circle">
-              <div class="image-overlay"></div>
-            </div>
-          </a>
-        </div>
-        <div class="col-10">
-          <div class="mb-2">
-            <a [routerLink]="'/profile/' + post.user.id" class="profile-link">
-              <h2 class="mb-0">{{ post.user.firstName }} {{ post.user.lastName }}</h2>
-            </a>
-            <span>
-              <app-async-date-format [date]="post.createdAt"></app-async-date-format>
-            </span>
-          </div>
-          <p [innerHTML]="post.content"></p><br>
-
-          <button type="submit" class="btn btn-secondary mt-2 mx-2"
-                  i18n="@@general.hide" (click)="hide(i)">Hide</button>
-        </div>
+      <div class="card-body pt-4 position-relative">
+        <app-post [post]="post"></app-post>
+        <button type="button" class="btn-close p-4 position-absolute top-0 end-0" aria-label="Close" (click)="hide(i)"></button>
       </div>
     </div>
   </div>
