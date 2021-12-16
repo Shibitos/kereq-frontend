@@ -7,12 +7,11 @@ import {FindFriendsService} from "../../services/find-friends.service";
 import {UserService} from "../../services/user.service";
 import {PageUtil} from "../../utils/page.util";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import MatchValidator from "../../utils/matchValidator";
 import {Gender} from "../../enums/gender.enum";
 import {first} from "rxjs/operators";
-import {HttpStatusCode} from "@angular/common/http";
 import {ModalConfig} from "../modal/modal.config";
 import {ModalComponent} from "../modal/modal.component";
+import {FormProperties} from "../../utils/form-properties";
 
 @Component({
   selector: 'app-find-friends',
@@ -21,23 +20,19 @@ import {ModalComponent} from "../modal/modal.component";
 })
 export class FindFriendsComponent implements OnInit {
 
-  loggedUser: User;
-  myAd?: FindFriendsAd;
-  myAdLoaded: boolean = false;
-
   @ViewChild('removeModal')
   private removeModal: ModalComponent;
   removeModalConfig: ModalConfig = new ModalConfig();
 
+  loggedUser: User;
+  myAd?: FindFriendsAd;
+  myAdLoaded: boolean = false;
+
   browseAdsList: FindFriendsAd[] = [];
   browseAdsPageTool: PageUtil<FindFriendsAd>;
 
-  adForm: FormGroup;
-  loading: boolean = false;
-  submitted: boolean = false;
-  success: boolean = false;
+  adForm: FormProperties = new FormProperties();
   ageAny: boolean = true;
-  error: string; //TODO: ng bootstrap alerts?
   readonly genders : typeof Gender = Gender;
 
   constructor(private router: Router,
@@ -45,7 +40,6 @@ export class FindFriendsComponent implements OnInit {
               private authService: AuthService,
               private findFriendsService: FindFriendsService,
               private userService: UserService) {
-    this.authService.currentUser.subscribe(u => this.loggedUser = u);
     this.removeModalConfig.modalTitle = $localize`:@@find-friends.remove-ad-confirm:Confirm poster removal`;
     this.removeModalConfig.confirmButtonLabel = $localize`:@@common.confirm:Confirm`;
     this.removeModalConfig.closeButtonLabel = $localize`:@@common.close:Close`;
@@ -53,7 +47,8 @@ export class FindFriendsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.adForm = this.formBuilder.group({
+    this.authService.currentUser.subscribe(u => this.loggedUser = u);
+    this.adForm.form = this.formBuilder.group({
         minAge: ['', [
           Validators.maxLength(3)
         ]],
@@ -91,7 +86,7 @@ export class FindFriendsComponent implements OnInit {
     this.findFriendsService.removeAd().subscribe(r => {
       this.myAd = undefined;
     }, (errorData) => {
-      this.error = $localize`:@@common.unknown-error:Unknown error`;
+      //this.error = $localize`:@@common.unknown-error:Unknown error`;
     });
   }
 
@@ -111,64 +106,41 @@ export class FindFriendsComponent implements OnInit {
   }
 
   get f() {
-    return this.adForm.controls;
+    return this.adForm.form.controls;
   }
 
   onSubmit() {
-    this.submitted = true;
-    this.adForm.markAllAsTouched();
-    if (this.adForm.invalid) {
-      return;
+    if (this.adForm.onSubmit()) {
+      this.addAd();
     }
-    this.loading = true;
-    this.addAd();
   }
 
   switchAgeAny(): void {
     this.ageAny = !this.ageAny;
     if (this.ageAny) {
-      this.adForm.controls['minAge'].setValue(null);
-      this.adForm.controls['maxAge'].setValue(null);
+      this.f['minAge'].setValue(null);
+      this.f['maxAge'].setValue(null);
     } else {
-
+      //TODO: ?
     }
   }
 
   onAgeChange(selectedValues: number[]): void {
     if (!this.ageAny) {
-      this.adForm.controls['minAge'].setValue(selectedValues[0]);
-      this.adForm.controls['maxAge'].setValue(selectedValues[1]);
+      this.f['minAge'].setValue(selectedValues[0]);
+      this.f['maxAge'].setValue(selectedValues[1]);
     }
   }
 
   addAd() {
-    this.findFriendsService.addAd(this.adForm.value).pipe(first())
+    this.findFriendsService.addAd(this.adForm.form.value).pipe(first())
       .subscribe(
         data => {
-          this.success = true;
-          this.loading = false;
+          this.adForm.onFinish();
           this.retrieveMyAd();
         },
         errorData => {
-          this.loading = false;
-          this.handleError(errorData);
+          this.adForm.onError(errorData);
         });
-  }
-
-  handleError(errorData: any) : void {
-    if (errorData.status == HttpStatusCode.BadRequest) {
-      if (errorData.error['data']) {
-        for (let entry in errorData.error['data']) {
-          let field = errorData.error['data'][entry]['field'];
-          let control = this.adForm.controls[field];
-          if (control) {
-            let customError = { customError: errorData.error['data'][entry]['messages'][0] };
-            control.setErrors(customError); //TODO: refactor
-          }
-        }
-      }
-    } else {
-      this.error = $localize`:@@common.unknown-error:Unknown error`;
-    }
   }
 }

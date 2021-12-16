@@ -3,9 +3,9 @@
     <div class="card-body pt-4">
       <h2 i18n="@@find-friends.my-ad">My poster</h2>
       <list-content-loader *ngIf="!myAdLoaded"></list-content-loader>
-      <div class="alert alert-danger" *ngIf="error">
-        {{ error }}
-      </div>
+      <p *ngFor="let error of adForm.errors">
+        <ngb-alert type="danger" (closed)="adForm.closeError(error.id)">{{ error.message }}</ngb-alert>
+      </p>
       <div *ngIf="myAdLoaded">
         <div *ngIf="myAd">
           <p [innerHTML]="myAd.description"></p><br>
@@ -28,11 +28,11 @@
           </app-modal>
         </div>
         <div *ngIf="!myAd" class="position-relative">
-          <app-loading *ngIf="loading"></app-loading>
-          <form [formGroup]="adForm" (ngSubmit)="onSubmit()">
+          <app-loading *ngIf="adForm.loading"></app-loading>
+          <form [formGroup]="adForm.form" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label i18n="@@find-friends.form.description">Description</label>
-              <textarea [ngClass]="{ 'is-invalid': submitted && f['description'].errors }" class="form-control validate" formControlName="description" i18n-placeholder="@@find-friends.form.description" placeholder="Description" autofocus></textarea>
+              <textarea [ngClass]="{ 'is-invalid': adForm.submitted && f['description'].errors }" class="form-control validate" formControlName="description" i18n-placeholder="@@find-friends.form.description" placeholder="Description" autofocus></textarea>
               <div *ngIf="f['description'].touched && f['description'].errors" class="invalid-feedback">
                 <ngx-form-error [control]="f['description']"></ngx-form-error>
               </div>
@@ -46,7 +46,7 @@
 
                 <npn-slider [disabled]="ageAny ? 'true' : 'false'" [min]="1" [max]="120" (onChange)="onAgeChange($event)" [step]="1" [showStepIndicator]="true"></npn-slider>
               </div>
-              <div *ngIf="submitted && (f['minAge'].errors || f['maxAge'].errors)" class="invalid-feedback">
+              <div *ngIf="adForm.submitted && (f['minAge'].errors || f['maxAge'].errors)" class="invalid-feedback">
                 <ngx-form-error [control]="f['minAge']"></ngx-form-error>
                 <ngx-form-error [control]="f['maxAge']"></ngx-form-error>
               </div>
@@ -54,7 +54,7 @@
 
             <div class="form-group">
               <label i18n="@@find-friends.form.gender">Gender</label>
-              <div [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
+              <div [ngClass]="{ 'is-invalid': adForm.submitted && f['gender'].errors }">
                 <div class="form-check-inline">
                   <input class="form-check-input" type="radio" formControlName="gender" [value]="null" id="radioGenderAny" checked>
                   <label class="form-check-label" for="radioGenderAny" i18n="@@user.form.gender-any">
@@ -74,12 +74,12 @@
                   </label>
                 </div>
               </div>
-              <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+              <div *ngIf="adForm.submitted && f['gender'].errors" class="invalid-feedback">
                 <ngx-form-error [control]="f['gender']"></ngx-form-error>
               </div>
             </div>
 
-            <button type="submit" [disabled]="loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
+            <button type="submit" [disabled]="adForm.loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
           </form>
         </div>
 
