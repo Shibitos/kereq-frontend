@@ -1,0 +1,7 @@
+<div class="position-relative">
+  <div class="mb-2">
+    <label i18n="@@common.any" class="me-2">Any</label>
+    <input *ngIf="switchable" type="checkbox" class="form-check-input" (change)="switch()" [checked]="!any" />
+  </div>
+  <npn-slider [disabled]="!any ? 'true' : 'false'" [min]="min" [max]="max" (onChange)="onChange($event)" [step]="1" [showStepIndicator]="true" [multiRange]="false"></npn-slider>
+</div>

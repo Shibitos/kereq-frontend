@@ -11,11 +11,7 @@
           <p [innerHTML]="myAd.description"></p><br>
           <p>
             Age:
-            <!--            TODO: translations, refactor-->
-            <span *ngIf="myAd.minAge || myAd.maxAge">
-              {{ myAd.minAge ? myAd.minAge : 'any' }} - {{ myAd.maxAge ? myAd.maxAge : 'any' }}
-            </span>
-            <span *ngIf="!myAd.minAge && !myAd.maxAge">any</span>
+            <app-range-placeholder i18n-placeholder="@@common.any" placeholder="any" [minValue]="myAd.minAge" [maxValue]="myAd.maxAge"></app-range-placeholder>
             <br>
             Gender: {{ myAd.gender ? myAd.gender : 'any' }}
           </p>
@@ -40,11 +36,11 @@
 
             <div class="form-group">
               <label i18n="@@find-friends.form.age">Age</label><br>
-              <label i18n="@@find-friends.form.age-any" for="radioAgeAny">Any</label>
-              <input type="checkbox"  id="radioAgeAny" class="form-check-input" (change)="switchAgeAny()" [checked]="ageAny"/>
               <div class="col-lg-3 col-md-6">
-
-                <npn-slider [disabled]="ageAny ? 'true' : 'false'" [min]="1" [max]="120" (onChange)="onAgeChange($event)" [step]="1" [showStepIndicator]="true"></npn-slider>
+                <app-slider [control]="f['minAge']" [min]="1" [max]="120"></app-slider>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <app-slider [control]="f['maxAge']" [min]="1" [max]="120"></app-slider>
               </div>
               <div *ngIf="adForm.submitted && (f['minAge'].errors || f['maxAge'].errors)" class="invalid-feedback">
                 <ngx-form-error [control]="f['minAge']"></ngx-form-error>
@@ -142,11 +138,7 @@
           <p [innerHTML]="ad.description"></p><br>
           <p>
             Age:
-<!--            TODO: translations, refactor-->
-            <span *ngIf="ad.minAge || ad.maxAge">
-              {{ ad.minAge ? ad.minAge : 'any' }} - {{ ad.maxAge ? ad.maxAge : 'any' }}
-            </span>
-            <span *ngIf="!ad.minAge && !ad.maxAge">any</span>
+            <app-range-placeholder i18n-placeholder="@@common.any" placeholder="any" [minValue]="ad.minAge" [maxValue]="ad.maxAge"></app-range-placeholder>
             <br>
             Gender: {{ ad.gender ? ad.gender : 'any' }}
           </p>

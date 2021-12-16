@@ -28,6 +28,8 @@ import {ModalComponent} from './components/modal/modal.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import { AsyncDateFormatComponent } from './components/async-date-format/async-date-format.component';
 import { PostComponent } from './components/post/post.component';
+import { RangePlaceholderComponent } from './components/range-placeholder/range-placeholder.component';
+import { SliderComponent } from './components/slider/slider.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { PostComponent } from './components/post/post.component';
     LoadingComponent,
     ModalComponent,
     AsyncDateFormatComponent,
-    PostComponent
+    PostComponent,
+    RangePlaceholderComponent,
+    SliderComponent
   ],
   imports: [
     BrowserModule,

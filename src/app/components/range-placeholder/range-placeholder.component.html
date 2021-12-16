@@ -1,0 +1,6 @@
+<span *ngIf="minValue || maxValue">
+  {{ minValue ? minValue : placeholder }} - {{ maxValue ? maxValue : placeholder }}
+</span>
+<span *ngIf="!minValue && !maxValue">
+  {{ placeholder }}
+</span>

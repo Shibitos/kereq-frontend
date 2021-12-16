@@ -86,7 +86,7 @@ export class FindFriendsComponent implements OnInit {
     this.findFriendsService.removeAd().subscribe(r => {
       this.myAd = undefined;
     }, (errorData) => {
-      //this.error = $localize`:@@common.unknown-error:Unknown error`;
+      //this.error = $localize`:@@common.unknown-error:Unknown error`; //TODO: handle
     });
   }
 
@@ -112,23 +112,6 @@ export class FindFriendsComponent implements OnInit {
   onSubmit() {
     if (this.adForm.onSubmit()) {
       this.addAd();
-    }
-  }
-
-  switchAgeAny(): void {
-    this.ageAny = !this.ageAny;
-    if (this.ageAny) {
-      this.f['minAge'].setValue(null);
-      this.f['maxAge'].setValue(null);
-    } else {
-      //TODO: ?
-    }
-  }
-
-  onAgeChange(selectedValues: number[]): void {
-    if (!this.ageAny) {
-      this.f['minAge'].setValue(selectedValues[0]);
-      this.f['maxAge'].setValue(selectedValues[1]);
     }
   }
 
