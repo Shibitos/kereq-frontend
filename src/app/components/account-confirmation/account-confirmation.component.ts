@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {first} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-account-confirmation',
@@ -9,6 +10,8 @@ import {first} from "rxjs/operators";
   styleUrls: ['./account-confirmation.component.scss']
 })
 export class AccountConfirmationComponent implements OnInit {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   confirmationToken: string;
   loading: boolean = true;
@@ -30,7 +33,7 @@ export class AccountConfirmationComponent implements OnInit {
         this.status = true;
       },
       error => {
-        this.loading = false; //TODO: what on failure?
+        this.loading = false; //TODO: reset link on failure?
         this.status = false;
       });
   }

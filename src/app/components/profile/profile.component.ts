@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.clear();
     this.currentUserSubject.pipe(
       filter((user: any) => user.id),
       takeUntil(this.unsubscribe$)
@@ -59,7 +58,7 @@ export class ProfileComponent implements OnInit {
         });
       } else {
         this.authService.currentUser.subscribe((user: User) => {
-          this.currentUserSubject.next(user);
+          this.router.navigate(['/profile/' + user.id]);
         });
       }
     });

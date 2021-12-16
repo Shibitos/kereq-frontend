@@ -1,17 +1,15 @@
 <div class="auth-wrapper row justify-content-center">
-  <div class="col-md-4">
-    <div *ngIf="loading">
-      loading..
-    </div>
-    <div *ngIf="!loading && status">
-      <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@general.congratulations">Congratulations!</h3>
+  <div class="col-md-4 position-relative">
+    <app-loading *ngIf="loading"></app-loading>
+    <div *ngIf="!loading && status" class="text-center">
+      <h3 class="h3 mb-3 font-weight-normal" i18n="@@general.congratulations">Congratulations!</h3>
       <p i18n="@@user.activation.success">
         You have succesfully confirmed your account!
       </p>
       <a routerLink="/login"><span i18n="@@sites.login">Login</span></a>
     </div>
-    <div *ngIf="!loading && !status">
-      <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@general.error">Error!</h3>
+    <div *ngIf="!loading && !status" class="text-center">
+      <h3 class="h3 mb-3 font-weight-normal" i18n="@@general.error">Error!</h3>
       <p i18n="@@user.activation.failure">
         There were problems confirming your account.
       </p>

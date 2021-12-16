@@ -18,18 +18,18 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
   { path: 'register', component: RegistrationComponent, canActivate: [NoAuthGuard] },
   { path: 'logout', component: LogoutComponent },
-  { path: 'confirm-account', component: AccountConfirmationComponent, canActivate: [NoAuthGuard] },
+  { path: 'confirm-account/:token', component: AccountConfirmationComponent, canActivate: [NoAuthGuard] },
   { path: 'find-friends', component: FindFriendsComponent, canActivate: [AuthGuard] },
   { path: 'friends', component: FriendsComponent, canActivate: [AuthGuard] },
   { path: 'friends/:id', component: FriendsComponent, canActivate: [AuthGuard] },
-  // { path: 'wall', component: WallComponent },
-  //{ path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
-  //{ path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },
   { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    scrollPositionRestoration: 'enabled',
+    onSameUrlNavigation: 'reload'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {takeUntil, Observable, Subject} from "rxjs";
 import {formatDate} from "@angular/common";
 
@@ -15,20 +15,27 @@ export class AsyncDateFormatComponent implements OnInit {
   @Input()
   date: Date;
 
+  @Input()
+  justNowTime: number = 5 * 60 * 1000;
+
+  @Input()
+  dateFormat: string = 'dd/MM/yyyy HH:mm:ss';
+
+  constructor(@Inject(LOCALE_ID) public locale: string) {}
+
   ngOnInit() {
     this.dateObservable$ = Observable.create((observer: any) => {
-      const JUST_NOW_TIME = 5 * 60 * 1000; //TODO: move
-      const formattedDate = formatDate(this.date, 'dd/MM/yyyy HH:mm:ss', 'en_US');
+      const formattedDate = formatDate(this.date, this.dateFormat, this.locale);
       const now = new Date();
       const wrappedDate = new Date(this.date);
-      if ((+now - +wrappedDate) > JUST_NOW_TIME) {
+      if ((+now - +wrappedDate) > this.justNowTime) {
         observer.next(formattedDate);
         return;
       }
       observer.next($localize`:@@common.just-now:just now`);
       const interval = setInterval(() => {
         observer.next(formattedDate);
-      }, JUST_NOW_TIME);
+      }, this.justNowTime);
 
       return () => clearInterval(interval);
     });
