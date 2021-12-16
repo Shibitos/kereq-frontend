@@ -4,6 +4,8 @@ import {Friendship} from "../../models/friendship.model";
 import {UserService} from "../../services/user.service";
 import {Perspective} from "../../enums/perspective.enum";
 import {ActivatedRoute} from "@angular/router";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-friends',
@@ -11,6 +13,8 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./friends.component.scss']
 })
 export class FriendsComponent implements OnInit {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   perspective: Perspective;
   userId?: number;
@@ -23,7 +27,7 @@ export class FriendsComponent implements OnInit {
 
   constructor(private userService: UserService,
               private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       this.clear();
       if (params['id']) {
         this.userId = params['id'];
@@ -49,10 +53,17 @@ export class FriendsComponent implements OnInit {
     this.invitationsPageTool = new PageUtil<Friendship>(this.userService.getInvitations.bind(this.userService), this.invitationsList, this.userId,4);
   }
 
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.friendsPageTool) this.friendsPageTool.destroy();
+    if (this.invitationsPageTool) this.invitationsPageTool.destroy();
+  }
+
   acceptInvitation(index: number): void {
     let invitation = this.invitationsList[index];
     if (invitation.user.id) {
-      this.userService.acceptInvitation(invitation.user.id).subscribe(a => {
+      this.userService.acceptInvitation(invitation.user.id).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
         this.hideInvitation(index);
       }, error => {
 
@@ -63,7 +74,7 @@ export class FriendsComponent implements OnInit {
   rejectInvitation(index: number): void {
     let invitation = this.invitationsList[index];
     if (invitation.user.id) {
-      this.userService.rejectInvitation(invitation.user.id).subscribe(a => {
+      this.userService.rejectInvitation(invitation.user.id).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
         this.hideInvitation(index);
       }, error => {
 
@@ -78,7 +89,7 @@ export class FriendsComponent implements OnInit {
   removeFriend(index: number): void {
     let friend = this.friendsList[index];
     if (friend.friend.id) {
-      this.userService.removeFriend(friend.friend.id).subscribe(a => {
+      this.userService.removeFriend(friend.friend.id).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
         this.hideFriend(index);
       }, error => {
 

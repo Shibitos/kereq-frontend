@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
-import {first} from "rxjs/operators";
+import {first, takeUntil} from "rxjs/operators";
 import MatchValidator from "../../utils/matchValidator";
 import {NgxFormErrorConfig} from "ngx-form-error";
 import {HttpStatusCode} from "@angular/common/http";
 import {DictionaryService} from "../../services/dictionary.service";
 import {DictionaryItem} from "../../models/dictionary-item.model";
 import {Gender} from "../../enums/gender.enum";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,8 @@ import {Gender} from "../../enums/gender.enum";
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   registrationForm: FormGroup; //TODO: captcha
   loading: boolean = false;
@@ -42,7 +45,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dictionaryService.getDictionaryValues(this.COUNTRIES_DICT_CODE).subscribe((items: DictionaryItem[]) => {
+    this.dictionaryService.getDictionaryValues(this.COUNTRIES_DICT_CODE).pipe(takeUntil(this.unsubscribe$)).subscribe((items: DictionaryItem[]) => {
       this.countries = items;
       this.componentLoaded = true;
     });
@@ -82,6 +85,11 @@ export class RegistrationComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   get f() {
     return this.registrationForm.controls;
   }
@@ -102,7 +110,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   registerUser() {
-    this.authService.register(this.registrationForm.value).pipe(first())
+    this.authService.register(this.registrationForm.value).pipe(takeUntil(this.unsubscribe$), first())
       .subscribe(
         data => {
           this.registrationForm.reset();

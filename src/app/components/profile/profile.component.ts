@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit {
     this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
       this.clear();
       if (params['id']) {
-        this.userService.getUser(params['id']).subscribe((user: User) => {
+        this.userService.getUser(params['id']).pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
           this.currentUserSubject.next(user);
         });
       } else {
@@ -67,6 +67,13 @@ export class ProfileComponent implements OnInit {
   ngOnDestroy(){
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.destroyPageTool();
+  }
+
+  destroyPageTool() {
+    if (this.browsePostsPageTool) {
+      this.browsePostsPageTool.destroy();
+    }
   }
 
   loadFull(): void {
@@ -78,6 +85,7 @@ export class ProfileComponent implements OnInit {
       () => {
         this.friendsLoaded = true;
       });
+    this.destroyPageTool();
     this.browsePostsPageTool = new PageUtil<Post>(this.postService.getUserPosts.bind(this.postService), this.browsePostsList, this.user.id);
   }
 

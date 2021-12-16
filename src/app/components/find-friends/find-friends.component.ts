@@ -8,10 +8,11 @@ import {UserService} from "../../services/user.service";
 import {PageUtil} from "../../utils/page.util";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Gender} from "../../enums/gender.enum";
-import {first} from "rxjs/operators";
+import {first, takeUntil} from "rxjs/operators";
 import {ModalConfig} from "../modal/modal.config";
 import {ModalComponent} from "../modal/modal.component";
 import {FormProperties} from "../../utils/form-properties";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-find-friends',
@@ -20,8 +21,10 @@ import {FormProperties} from "../../utils/form-properties";
 })
 export class FindFriendsComponent implements OnInit {
 
+  unsubscribe$: Subject<void> = new Subject<void>();
+
   @ViewChild('removeModal')
-  private removeModal: ModalComponent;
+  removeModal: ModalComponent;
   removeModalConfig: ModalConfig = new ModalConfig();
 
   loggedUser: User;
@@ -47,7 +50,7 @@ export class FindFriendsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(u => this.loggedUser = u);
+    this.authService.currentUser.pipe(takeUntil(this.unsubscribe$)).subscribe(u => this.loggedUser = u);
     this.adForm.form = this.formBuilder.group({
         minAge: ['', [
           Validators.maxLength(3)
@@ -68,9 +71,15 @@ export class FindFriendsComponent implements OnInit {
     this.browseAdsPageTool = new PageUtil<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList);
   }
 
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.browseAdsPageTool) this.browseAdsPageTool.destroy();
+  }
+
   retrieveMyAd(): void {
     this.myAdLoaded = false;
-    this.findFriendsService.getMyAd().subscribe(a => {
+    this.findFriendsService.getMyAd().pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
       this.myAd = a;
       this.myAdLoaded = true;
     }, () => {
@@ -83,7 +92,7 @@ export class FindFriendsComponent implements OnInit {
   }
 
   removeMyAd(): void {
-    this.findFriendsService.removeAd().subscribe(r => {
+    this.findFriendsService.removeAd().pipe(takeUntil(this.unsubscribe$)).subscribe(r => {
       this.myAd = undefined;
     }, (errorData) => {
       //this.error = $localize`:@@common.unknown-error:Unknown error`; //TODO: handle
@@ -97,7 +106,7 @@ export class FindFriendsComponent implements OnInit {
   invite(index: number): void {
     let ad = this.browseAdsList[index];
     if (ad.user.id) {
-      this.userService.inviteFriend(ad.user.id).subscribe(a => {
+      this.userService.inviteFriend(ad.user.id).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
         this.hide(index);
       }, error => {
         //TODO: handle

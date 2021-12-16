@@ -5,11 +5,12 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
-import {first} from "rxjs/operators";
+import {first, takeUntil} from "rxjs/operators";
 import {HttpStatusCode} from "@angular/common/http";
 import {PostService} from "../../services/post.service";
 import {Post} from "../../models/post.model";
 import {formatDate} from "@angular/common";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-wall',
@@ -17,6 +18,8 @@ import {formatDate} from "@angular/common";
   styleUrls: ['./wall.component.scss']
 })
 export class WallComponent implements OnInit {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
 
   loggedUser: User;
 
@@ -47,6 +50,12 @@ export class WallComponent implements OnInit {
     this.browsePostsPageTool = new PageUtil<Post>(this.postService.browsePosts.bind(this.postService), this.browsePostsList);
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+    if (this.browsePostsPageTool) this.browsePostsPageTool.destroy();
+  }
+
   hide(index: number): void {
     this.browsePostsList.splice(index, 1); //TODO: hide on backend?
   }
@@ -71,7 +80,7 @@ export class WallComponent implements OnInit {
   }
 
   addPost() {
-    this.postService.addPost(this.postForm.value).pipe(first())
+    this.postService.addPost(this.postForm.value).pipe(takeUntil(this.unsubscribe$), first())
       .subscribe(
         (post: Post) => {
           this.success = true;

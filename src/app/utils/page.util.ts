@@ -1,7 +1,12 @@
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {Page} from "./page";
+import {takeUntil} from "rxjs/operators";
+import {OnDestroy} from "@angular/core";
 
 export class PageUtil<T> {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
+
   loaded = false;
   throttle = 0;
   distance = 2;
@@ -21,7 +26,7 @@ export class PageUtil<T> {
   }
 
   init() {
-    this.loadFunc(this.page, this.param).subscribe(a => {
+    this.loadFunc(this.page, this.param).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
       if (!a.empty) {
         this.container.push(...a.content);
         if (a.totalPages <= (this.page.pageNumber + 1)) {
@@ -34,6 +39,11 @@ export class PageUtil<T> {
     });
   }
 
+  destroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   reset() {
     this.loaded = false;
     this.container.length = 0;
@@ -44,7 +54,7 @@ export class PageUtil<T> {
   loadMore(): void { //TODO: think about duplicates
     if (!this.stopLoading) {
       this.page.pageNumber += 1;
-      this.loadFunc(this.page, this.param).subscribe(a => {
+      this.loadFunc(this.page, this.param).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
         if (a.empty) {
           this.stopLoading = true;
         } else {

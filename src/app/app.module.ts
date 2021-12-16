@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
 import {RegistrationComponent} from './components/registration/registration.component';
-import {HomeComponent} from './components/home/home.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {LogoutComponent} from './components/logout/logout.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -36,7 +35,6 @@ import { SliderComponent } from './components/slider/slider.component';
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    HomeComponent,
     ProfileComponent,
     LogoutComponent,
     HeaderComponent,
