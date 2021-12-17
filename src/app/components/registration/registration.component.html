@@ -1,18 +1,18 @@
 <div class="auth-wrapper row justify-content-center">
   <div class="col-md-4 position-relative">
     <app-loading *ngIf="!componentLoaded"></app-loading>
-    <div *ngIf="!success && componentLoaded" class="position-relative">
-      <app-loading *ngIf="loading"></app-loading>
-      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="!registrationForm.success && componentLoaded" class="position-relative">
+      <app-loading *ngIf="registrationForm.loading"></app-loading>
+      <form [formGroup]="registrationForm.form" (ngSubmit)="onSubmit()">
         <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@user.form.registration-title">Please sign up</h3>
 
-        <div class="alert alert-danger" *ngIf="error">
-          {{ error }}
-        </div>
+        <p *ngFor="let error of registrationForm.errors">
+          <ngb-alert type="danger" (closed)="registrationForm.closeError(error.id)">{{ error.message }}</ngb-alert>
+        </p>
 
         <div class="form-group">
           <label i18n="@@user.form.email">Email address</label>
-          <input type="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" class="form-control validate" formControlName="email" i18n-placeholder="@@user.form.email" placeholder="Email address" autofocus>
+          <input type="email" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['email'].errors }" class="form-control validate" formControlName="email" i18n-placeholder="@@user.form.email" placeholder="Email address" autofocus>
           <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['email']"></ngx-form-error>
           </div>
@@ -20,52 +20,52 @@
 
         <div class="form-group">
           <label i18n="@@user.form.password">Password</label>
-          <input type="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" class="form-control" formControlName="password" i18n-placeholder="@@user.form.password" placeholder="Password">
-          <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <input type="password" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['password'].errors }" class="form-control" formControlName="password" i18n-placeholder="@@user.form.password" placeholder="Password">
+          <div *ngIf="registrationForm.submitted && f['password'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['password']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group">
           <label i18n="@@user.form.confirm-password">Confirm password</label>
-          <input type="password" [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" class="form-control" formControlName="confirmPassword" i18n-placeholder="@@user.form.confirm-password" placeholder="Confirm password">
-          <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+          <input type="password" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['confirmPassword'].errors }" class="form-control" formControlName="confirmPassword" i18n-placeholder="@@user.form.confirm-password" placeholder="Confirm password">
+          <div *ngIf="registrationForm.submitted && f['confirmPassword'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['confirmPassword']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group">
           <label i18n="@@user.form.first-name">First name</label>
-          <input type="text" [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" class="form-control" formControlName="firstName" i18n-placeholder="@@user.form.first-name" placeholder="First name">
-          <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
+          <input type="text" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['firstName'].errors }" class="form-control" formControlName="firstName" i18n-placeholder="@@user.form.first-name" placeholder="First name">
+          <div *ngIf="registrationForm.submitted && f['firstName'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['firstName']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group">
           <label i18n="@@user.form.last-name">Last name</label>
-          <input type="text" [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" class="form-control" formControlName="lastName" i18n-placeholder="@@user.form.last-name" placeholder="Last name">
-          <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
+          <input type="text" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['lastName'].errors }" class="form-control" formControlName="lastName" i18n-placeholder="@@user.form.last-name" placeholder="Last name">
+          <div *ngIf="registrationForm.submitted && f['lastName'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['lastName']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group">
           <label i18n="@@user.form.country">Country</label>
-          <select [ngClass]="{ 'is-invalid': submitted && f['country'].errors }" class="form-select" formControlName="country">
+          <select [ngClass]="{ 'is-invalid': registrationForm.submitted && f['country'].errors }" class="form-select" formControlName="country">
             <option value="" i18n="@@user.form.choose-country" disabled>Choose country</option>
             <option *ngFor="let country of countries" [ngValue]="country.code">
-              {{ country.value }}
+              <span [innerHTML]="country.value"></span>
             </option>
           </select>
-          <div *ngIf="submitted && f['country'].errors" class="invalid-feedback">
+          <div *ngIf="registrationForm.submitted && f['country'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['country']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group">
           <label i18n="@@user.form.gender">Gender</label>
-          <div [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
+          <div [ngClass]="{ 'is-invalid': registrationForm.submitted && f['gender'].errors }">
             <div class="form-check-inline">
               <input class="form-check-input" type="radio" formControlName="gender" [value]="genders.MALE" id="radioGenderMale">
               <label class="form-check-label" for="radioGenderMale" i18n="@@user.form.gender-male">
@@ -79,53 +79,34 @@
               </label>
             </div>
           </div>
-          <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+          <div *ngIf="registrationForm.submitted && f['gender'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['gender']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group">
           <label i18n="@@user.form.birth-date">Birth date</label>
-
-<!--            <div class="input-group mb-3">-->
-<!--              <input type="text" class="form-control" aria-label="xD" formControlName="birthDate">-->
-<!--              <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                <i class="bi bi-calendar"></i>-->
-<!--              </button>-->
-<!--              <ul class="dropdown-menu dropdown-menu-end">-->
-<!--                <li>-->
-<!--&lt;!&ndash;                  <a class="dropdown-item" href="#">&ndash;&gt;-->
-<!--                    <dl-date-time-picker-->
-<!--                      startView="day"-->
-<!--                      maxView="day"-->
-<!--                      minView="day"-->
-<!--                      formControlName="birthDate"-->
-<!--                    >-->
-<!--                    </dl-date-time-picker>-->
-<!--&lt;!&ndash;                  </a>&ndash;&gt;-->
-<!--                </li>-->
-<!--              </ul>-->
-<!--            </div>-->
-          <input type="date" [ngClass]="{ 'is-invalid': submitted && f['birthDate'].errors }" class="form-control" formControlName="birthDate">
-          <div *ngIf="submitted && f['birthDate'].errors" class="invalid-feedback">
+<!--TODO: custom date picker?-->
+          <input type="date" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['birthDate'].errors }" class="form-control" formControlName="birthDate">
+          <div *ngIf="registrationForm.submitted && f['birthDate'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['birthDate']"></ngx-form-error>
           </div>
         </div>
 
         <div class="form-group form-check">
-          <input type="checkbox" [ngClass]="{ 'is-invalid': submitted && f['acceptedTerms'].errors }" class="form-check-input" formControlName="acceptedTerms"/>
+          <input type="checkbox" [ngClass]="{ 'is-invalid': registrationForm.submitted && f['acceptedTerms'].errors }" class="form-check-input" formControlName="acceptedTerms"/>
           <label class="form-check-label" i18n="@@user.form.accept-terms">I have read and agree to the Terms</label>
-          <div *ngIf="submitted && f['acceptedTerms'].errors" class="invalid-feedback">
+          <div *ngIf="registrationForm.submitted && f['acceptedTerms'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['acceptedTerms']"></ngx-form-error>
           </div>
         </div>
 
-        <button type="submit" [disabled]="loading ? true : null" class="btn btn-primary mt-2" i18n="@@user.form.register">Sign up</button>
-        <button type="button" (click)="onReset()" [disabled]="loading ? true : null" class="btn btn-warning mt-2" i18n="@@general.form.reset">Reset</button>
+        <button type="submit" [disabled]="registrationForm.loading ? true : null" class="btn btn-primary mt-2" i18n="@@user.form.register">Sign up</button>
+        <button type="button" (click)="registrationForm.reset()" [disabled]="registrationForm.loading ? true : null" class="btn btn-warning mt-2" i18n="@@general.form.reset">Reset</button>
       </form>
       <a routerLink="/login"><span i18n="@@user.form.already-registered">Already have an account?</span></a>
     </div>
-    <div *ngIf="success">
+    <div *ngIf="registrationForm.success">
       <h3 class="h3 mb-3 font-weight-normal text-center" i18n="@@general.congratulations">Congratulations!</h3>
       <p i18n="@@user.form.success">
         You have succesfully registered! Confirm your account by clicking activation link sent to your email address.

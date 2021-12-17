@@ -10,6 +10,7 @@ import {DictionaryService} from "../../services/dictionary.service";
 import {DictionaryItem} from "../../models/dictionary-item.model";
 import {Gender} from "../../enums/gender.enum";
 import {Subject} from "rxjs";
+import {FormProperties} from "../../utils/form-properties";
 
 @Component({
   selector: 'app-register',
@@ -20,11 +21,7 @@ export class RegistrationComponent implements OnInit {
 
   unsubscribe$: Subject<void> = new Subject<void>();
 
-  registrationForm: FormGroup; //TODO: captcha
-  loading: boolean = false;
-  submitted: boolean = false;
-  success: boolean = false;
-  error: string;
+  registrationForm: FormProperties = new FormProperties(); //TODO: captcha
   componentLoaded: boolean = false;
 
   countries: DictionaryItem[];
@@ -49,7 +46,7 @@ export class RegistrationComponent implements OnInit {
       this.countries = items;
       this.componentLoaded = true;
     });
-    this.registrationForm = this.formBuilder.group({
+    this.registrationForm.form = this.formBuilder.group({
         email: ['', [
           Validators.required,
           Validators.email,
@@ -91,53 +88,23 @@ export class RegistrationComponent implements OnInit {
   }
 
   get f() {
-    return this.registrationForm.controls;
+    return this.registrationForm.form.controls;
   }
 
   onSubmit() {
-    this.submitted = true;
-    this.registrationForm.markAllAsTouched();
-    if (this.registrationForm.invalid) {
-      return;
+    if (this.registrationForm.onSubmit()) {
+      this.registerUser();
     }
-    this.loading = true;
-    this.registerUser();
-  }
-
-  onReset(): void {
-    this.submitted = false;
-    this.registrationForm.reset();
   }
 
   registerUser() {
-    this.authService.register(this.registrationForm.value).pipe(takeUntil(this.unsubscribe$), first())
+    this.authService.register(this.registrationForm.form.value).pipe(takeUntil(this.unsubscribe$), first())
       .subscribe(
         data => {
-          this.registrationForm.reset();
-          this.success = true;
+          this.registrationForm.onFinish();
         },
         errorData => {
-          this.loading = false;
-          this.handleError(errorData);
+          this.registrationForm.handleError(errorData);
         });
-  }
-
-  handleError(errorData: any) : void {
-    if (errorData.status == HttpStatusCode.BadRequest) {
-      if (errorData.error['data']) {
-        for (let entry in errorData.error['data']) {
-          let field = errorData.error['data'][entry]['field'];
-          let control = this.registrationForm.controls[field];
-          if (control) {
-            let customError = { customError: errorData.error['data'][entry]['messages'][0] };
-            control.setErrors(customError); //TODO: refactor
-          }
-        }
-      }
-    } else if (errorData.status == HttpStatusCode.Conflict) {
-      this.error = $localize`:@@user.form.email-taken:Email already taken`;
-    } else {
-      this.error = $localize`:@@common.unknown-error:Unknown error`;
-    }
   }
 }

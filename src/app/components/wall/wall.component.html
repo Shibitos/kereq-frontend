@@ -2,22 +2,22 @@
   <div class="card">
     <div class="card-body pt-4">
       <h2 i18n="@@find-friends.my-ad">Add post</h2>
-      <div class="alert alert-danger" *ngIf="error">
-        {{ error }}
-      </div>
+      <p *ngFor="let error of postForm.errors">
+        <ngb-alert type="danger" (closed)="postForm.closeError(error.id)">{{ error.message }}</ngb-alert>
+      </p>
         <div class="position-relative">
-          <app-loading *ngIf="loading"></app-loading>
-          <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+          <app-loading *ngIf="postForm.loading"></app-loading>
+          <form [formGroup]="postForm.form" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label i18n="@@post.form.content">Body</label>
-              <textarea [ngClass]="{ 'is-invalid': submitted && f['content'].errors }" class="form-control validate" formControlName="content" i18n-placeholder="@@post.form.content-placeholder" placeholder="Write here" autofocus></textarea>
+              <textarea [ngClass]="{ 'is-invalid': postForm.submitted && f['content'].errors }" class="form-control validate" formControlName="content" i18n-placeholder="@@post.form.content-placeholder" placeholder="Write here" autofocus></textarea>
               <div *ngIf="f['content'].touched && f['content'].errors" class="invalid-feedback">
                 <ngx-form-error [control]="f['content']"></ngx-form-error>
               </div>
             </div>
 
-            <button type="submit" [disabled]="loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
-            <button type="button" (click)="onReset()" [disabled]="loading ? true : null" class="btn btn-warning mt-2" i18n="@@general.form.reset">Reset</button>
+            <button type="submit" [disabled]="postForm.loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.submit">Submit</button>
+            <button type="button" (click)="postForm.reset()" [disabled]="postForm.loading ? true : null" class="btn btn-warning mt-2" i18n="@@general.form.reset">Reset</button>
           </form>
         </div>
     </div>

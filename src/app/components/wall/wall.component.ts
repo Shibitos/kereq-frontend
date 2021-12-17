@@ -6,11 +6,10 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {UserService} from "../../services/user.service";
 import {first, takeUntil} from "rxjs/operators";
-import {HttpStatusCode} from "@angular/common/http";
 import {PostService} from "../../services/post.service";
 import {Post} from "../../models/post.model";
-import {formatDate} from "@angular/common";
 import {Subject} from "rxjs";
+import {FormProperties} from "../../utils/form-properties";
 
 @Component({
   selector: 'app-wall',
@@ -26,11 +25,7 @@ export class WallComponent implements OnInit {
   browsePostsList: Post[] = [];
   browsePostsPageTool: PageUtil<Post>;
 
-  postForm: FormGroup;
-  loading: boolean = false;
-  submitted: boolean = false;
-  success: boolean = false;
-  error: string; //TODO: ng bootstrap alerts?
+  postForm: FormProperties = new FormProperties();
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -41,7 +36,7 @@ export class WallComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.postForm = this.formBuilder.group({
+    this.postForm.form = this.formBuilder.group({
         content: ['', [
           Validators.minLength(15),
           Validators.maxLength(1000)
@@ -61,53 +56,24 @@ export class WallComponent implements OnInit {
   }
 
   get f() {
-    return this.postForm.controls;
+    return this.postForm.form.controls;
   }
 
   onSubmit() {
-    this.submitted = true;
-    this.postForm.markAllAsTouched();
-    if (this.postForm.invalid) {
-      return;
+    if (this.postForm.onSubmit()) {
+      this.addPost();
     }
-    this.loading = true;
-    this.addPost();
-  }
-
-  onReset(): void {
-    this.submitted = false;
-    this.postForm.reset();
   }
 
   addPost() {
-    this.postService.addPost(this.postForm.value).pipe(takeUntil(this.unsubscribe$), first())
+    this.postService.addPost(this.postForm.form.value).pipe(takeUntil(this.unsubscribe$), first())
       .subscribe(
         (post: Post) => {
-          this.success = true;
-          this.loading = false;
-          this.onReset();
+          this.postForm.onFinish();
           this.browsePostsList.unshift(post);
         },
         errorData => {
-          this.loading = false;
-          this.handleError(errorData);
+          this.postForm.handleError(errorData);
         });
-  }
-
-  handleError(errorData: any) : void {
-    if (errorData.status == HttpStatusCode.BadRequest) {
-      if (errorData.error['data']) {
-        for (let entry in errorData.error['data']) {
-          let field = errorData.error['data'][entry]['field'];
-          let control = this.postForm.controls[field];
-          if (control) {
-            let customError = { customError: errorData.error['data'][entry]['messages'][0] };
-            control.setErrors(customError); //TODO: refactor
-          }
-        }
-      }
-    } else {
-      this.error = $localize`:@@common.unknown-error:Unknown error`;
-    }
   }
 }
