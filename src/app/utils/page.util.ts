@@ -14,13 +14,14 @@ export class PageUtil<T> {
   param?: number;
   stopLoading = false;
 
-  constructor(private loadFunc: (p: Page, param?: number) => Observable<any>, private container: T[], param?: number, pageSize?: number) { //TODO: hide func there? load more button not hiding after hiding all
+  constructor(private loadFunc: (p: Page, param?: number) => Observable<any>, private container: T[], pageSize: number, param?: number, initialSize?: number) { //TODO: hide func there? load more button not hiding after hiding all
     this.page = new Page();
-    if (pageSize) {
-      this.page.pageSize = pageSize;
-    }
+    this.page.pageSize = pageSize;
     if (param) {
       this.param = param;
+    }
+    if (initialSize) {
+      this.page.initialSize = initialSize;
     }
     this.init();
   }
@@ -53,7 +54,12 @@ export class PageUtil<T> {
 
   loadMore(): void { //TODO: think about duplicates
     if (!this.stopLoading) {
-      this.page.pageNumber += 1;
+      if (!this.page.initialized && this.page.initialSize > 0) {
+        this.page.initialized = true;
+        this.container.length = 0;
+      } else {
+        this.page.pageNumber += 1;
+      }
       this.loadFunc(this.page, this.param).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
         if (a.empty) {
           this.stopLoading = true;

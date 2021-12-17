@@ -49,8 +49,8 @@ export class FriendsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.friendsPageTool = new PageUtil<Friendship>(this.userService.getFriends.bind(this.userService), this.friendsList, this.userId, 8);
-    this.invitationsPageTool = new PageUtil<Friendship>(this.userService.getInvitations.bind(this.userService), this.invitationsList, this.userId,4);
+    this.friendsPageTool = new PageUtil<Friendship>(this.userService.getFriends.bind(this.userService), this.friendsList, 8, this.userId);
+    this.invitationsPageTool = new PageUtil<Friendship>(this.userService.getInvitations.bind(this.userService), this.invitationsList, 4, this.userId);
   }
 
   ngOnDestroy(){

@@ -86,7 +86,7 @@ export class ProfileComponent implements OnInit {
         this.friendsLoaded = true;
       });
     this.destroyPageTool();
-    this.browsePostsPageTool = new PageUtil<Post>(this.postService.getUserPosts.bind(this.postService), this.browsePostsList, this.user.id);
+    this.browsePostsPageTool = new PageUtil<Post>(this.postService.getUserPosts.bind(this.postService), this.browsePostsList, 6, this.user.id);
   }
 
   clear(): void {

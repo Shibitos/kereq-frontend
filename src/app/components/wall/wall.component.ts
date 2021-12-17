@@ -42,7 +42,7 @@ export class WallComponent implements OnInit {
           Validators.maxLength(1000)
         ]]
       });
-    this.browsePostsPageTool = new PageUtil<Post>(this.postService.browsePosts.bind(this.postService), this.browsePostsList);
+    this.browsePostsPageTool = new PageUtil<Post>(this.postService.browsePosts.bind(this.postService), this.browsePostsList, 6);
   }
 
   ngOnDestroy() {

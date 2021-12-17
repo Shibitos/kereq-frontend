@@ -68,7 +68,7 @@ export class FindFriendsComponent implements OnInit {
         ]]
       });
     this.retrieveMyAd();
-    this.browseAdsPageTool = new PageUtil<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList);
+    this.browseAdsPageTool = new PageUtil<FindFriendsAd>(this.findFriendsService.browseAds.bind(this.findFriendsService), this.browseAdsList, 6);
   }
 
   ngOnDestroy(){

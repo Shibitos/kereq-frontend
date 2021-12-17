@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-auto">
     <a [routerLink]="'/profile/' + post.user.id" class="profile-link">
-      <div class="image-overlay-container">
-        <img src="assets/img/default-avatar.png" class="rounded-circle">
+      <div class="image-overlay-container avatar">
+        <img src="assets/img/default-avatar.png" class="rounded-circle img-fluid">
         <div class="image-overlay"></div>
       </div>
     </a>
@@ -16,6 +16,26 @@
           <app-async-date-format [date]="post.createdAt"></app-async-date-format>
         </span>
     </div>
+  </div>
+  <div class="col">
     <p [innerHTML]="post.content"></p><br>
   </div>
+</div>
+<div class="row">
+  <div class="col-auto">
+    <i class="bi bi-hand-thumbs-up"></i> Like
+  </div>
+  <div class="col-auto">
+    <i class="bi bi-hand-thumbs-down"></i> Dislike
+  </div>
+  <div class="col-auto">
+    <i class="bi bi-card-text"></i> Add comment
+  </div>
+  <hr class="bg-danger mt-1 border-2 border-top border-dark">
+</div>
+<div class="row">
+  komenty
+</div>
+<div class="row">
+  formularz
 </div>

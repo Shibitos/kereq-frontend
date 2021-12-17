@@ -33,6 +33,6 @@ export class FindFriendsService {
   }
 
   browseAds(page: Page): Observable<any> {
-    return this.http.get<FindFriendsAd>(environment.baseUrl + this.ffUrl + 'browse?p=' + page.pageNumber);
+    return this.http.get<FindFriendsAd>(environment.baseUrl + this.ffUrl + 'browse?' + page.generateQueryParams());
   }
 }
