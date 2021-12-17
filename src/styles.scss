@@ -9,6 +9,10 @@ body, app-root {
   color: $font-color;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 a {
   font-size: 15px;
   text-decoration: none;

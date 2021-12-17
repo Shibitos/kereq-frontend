@@ -10,7 +10,7 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link collapsed" routerLink="/profile">
+      <a class="nav-link collapsed" [routerLink]="'/profile/' + loggedUser.id">
         <i class="bi bi-person"></i>
         <span i18n="@@sites.profile">Profile</span>
       </a>

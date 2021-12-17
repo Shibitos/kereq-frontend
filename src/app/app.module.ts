@@ -29,6 +29,7 @@ import { AsyncDateFormatComponent } from './components/async-date-format/async-d
 import { PostComponent } from './components/post/post.component';
 import { RangePlaceholderComponent } from './components/range-placeholder/range-placeholder.component';
 import { SliderComponent } from './components/slider/slider.component';
+import { ChatbarComponent } from './components/chatbar/chatbar.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { SliderComponent } from './components/slider/slider.component';
     AsyncDateFormatComponent,
     PostComponent,
     RangePlaceholderComponent,
-    SliderComponent
+    SliderComponent,
+    ChatbarComponent
   ],
   imports: [
     BrowserModule,

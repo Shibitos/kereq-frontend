@@ -1,5 +1,14 @@
 <app-header *ngIf="this.authService.isLoggedIn"></app-header>
 <app-menu *ngIf="this.authService.isLoggedIn"></app-menu>
 <main>
-  <router-outlet></router-outlet>
+  <div class="container-fluid h-100 d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
+    <div class="row flex-grow-1 overflow-hidden">
+      <div class="col-10 mh-100 overflow-auto">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="col-2 mh-100 overflow-auto">
+        <app-chatbar></app-chatbar>
+      </div>
+    </div>
+  </div>
 </main>
