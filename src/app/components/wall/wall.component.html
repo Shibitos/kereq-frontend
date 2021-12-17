@@ -9,7 +9,7 @@
           <app-loading *ngIf="postForm.loading"></app-loading>
           <form [formGroup]="postForm.form" (ngSubmit)="onSubmit()">
             <div class="form-group">
-              <label i18n="@@post.form.content">Body</label>
+              <label i18n="@@post.form.content">Content</label>
               <textarea [ngClass]="{ 'is-invalid': postForm.submitted && f['content'].errors }" class="form-control validate" formControlName="content" i18n-placeholder="@@post.form.content-placeholder" placeholder="Write here" autofocus></textarea>
               <div *ngIf="f['content'].touched && f['content'].errors" class="invalid-feedback">
                 <ngx-form-error [control]="f['content']"></ngx-form-error>

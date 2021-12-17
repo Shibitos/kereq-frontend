@@ -56,7 +56,7 @@ export class FindFriendsComponent implements OnInit {
           Validators.maxLength(3)
         ]],
         maxAge: ['', [
-          Validators.maxLength(3)
+          Validators.maxLength(3) //TODO: 1. broken 2. validator min<=max
         ]],
         gender: [null, [
           Validators.maxLength(1)

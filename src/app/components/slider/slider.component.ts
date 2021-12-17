@@ -20,7 +20,8 @@ export class SliderComponent implements OnInit {
   @Input()
   switchable: boolean = true;
 
-  any: boolean = true;
+  any: boolean = false;
+  lastValue: number;
 
   constructor() { }
 
@@ -32,13 +33,14 @@ export class SliderComponent implements OnInit {
     if (this.any) {
       this.control.setValue(null);
     } else {
-      //TODO: ?
+      this.control.setValue(this.lastValue);
     }
   }
 
   onChange(selectedValues: number[]): void {
+    this.lastValue = selectedValues[0];
     if (!this.any) {
-      this.control.setValue(selectedValues[0]);
+      this.control.setValue(this.lastValue);
     }
   }
 }
