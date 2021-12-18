@@ -17,15 +17,15 @@ export class PostService {
   }
 
   addPost(post: Post): Observable<any> {
-    return this.http.post(environment.baseUrl + this.postsUrl + 'post', post);
+    return this.http.post(environment.baseUrl + this.postsUrl, post);
   }
 
   modifyPost(post: Post): Observable<any> {
-    return this.http.put(environment.baseUrl + this.postsUrl + 'post/' + post.id, post);
+    return this.http.put(environment.baseUrl + this.postsUrl + post.id, post);
   }
 
   removePost(postId: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.postsUrl + 'post/' + postId);
+    return this.http.delete(environment.baseUrl + this.postsUrl + postId);
   }
 
   browsePosts(page: Page): Observable<any> {
@@ -33,6 +33,6 @@ export class PostService {
   }
 
   getUserPosts(page: Page, userId?: number): Observable<any> {
-    return this.http.get<Post>(environment.baseUrl + this.postsUrl + 'posts/' + userId + '?' + page.generateQueryParams());
+    return this.http.get<Post>(environment.baseUrl + this.postsUrl + 'user/' + userId + '?' + page.generateQueryParams());
   }
 }

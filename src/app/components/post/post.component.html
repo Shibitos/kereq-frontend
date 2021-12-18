@@ -24,16 +24,16 @@
 <div class="row">
   <div class="col-auto">
     <a href="#">
-      <i class="bi bi-hand-thumbs-up"></i> Like
-    </a>
+      <i class="bi bi-hand-thumbs-up"></i>
+    </a> 0
   </div>
   <div class="col-auto">
     <a href="#">
-      <i class="bi bi-hand-thumbs-down"></i> Dislike
-    </a>
+      <i class="bi bi-hand-thumbs-down"></i>
+    </a> 0
   </div>
   <div class="col-auto">
-    <a href="#">
+    <a href="#" (click)="scrollFocus(commentInput)">
       <i class="bi bi-card-text"></i> Add comment
     </a>
   </div>
@@ -87,8 +87,7 @@
 
   <div *ngIf="commentsList.length < post.commentsCount && !commentsPageTool.stopLoading">
 
-    <button type="submit" class="btn"
-            i18n="@@general.load-more" (click)="commentsPageTool.loadMore()">Load more</button>
+    <a href="#" (click)="commentsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
   </div>
 </div>
 
@@ -97,13 +96,14 @@
     <app-loading *ngIf="commentForm.loading"></app-loading>
     <form [formGroup]="commentForm.form" (ngSubmit)="onSubmit()">
       <div class="row">
-
-        <div class="col-auto avatar">
-          <img src="assets/img/default-avatar.png" class="rounded-circle img-fluid">
+        <div class="col-auto">
+          <div class="avatar-sm">
+            <img src="assets/img/default-avatar.png" class="rounded-circle img-fluid">
+          </div>
         </div>
 
         <div class="col form-group">
-          <input type="text" [ngClass]="{ 'is-invalid': commentForm.submitted && f['content'].errors }" class="form-control validate" formControlName="content" i18n-placeholder="@@post.form.content-placeholder" placeholder="Write here" />
+          <input #commentInput type="text" [ngClass]="{ 'is-invalid': commentForm.submitted && f['content'].errors }" class="form-control validate" formControlName="content" i18n-placeholder="@@post.form.content-placeholder" placeholder="Write here" />
           <div *ngIf="f['content'].touched && f['content'].errors" class="invalid-feedback">
             <ngx-form-error [control]="f['content']"></ngx-form-error>
           </div>

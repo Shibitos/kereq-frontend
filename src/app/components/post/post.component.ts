@@ -56,6 +56,11 @@ export class PostComponent implements OnInit {
     }
   }
 
+  scrollFocus(el: HTMLElement) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.focus();
+  }
+
   addComment() {
     this.commentService.addComment(<number>this.post.id, this.commentForm.form.value).pipe(takeUntil(this.unsubscribe$), first())
       .subscribe(

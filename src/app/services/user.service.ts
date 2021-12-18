@@ -18,11 +18,11 @@ export class UserService {
   }
 
   inviteFriend(userId: number): Observable<any> {
-    return this.http.post(environment.baseUrl + this.friendsUrl + 'invite/' + userId, null);
+    return this.http.post(environment.baseUrl + this.friendsUrl + 'invitations/' + userId, null);
   }
 
   getFriends(page: Page, userId?: number): Observable<any> {
-    return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + 'friends' + (userId ? ('/' + userId) : '') + '?' + page.generateQueryParams());
+    return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + (userId ? userId : '') + '?' + page.generateQueryParams());
   }
 
   getInvitations(page: Page): Observable<any> {
@@ -38,7 +38,7 @@ export class UserService {
   }
 
   removeFriend(userId: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.friendsUrl + 'friend/' + userId);
+    return this.http.delete(environment.baseUrl + this.friendsUrl + userId);
   }
 
   getUser(userId: number): Observable<User> {
