@@ -41,12 +41,12 @@
 </div>
 
 <div class="row">
-  <div *ngIf="commentsPageTool.loaded && !commentsList.length">
+  <div *ngIf="!commentsList || !commentsList.length">
     <span i18n="@@post.no-comments">Not commented yet</span>
   </div>
 </div>
 
-<div *ngIf="commentsPageTool.loaded">
+<div *ngIf="commentsList">
   <div *ngFor="let comment of commentsList" class="row mt-2">
     <div class="col-auto mt-1">
       <a [routerLink]="'/profile/' + comment.user.id" class="profile-link">
@@ -83,6 +83,12 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="commentsList.length < post.commentsCount && !commentsPageTool.stopLoading">
+
+    <button type="submit" class="btn"
+            i18n="@@general.load-more" (click)="commentsPageTool.loadMore()">Load more</button>
   </div>
 </div>
 

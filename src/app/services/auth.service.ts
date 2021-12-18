@@ -81,7 +81,6 @@ export class AuthService {
   }
 
   saveTokens(accessToken: string, refreshToken: string) {
-    console.log('xD');
     localStorage.setItem(AuthService.TOKEN_NAME, accessToken);
     localStorage.setItem(AuthService.REFRESH_TOKEN_NAME, refreshToken);
   }

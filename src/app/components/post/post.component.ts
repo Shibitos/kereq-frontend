@@ -36,7 +36,8 @@ export class PostComponent implements OnInit {
         Validators.maxLength(1000)
       ]]
     });
-    this.commentsPageTool = new PageUtil<Comment>(this.commentService.getPostComments.bind(this.commentService), this.commentsList, 8, this.post.id, 3);
+    this.commentsList = this.post.comments;
+    this.commentsPageTool = new PageUtil<Comment>(this.commentService.getPostComments.bind(this.commentService), this.commentsList, 8, this.post.id, true);
   }
 
   ngOnDestroy(): void {
