@@ -50,7 +50,7 @@
   [infiniteScrollDistance]="browsePostsPageTool.distance"
   [infiniteScrollThrottle]="browsePostsPageTool.throttle"
   (scrolled)="browsePostsPageTool.loadMore()"
-  *ngIf="browsePostsPageTool.loaded && browsePostsList"
+  *ngIf="browsePostsPageTool.loaded"
 >
   <div class="col-12 card-container" *ngFor="let post of browsePostsList; let i = index">
     <div class="card">

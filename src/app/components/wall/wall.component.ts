@@ -30,8 +30,7 @@ export class WallComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private authService: AuthService,
-              private postService: PostService,
-              private userService: UserService) {
+              private postService: PostService) {
     this.authService.currentUser.subscribe(u => this.loggedUser = u);
   }
 

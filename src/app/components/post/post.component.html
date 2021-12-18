@@ -39,9 +39,75 @@
   </div>
   <hr class="bg-danger mt-1 border-2 border-top border-dark">
 </div>
+
 <div class="row">
-  komenty
+  <div *ngIf="commentsPageTool.loaded && !commentsList.length">
+    <span i18n="@@post.no-comments">Not commented yet</span>
+  </div>
 </div>
-<div class="row">
-  formularz
+
+<div *ngIf="commentsPageTool.loaded">
+  <div *ngFor="let comment of commentsList" class="row mt-2">
+    <div class="col-auto mt-1">
+      <a [routerLink]="'/profile/' + comment.user.id" class="profile-link">
+        <div class="image-overlay-container avatar-sm">
+          <img src="assets/img/default-avatar.png" class="rounded-circle img-fluid">
+          <div class="image-overlay"></div>
+        </div>
+      </a>
+    </div>
+    <div class="col-10">
+      <div>
+        <a [routerLink]="'/profile/' + post.user.id" class="profile-link">
+          <h5 class="mb-0 mt-0">{{ comment.user.firstName }} {{ comment.user.lastName }}</h5>
+        </a>
+      </div>
+      <p [innerHTML]="comment.content"></p>
+      <div class="row">
+        <div class="col-auto pe-1">
+          <a href="#">
+            <i class="bi bi-hand-thumbs-up"></i>
+          </a>
+          0
+        </div>
+        <div class="col-auto ps-1 pe-2">
+          <a href="#">
+            <i class="bi bi-hand-thumbs-down"></i>
+          </a>
+          0
+        </div>
+        <div class="col-auto ps-2">
+          <small>
+            <app-async-date-format [date]="comment.createdAt"></app-async-date-format>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="position-relative">
+    <app-loading *ngIf="commentForm.loading"></app-loading>
+    <form [formGroup]="commentForm.form" (ngSubmit)="onSubmit()">
+      <div class="row">
+
+        <div class="col-auto avatar">
+          <img src="assets/img/default-avatar.png" class="rounded-circle img-fluid">
+        </div>
+
+        <div class="col form-group">
+          <input type="text" [ngClass]="{ 'is-invalid': commentForm.submitted && f['content'].errors }" class="form-control validate" formControlName="content" i18n-placeholder="@@post.form.content-placeholder" placeholder="Write here" />
+          <div *ngIf="f['content'].touched && f['content'].errors" class="invalid-feedback">
+            <ngx-form-error [control]="f['content']"></ngx-form-error>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button type="submit" [disabled]="commentForm.loading ? true : null" class="btn btn-primary" i18n="@@common.submit">Submit</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
 </div>
