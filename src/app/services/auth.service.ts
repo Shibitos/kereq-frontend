@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(environment.baseUrl + 'profile/me');
+    return this.http.get<User>(environment.baseUrl + 'profile');
   }
 
   logout() {

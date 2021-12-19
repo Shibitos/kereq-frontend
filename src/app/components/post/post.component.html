@@ -17,20 +17,20 @@
         </span>
     </div>
   </div>
-  <div class="col">
+  <div class="col-12">
     <p [innerHTML]="post.content"></p><br>
   </div>
 </div>
 <div class="row">
   <div class="col-auto">
-    <a href="#">
-      <i class="bi bi-hand-thumbs-up"></i>
-    </a> 0
+    <a href="#" (click)="like()">
+      <i class="bi" [class]="likeTypes.LIKE == post.statistics.userLikeType ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up'"></i>
+    </a> {{ post.statistics.likesCount }}
   </div>
   <div class="col-auto">
-    <a href="#">
-      <i class="bi bi-hand-thumbs-down"></i>
-    </a> 0
+    <a href="#" (click)="dislike()">
+      <i class="bi"  [class]="likeTypes.DISLIKE == post.statistics.userLikeType ? 'bi-hand-thumbs-down-fill' : 'bi-hand-thumbs-down'"></i>
+    </a>  {{ post.statistics.dislikesCount }}
   </div>
   <div class="col-auto">
     <a href="#" (click)="scrollFocus(commentInput)">
@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  <div *ngIf="commentsList.length < post.commentsCount && !commentsPageTool.stopLoading">
+  <div *ngIf="commentsList.length < post.statistics.commentsCount && !commentsPageTool.stopLoading">
 
     <a href="#" (click)="commentsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
   </div>

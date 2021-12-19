@@ -7,6 +7,9 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {Subject} from "rxjs";
 import {first, takeUntil} from "rxjs/operators";
 import {Comment} from "../../models/comment.model";
+import {LikeType} from "../../enums/like-type.enum";
+import {PostService} from "../../services/post.service";
+import {PostStatistics} from "../../models/post-statistics.model";
 
 @Component({
   selector: 'app-post',
@@ -25,8 +28,12 @@ export class PostComponent implements OnInit {
 
   commentForm: FormProperties = new FormProperties();
 
+  likeInProgress: boolean = false;
+  likeTypes = LikeType;
+
   constructor(
     private formBuilder: FormBuilder,
+    private postService: PostService,
     private commentService: CommentService) { }
 
   ngOnInit(): void {
@@ -71,5 +78,65 @@ export class PostComponent implements OnInit {
         errorData => {
           this.commentForm.handleError(errorData);
         });
+  }
+
+  like() {
+    if (this.likeInProgress) {
+      return;
+    }
+    this.likeInProgress = true;
+    if (this.post.statistics.userLikeType == <number>LikeType.LIKE) {
+      this.postService.removeLike(<number>this.post.id).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (postStatistics: PostStatistics) => {
+            this.post.statistics = postStatistics;
+            this.post.statistics.userLikeType = undefined;
+            this.likeInProgress = false;
+          },
+          () => {
+            this.likeInProgress = false;
+          });
+    } else {
+      this.postService.like(<number>this.post.id).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (postStatistics: PostStatistics) => {
+            this.post.statistics = postStatistics;
+            this.post.statistics.userLikeType = LikeType.LIKE;
+            this.likeInProgress = false;
+          },
+          () => {
+            this.likeInProgress = false;
+          });
+    }
+  }
+
+  dislike() {
+    if (this.likeInProgress) {
+      return;
+    }
+    this.likeInProgress = true;
+    if (this.post.statistics.userLikeType == <number>LikeType.DISLIKE) {
+      this.postService.removeDislike(<number>this.post.id).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (postStatistics: PostStatistics) => {
+            this.post.statistics = postStatistics;
+            this.post.statistics.userLikeType = undefined;
+            this.likeInProgress = false;
+          },
+          () => {
+            this.likeInProgress = false;
+          });
+    } else {
+      this.postService.dislike(<number>this.post.id).pipe(takeUntil(this.unsubscribe$))
+        .subscribe(
+          (postStatistics: PostStatistics) => {
+            this.post.statistics = postStatistics;
+            this.post.statistics.userLikeType = LikeType.DISLIKE;
+            this.likeInProgress = false;
+          },
+          () => {
+            this.likeInProgress = false;
+          });
+    }
   }
 }

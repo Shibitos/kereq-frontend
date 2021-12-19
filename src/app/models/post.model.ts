@@ -1,5 +1,6 @@
 import {User} from "./user.model";
 import {Comment} from "./comment.model";
+import {PostStatistics} from "./post-statistics.model";
 
 export class Post {
   id?: number;
@@ -7,5 +8,5 @@ export class Post {
   createdAt: Date;
   content: string;
   comments: Comment[] = [];
-  commentsCount: number;
+  statistics: PostStatistics;
 }

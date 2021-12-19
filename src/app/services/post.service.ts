@@ -35,4 +35,20 @@ export class PostService {
   getUserPosts(page: Page, userId?: number): Observable<any> {
     return this.http.get<Post>(environment.baseUrl + this.postsUrl + 'user/' + userId + '?' + page.generateQueryParams());
   }
+
+  like(postId: number): Observable<any> {
+    return this.http.post(environment.baseUrl + this.postsUrl + postId + '/like', null);
+  }
+
+  removeLike(postId: number): Observable<any> {
+    return this.http.delete(environment.baseUrl + this.postsUrl + postId + '/like');
+  }
+
+  dislike(postId: number): Observable<any> {
+    return this.http.post(environment.baseUrl + this.postsUrl + postId + '/dislike', null);
+  }
+
+  removeDislike(postId: number): Observable<any> {
+    return this.http.delete(environment.baseUrl + this.postsUrl + postId + '/dislike');
+  }
 }
