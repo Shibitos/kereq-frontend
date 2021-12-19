@@ -1,9 +1,8 @@
 import {LikeType} from "../enums/like-type.enum";
 
-export class PostStatistics {
-  postId?: number;
+export class CommentStatistics {
+  commentId?: number;
   likesCount: number;
   dislikesCount: number;
-  commentsCount: number;
   userLikeType?: LikeType;
 }

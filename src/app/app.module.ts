@@ -30,6 +30,7 @@ import { PostComponent } from './components/post/post.component';
 import { RangePlaceholderComponent } from './components/range-placeholder/range-placeholder.component';
 import { SliderComponent } from './components/slider/slider.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ChatbarComponent } from './components/chatbar/chatbar.component';
     PostComponent,
     RangePlaceholderComponent,
     SliderComponent,
-    ChatbarComponent
+    ChatbarComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

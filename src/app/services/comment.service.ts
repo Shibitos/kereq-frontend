@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Page} from "../utils/page";
 import {Post} from "../models/post.model";
+import {Comment} from "../models/comment.model";
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class CommentService {
   }
 
   modifyPost(postId: number, comment: Comment): Observable<any> {
-    return this.http.put(environment.baseUrl + this.postsUrl + postId + this.commentsUrl, comment);
+    return this.http.put(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + comment.id, comment);
   }
 
   removePost(postId: number, commentId: number): Observable<any> {
@@ -31,5 +32,21 @@ export class CommentService {
 
   getPostComments(page: Page, postId?: number): Observable<any> {
     return this.http.get<Post>(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '?' + page.generateQueryParams());
+  }
+
+  like(postId: number, commentId: number): Observable<any> {
+    return this.http.post(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/like', null);
+  }
+
+  removeLike(postId: number, commentId: number): Observable<any> {
+    return this.http.delete(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/like');
+  }
+
+  dislike(postId: number, commentId: number): Observable<any> {
+    return this.http.post(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/dislike', null);
+  }
+
+  removeDislike(postId: number, commentId: number): Observable<any> {
+    return this.http.delete(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/dislike');
   }
 }

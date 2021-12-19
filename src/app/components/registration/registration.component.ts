@@ -104,7 +104,7 @@ export class RegistrationComponent implements OnInit {
           this.registrationForm.onFinish();
         },
         errorData => {
-          this.registrationForm.handleError(errorData);
+          this.registrationForm.onError(errorData);
         });
   }
 }
