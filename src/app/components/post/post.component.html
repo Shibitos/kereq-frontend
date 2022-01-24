@@ -47,9 +47,7 @@
 </div>
 
 <div *ngIf="commentsList">
-  <div *ngFor="let comment of commentsList" class="row mt-2">
-    <app-comment [post]="post" [comment]="comment"></app-comment>
-  </div>
+  <app-comment *ngFor="let comment of commentsList" [post]="post" [comment]="comment"></app-comment>
 
   <div *ngIf="commentsList.length < post.statistics.commentsCount && !commentsPageTool.stopLoading">
 
