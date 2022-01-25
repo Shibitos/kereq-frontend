@@ -31,6 +31,7 @@ import { RangePlaceholderComponent } from './components/range-placeholder/range-
 import { SliderComponent } from './components/slider/slider.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { CommentComponent } from './components/comment/comment.component';
     RangePlaceholderComponent,
     SliderComponent,
     ChatbarComponent,
-    CommentComponent
+    CommentComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

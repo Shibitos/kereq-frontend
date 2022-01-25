@@ -57,7 +57,7 @@ export class ProfileComponent implements OnInit {
           this.currentUserSubject.next(user);
         });
       } else {
-        this.authService.currentUser.subscribe((user: User) => {
+        this.authService.currentUser.pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
           this.router.navigate(['/profile/' + user.id]);
         });
       }

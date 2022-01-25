@@ -45,6 +45,10 @@ export class AuthService {
     }));
   }
 
+  refreshUser(user: User) {
+    this.currentUserSubject.next(user);
+  }
+
   checkToken() {
     if (this.getToken() !== null) {
       this.getCurrentUser().subscribe((user: User) => {

@@ -44,4 +44,8 @@ export class UserService {
   getUser(userId: number): Observable<User> {
     return this.http.get<User>(environment.baseUrl + 'profile/' + userId);
   }
+
+  modifyUser(user: User): Observable<any> {
+    return this.http.patch(environment.baseUrl + 'profile', user);
+  }
 }

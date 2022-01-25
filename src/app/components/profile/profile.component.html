@@ -6,7 +6,7 @@
       <list-content-loader *ngIf="!userLoaded"></list-content-loader>
       <div class="ps-2" *ngIf="userLoaded">
         <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-        <a href="" (click)="$event.preventDefault()" *ngIf="isOwner()">
+        <a [routerLink]="'/profile/' + user.id + '/edit'" *ngIf="isOwner()">
           <i class="bi bi-pencil-square"></i>
           <span i18n="@@sites.edit-profile">Edit profile</span>
         </a>

@@ -26,7 +26,7 @@ export class RegistrationComponent implements OnInit {
 
   countries: DictionaryItem[];
   COUNTRIES_DICT_CODE: string = 'COUNTRIES'; //TODO: load once
-  readonly genders : typeof Gender = Gender ;
+  readonly genders : typeof Gender = Gender;
 
   constructor(
     private formBuilder: FormBuilder,
