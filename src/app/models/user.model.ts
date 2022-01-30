@@ -7,6 +7,7 @@ export class User {
   confirmPassword: string;
   firstName: string;
   lastName: string;
+  biography: string;
   roles: Role[];
   country: string;
   joinDate: string;

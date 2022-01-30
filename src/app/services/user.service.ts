@@ -48,4 +48,8 @@ export class UserService {
   modifyUser(user: User): Observable<any> {
     return this.http.patch(environment.baseUrl + 'profile', user);
   }
+
+  modifyUserBiography(user: User): Observable<any> {
+    return this.http.post(environment.baseUrl + 'profile/biography', user);
+  }
 }

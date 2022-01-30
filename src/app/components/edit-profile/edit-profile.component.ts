@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {filter, first, takeUntil} from "rxjs/operators";
 import {User} from "../../models/user.model";
 import {BehaviorSubject, Subject} from "rxjs";
@@ -12,6 +12,7 @@ import MatchValidator from "../../utils/matchValidator";
 import {DictionaryItem} from "../../models/dictionary-item.model";
 import {DictionaryService} from "../../services/dictionary.service";
 import {Gender} from "../../enums/gender.enum";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-edit-profile',
@@ -23,16 +24,21 @@ export class EditProfileComponent implements OnInit {
   private currentUserSubject: BehaviorSubject<User> = new BehaviorSubject<User>(new User());
   unsubscribe$: Subject<void> = new Subject<void>();
 
+  @ViewChild('editProfileImageModal')
+  editProfileImageModal: ModalComponent;
+
   user: User;
   userLoaded: boolean = false;
   componentLoaded: boolean = false;
-  modifyMode: boolean = false;
+  modifyProfileMode: boolean = false;
+  modifyBiographyMode: boolean = false;
 
   countries: DictionaryItem[];
   COUNTRIES_DICT_CODE: string = 'COUNTRIES'; //TODO: load once
   readonly genders : typeof Gender = Gender;
 
   userForm: FormProperties = new FormProperties();
+  biographyForm: FormProperties = new FormProperties();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +63,11 @@ export class EditProfileComponent implements OnInit {
         ]],
         country: ['', Validators.required]
       });
+    this.biographyForm.form = this.formBuilder.group({
+      biography: ['', [
+        Validators.maxLength(200)
+      ]]
+    });
     this.dictionaryService.getDictionaryValues(this.COUNTRIES_DICT_CODE).pipe(takeUntil(this.unsubscribe$)).subscribe((items: DictionaryItem[]) => {
       this.countries = items;
       this.componentLoaded = true;
@@ -89,14 +100,28 @@ export class EditProfileComponent implements OnInit {
     return this.userForm.form.controls;
   }
 
-  onSubmit() {
+  async editProfileImageModalOpen() {
+    return await this.editProfileImageModal.open();
+  }
+
+  onProfileSubmit() {
     if (this.userForm.onSubmit()) {
       this.editUser();
     }
   }
 
-  modifyModeOn() {
-    this.modifyMode = true;
+  onBiographySubmit() {
+    if (this.biographyForm.onSubmit()) {
+      this.editUserBiography();
+    }
+  }
+
+  modifyProfileModeOn() {
+    this.modifyProfileMode = true;
+  }
+
+  modifyBiographyModeOn() {
+    this.modifyBiographyMode = true;
   }
 
   editUser() {
@@ -106,7 +131,21 @@ export class EditProfileComponent implements OnInit {
         (modifiedUser: User) => {
           this.userForm.onFinish();
           this.authService.refreshUser(modifiedUser);
-          this.modifyMode = false;
+          this.modifyProfileMode = false;
+        },
+        errorData => {
+          this.userForm.onError(errorData);
+        });
+  }
+
+  editUserBiography() {
+    let modified = Object.assign(this.user, this.biographyForm.form.value);
+    this.userService.modifyUserBiography(modified).pipe(takeUntil(this.unsubscribe$), first())
+      .subscribe(
+        (modifiedUser: User) => {
+          this.userForm.onFinish();
+          this.authService.refreshUser(modifiedUser);
+          this.modifyBiographyMode = false;
         },
         errorData => {
           this.userForm.onError(errorData);

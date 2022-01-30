@@ -1,0 +1,39 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <h5 class="modal-title" i18n="@@profile.edit-image">Edit profile image</h5>
+  </div>
+  <div class="modal-body">
+    <input type="file" (change)="fileChangeEvent($event)" />
+    <div class="row" style="margin-top: 15px;">
+      <div class="text-center col-md-8">
+        <h5>Crop Image</h5>
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="4 / 4"
+          [resizeToWidth]="256"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()"></image-cropper>
+      </div>
+      <div class="text-center col-md-4">
+        <h5>Preview</h5>
+        <img [src]="croppedImage" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button"
+            class="btn btn-primary"
+            (click)="confirm()">
+      <span i18n="@@general.upload">Upload</span>
+    </button>
+    <button type="button"
+            class="btn btn-outline-secondary"
+            (click)="close()">
+      <span i18n="@@general.close">Close</span>
+    </button>
+  </div>
+</ng-template>

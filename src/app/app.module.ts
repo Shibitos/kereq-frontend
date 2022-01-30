@@ -32,6 +32,8 @@ import { SliderComponent } from './components/slider/slider.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { EditProfileImageComponent } from './components/edit-profile-image/edit-profile-image.component';
+import {ImageCropperModule} from "ngx-image-cropper";
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
     SliderComponent,
     ChatbarComponent,
     CommentComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    EditProfileImageComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
     DlDateTimeDateModule, //TODO: ng bootstrap
     DlDateTimePickerModule,
     NgbModule,
+    ImageCropperModule,
     NpnSliderModule //TODO: change for better
   ],
   providers: [

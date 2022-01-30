@@ -8,8 +8,13 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
-  @Input() public modalConfig: ModalConfig;
-  @ViewChild('modal') private modalContent: TemplateRef<ModalComponent>;
+
+  @Input()
+  public modalConfig: ModalConfig;
+
+  @ViewChild('modal')
+  private modalContent: TemplateRef<ModalComponent>;
+
   private modalRef: NgbModalRef;
 
   constructor(private modalService: NgbModal) { }

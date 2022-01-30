@@ -23,10 +23,20 @@
         <div class="card-body pt-4">
           <h2 i18n="@@profile.about">About</h2>
           <list-content-loader *ngIf="!userLoaded"></list-content-loader>
-          <p *ngIf="userLoaded">
+          <div *ngIf="userLoaded">
             <span i18n="@@profile.from">From</span>: {{ user.country }}<br>
-            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:mm:ss" }}
-          </p>
+            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:mm:ss" }}<br><br>
+            <div *ngIf="user.biography">
+              <h2 i18n="@@user.biography">Biography</h2>
+              <p [innerHTML]="user.biography"></p>
+            </div>
+            <div *ngIf="isOwner()">
+              <a [routerLink]="'/profile/' + user.id + '/edit'">
+                <i class="bi bi-pencil-square"></i>
+                <span i18n="@@sites.edit-biography">Edit biography</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
