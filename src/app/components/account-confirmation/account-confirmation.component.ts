@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
-import {first} from "rxjs/operators";
+import {first, takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 
 @Component({
@@ -17,12 +17,14 @@ export class AccountConfirmationComponent implements OnInit {
   loading: boolean = true;
   status: boolean;
 
-  constructor(private authService: AuthService, private route: ActivatedRoute) { }
+  constructor(private authService: AuthService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.confirmationToken = params['token'];
-      this.confirmUser();
+    this.activatedRoute.params.pipe(takeUntil(this.unsubscribe$)).subscribe(params => {
+      if (params['token']) {
+        this.confirmationToken = params['token'];
+        this.confirmUser();
+      }
     });
   }
 
@@ -36,5 +38,10 @@ export class AccountConfirmationComponent implements OnInit {
         this.loading = false; //TODO: reset link on failure?
         this.status = false;
       });
+  }
+
+  ngOnDestroy(){
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

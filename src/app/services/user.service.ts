@@ -52,4 +52,17 @@ export class UserService {
   modifyUserBiography(user: User): Observable<any> {
     return this.http.post(environment.baseUrl + 'profile/biography', user);
   }
+
+  uploadProfileImage(image: File, croppedSize: number, croppedPosX: number, croppedPosY: number): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', image);
+    formData.append('size', croppedSize.toString());
+    formData.append('posX', croppedPosX.toString());
+    formData.append('posY', croppedPosY.toString());
+
+    return this.http.post(environment.baseUrl + 'profile/image', formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+  }
 }

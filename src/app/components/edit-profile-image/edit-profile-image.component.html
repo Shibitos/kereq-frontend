@@ -4,30 +4,27 @@
   </div>
   <div class="modal-body">
     <input type="file" (change)="fileChangeEvent($event)" />
-    <div class="row" style="margin-top: 15px;">
-      <div class="text-center col-md-8">
-        <h5>Crop Image</h5>
+    <div class="text-center mt-2">
+      <h5 i18n="@@profile.edit-image-select-area" *ngIf="selectedFile">Select area</h5>
+      <div style="display: block; height: 500px; text-align: center">
+
         <image-cropper
           [imageChangedEvent]="imageChangedEvent"
           [maintainAspectRatio]="true"
           [aspectRatio]="4 / 4"
-          [resizeToWidth]="256"
+          [cropperMinWidth]="minSize"
           format="png"
           (imageCropped)="imageCropped($event)"
           (imageLoaded)="imageLoaded()"
           (cropperReady)="cropperReady()"
           (loadImageFailed)="loadImageFailed()"></image-cropper>
       </div>
-      <div class="text-center col-md-4">
-        <h5>Preview</h5>
-        <img [src]="croppedImage" />
-      </div>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button"
             class="btn btn-primary"
-            (click)="confirm()">
+            (click)="upload()">
       <span i18n="@@general.upload">Upload</span>
     </button>
     <button type="button"
