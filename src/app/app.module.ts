@@ -35,6 +35,7 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { EditProfileImageComponent } from './components/edit-profile-image/edit-profile-image.component';
 import {ImageCropperModule} from "ngx-image-cropper";
 import {AvatarComponent} from "./components/avatar/avatar.component";
+import {PhotoComponent} from "./components/photo/photo.component";
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {AvatarComponent} from "./components/avatar/avatar.component";
     CommentComponent,
     EditProfileComponent,
     EditProfileImageComponent,
-    AvatarComponent
+    AvatarComponent,
+    PhotoComponent
   ],
   imports: [
     BrowserModule,

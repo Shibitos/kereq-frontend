@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {Friendship} from "../models/friendship.model";
 import {Page} from "../utils/page";
 import {User} from "../models/user.model";
+import {Photo} from "../models/photo.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ import {User} from "../models/user.model";
 export class UserService {
 
   friendsUrl: string = 'friends/';
+  profileUrl: string = 'profile/';
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -23,6 +25,10 @@ export class UserService {
 
   getFriends(page: Page, userId?: number): Observable<any> {
     return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + (userId ? userId : '') + '?' + page.generateQueryParams());
+  }
+
+  getPhotos(page: Page, userId?: number): Observable<any> {
+    return this.http.get<Photo[]>(environment.baseUrl + this.profileUrl + userId + '/photos' + '?' + page.generateQueryParams());
   }
 
   getInvitations(page: Page): Observable<any> {

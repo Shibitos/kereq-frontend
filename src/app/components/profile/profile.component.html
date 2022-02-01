@@ -75,7 +75,6 @@
                 <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
                   <div class="image-overlay-container">
                     <app-avatar [user]="friend.friend" [size]="'tb'"></app-avatar>
-<!--                    <img src="assets/img/default-avatar.png" class="img-thumbnail">-->
                     <div class="image-overlay"></div>
                   </div>
                   {{ friend.friend.firstName }} {{ friend.friend.lastName }}
@@ -98,9 +97,41 @@
   <div class="card">
     <div class="card-body pt-4">
       <h2 i18n="@@profile.media">Media</h2>
-      <p>
-        Lorem ipsum dolores sit amet.
-      </p>
+
+      <div *ngIf="!photosLoaded">
+        <div class="row row-cols-auto">
+          <div class="col photo-sm" *ngFor="let item of [].constructor(16)">
+            <content-loader viewBox="0 0 128 128">
+              <svg:rect x="0" y="0" rx="33" ry="33" width="128" height="128" />
+            </content-loader>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="photosLoaded && !photosList.length">
+        <div *ngIf="isOwner()">
+          <span i18n="@@profile.no-photos-owner">You have no photos at moment</span><br>
+        </div>
+        <div *ngIf="!isOwner()">
+          <span i18n="@@profile.no-photos">This user has no photos at moment</span><br>
+        </div>
+      </div>
+
+      <div *ngIf="photosLoaded && photosList.length">
+        <div class="row row-cols-auto">
+          <div class="col" *ngFor="let photo of photosList">
+            <a href="#" class="profile-link">
+              <div class="image-overlay-container">
+                <app-photo [photo]="photo" [size]="'tb'"></app-photo>
+                <div class="image-overlay"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <a href="">
+          <span i18n="@@general.view-all">View all</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>

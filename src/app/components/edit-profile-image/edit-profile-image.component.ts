@@ -86,7 +86,8 @@ export class EditProfileImageComponent implements OnInit {
     /* cropper ready */
   }
   loadImageFailed() {
-    /* show message */
+    this.error = $localize`:@@common.invalid-image:Not valid image file`;
+    this.changedSinceLastFail = false;
   }
 
   closeError() {

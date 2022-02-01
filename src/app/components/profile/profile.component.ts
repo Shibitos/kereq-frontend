@@ -12,6 +12,7 @@ import {PostService} from "../../services/post.service";
 import {BehaviorSubject, Subject} from "rxjs";
 import {filter, takeUntil} from "rxjs/operators";
 import {PhotoService} from "../../services/photo.service";
+import {Photo} from "../../models/photo.model";
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +32,9 @@ export class ProfileComponent implements OnInit {
 
   browsePostsList: Post[] = [];
   browsePostsPageTool: PageUtil<Post>;
+
+  photosList: Photo[] = [];
+  photosLoaded: boolean = false;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -86,6 +90,14 @@ export class ProfileComponent implements OnInit {
       },
       () => {
         this.friendsLoaded = true;
+      });
+    this.userService.getPhotos(new Page(8), this.user.id).pipe(takeUntil(this.unsubscribe$)).subscribe(a => {
+        this.photosList = [];
+        this.photosList.push(...a.content);
+        this.photosLoaded = true;
+      },
+      () => {
+        this.photosLoaded = true;
       });
     this.destroyPageTool();
     this.browsePostsPageTool = new PageUtil<Post>(this.postService.getUserPosts.bind(this.postService), this.browsePostsList, 6, this.user.id);
