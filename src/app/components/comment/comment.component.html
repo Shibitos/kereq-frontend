@@ -2,7 +2,8 @@
   <div class="col-auto mt-1">
     <a [routerLink]="'/profile/' + comment.user.id" class="profile-link">
       <div class="image-overlay-container avatar-sm">
-        <img src="assets/img/default-avatar.png" class="rounded-circle img-fluid">
+<!--        <img [src]="post.user.profilePhotoId ? photoService.getPhotoThumbnail(post.user.profilePhotoId) : photoService.getDefaultAvatar()" class="rounded-circle img-fluid">-->
+        <app-avatar [user]="comment.user" [size]="'tbm'"></app-avatar>
         <div class="image-overlay"></div>
       </div>
     </a>
@@ -16,12 +17,12 @@
     <p [innerHTML]="comment.content"></p>
     <div class="row">
       <div class="col-auto pe-1">
-        <a href="#" (click)="like()">
+        <a href="" (click)="$event.preventDefault();like()">
           <i class="bi" [class]="likeTypes.LIKE == comment.statistics.userLikeType ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up'"></i>
         </a> {{ comment.statistics.likesCount }}
       </div>
       <div class="col-auto ps-1 pe-2">
-        <a href="#" (click)="dislike()">
+        <a href="" (click)="$event.preventDefault();dislike()">
           <i class="bi"  [class]="likeTypes.DISLIKE == comment.statistics.userLikeType ? 'bi-hand-thumbs-down-fill' : 'bi-hand-thumbs-down'"></i>
         </a>  {{ comment.statistics.dislikesCount }}
       </div>

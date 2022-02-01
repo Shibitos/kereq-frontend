@@ -11,6 +11,7 @@ import {PageUtil} from "../../utils/page.util";
 import {PostService} from "../../services/post.service";
 import {BehaviorSubject, Subject} from "rxjs";
 import {filter, takeUntil} from "rxjs/operators";
+import {PhotoService} from "../../services/photo.service";
 
 @Component({
   selector: 'app-profile',
@@ -35,7 +36,8 @@ export class ProfileComponent implements OnInit {
               private authService: AuthService,
               private userService: UserService,
               private postService: PostService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              public photoService: PhotoService) {
   }
 
   ngOnInit(): void {

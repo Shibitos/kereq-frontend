@@ -13,6 +13,7 @@ import {DictionaryItem} from "../../models/dictionary-item.model";
 import {DictionaryService} from "../../services/dictionary.service";
 import {Gender} from "../../enums/gender.enum";
 import {ModalComponent} from "../modal/modal.component";
+import {PhotoService} from "../../services/photo.service";
 
 @Component({
   selector: 'app-edit-profile',
@@ -46,7 +47,8 @@ export class EditProfileComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private dictionaryService: DictionaryService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public photoService: PhotoService
   ) { }
 
   ngOnInit(): void {

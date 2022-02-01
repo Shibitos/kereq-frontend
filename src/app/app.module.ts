@@ -34,6 +34,7 @@ import { CommentComponent } from './components/comment/comment.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { EditProfileImageComponent } from './components/edit-profile-image/edit-profile-image.component';
 import {ImageCropperModule} from "ngx-image-cropper";
+import {AvatarComponent} from "./components/avatar/avatar.component";
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {ImageCropperModule} from "ngx-image-cropper";
     ChatbarComponent,
     CommentComponent,
     EditProfileComponent,
-    EditProfileImageComponent
+    EditProfileImageComponent,
+    AvatarComponent
   ],
   imports: [
     BrowserModule,

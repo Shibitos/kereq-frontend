@@ -47,7 +47,7 @@
             </form>
           </div>
           <div class="col-md-4 text-center">
-            <img src="assets/img/default-avatar.png" class="pull-left rounded-circle">
+            <app-avatar [user]="user" [size]="'xl'"></app-avatar>
             <br>
             <a (click)="$event.preventDefault();editProfileImageModalOpen()" href="">
               <i class="bi bi-pencil-square"></i>

@@ -2,8 +2,11 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {CropperPosition, ImageCroppedEvent} from "ngx-image-cropper";
 import {UserService} from "../../services/user.service";
-import {takeUntil} from "rxjs/operators";
+import {catchError, first, takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {AuthService} from "../../services/auth.service";
+import {User} from "../../models/user.model";
+import {throwError} from "rxjs";
 
 @Component({
   selector: 'app-edit-profile-image',
@@ -22,9 +25,12 @@ export class EditProfileImageComponent implements OnInit {
   private croppedPosition: CropperPosition;
   private size: number;
   selectedFile: File;
+  loading: boolean = false;
   minSize: number = 200;
+  changedSinceLastFail: boolean = false;
+  error?: string;
 
-  constructor(private modalService: NgbModal, private userService: UserService) { }
+  constructor(private modalService: NgbModal, private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(): void { }
 
@@ -44,8 +50,18 @@ export class EditProfileImageComponent implements OnInit {
   }
 
   upload() {
-    this.userService.uploadProfileImage(this.selectedFile, this.size, this.croppedPosition.x1, this.croppedPosition.y1).pipe(takeUntil(this.unsubscribe$)).subscribe((ev: any) => {
-      this.close();
+    this.loading = true;
+    this.userService.uploadProfileImage(this.selectedFile, this.size, this.croppedPosition.x1, this.croppedPosition.y1).pipe(takeUntil(this.unsubscribe$), catchError((errorData) => {
+      this.error = errorData['error']['message'] ? errorData['error']['message'] : $localize`:@@common.unknown-error:Unknown error`;
+      this.changedSinceLastFail = false;
+      this.loading = false;
+      return throwError(errorData);
+    })).subscribe((ev: any) => {
+      this.authService.getCurrentUser().pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
+        this.authService.refreshUser(user);
+        this.loading = false;
+        this.close();
+      });
     })
   }
 
@@ -54,7 +70,9 @@ export class EditProfileImageComponent implements OnInit {
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
+    this.changedSinceLastFail = true;
     this.selectedFile = event.target.files[0];
+    this.closeError();
   }
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
@@ -69,6 +87,10 @@ export class EditProfileImageComponent implements OnInit {
   }
   loadImageFailed() {
     /* show message */
+  }
+
+  closeError() {
+    this.error = undefined;
   }
 
   ngOnDestroy(){

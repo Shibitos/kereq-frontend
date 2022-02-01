@@ -2,7 +2,7 @@
 
   <div class="card">
     <div class="card-body pt-4 d-flex align-items-center">
-      <img src="assets/img/default-avatar.png" alt="Profile" class="pull-left rounded-circle">
+      <app-avatar [user]="user" [size]="'lg'"></app-avatar>
       <list-content-loader *ngIf="!userLoaded"></list-content-loader>
       <div class="ps-2" *ngIf="userLoaded">
         <h2>{{ user.firstName }} {{ user.lastName }}</h2>
@@ -74,7 +74,8 @@
               <div class="col" *ngFor="let friend of friendsList">
                 <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
                   <div class="image-overlay-container">
-                    <img src="assets/img/default-avatar.png" class="img-thumbnail">
+                    <app-avatar [user]="friend.friend" [size]="'tb'"></app-avatar>
+<!--                    <img src="assets/img/default-avatar.png" class="img-thumbnail">-->
                     <div class="image-overlay"></div>
                   </div>
                   {{ friend.friend.firstName }} {{ friend.friend.lastName }}

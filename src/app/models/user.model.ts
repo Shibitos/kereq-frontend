@@ -11,4 +11,5 @@ export class User {
   roles: Role[];
   country: string;
   joinDate: string;
+  profilePhotoId: string;
 }
