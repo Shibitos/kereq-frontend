@@ -51,7 +51,7 @@
 
   <div *ngIf="commentsList.length < post.statistics.commentsCount && !commentsPageTool.stopLoading">
 
-    <a href="#" (click)="commentsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
+    <a href="" (click)="$event.preventDefault();commentsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
   </div>
 </div>
 

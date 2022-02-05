@@ -79,6 +79,9 @@ export class PostComponent implements OnInit {
       .subscribe(
         (comment: Comment) => {
           this.commentForm.onFinish();
+          if (!this.commentsList) {
+            this.commentsList = [];
+          }
           this.commentsList.push(comment);
         },
         errorData => {

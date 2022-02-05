@@ -1,4 +1,5 @@
 import {Role} from "./role.model";
+import {Photo} from "./photo.model";
 
 export class User {
   id?: number;
@@ -11,5 +12,5 @@ export class User {
   roles: Role[];
   country: string;
   joinDate: string;
-  profilePhotoId: string;
+  profilePhoto: Photo;
 }

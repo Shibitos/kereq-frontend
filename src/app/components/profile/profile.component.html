@@ -120,7 +120,7 @@
       <div *ngIf="photosLoaded && photosList.length">
         <div class="row row-cols-auto">
           <div class="col" *ngFor="let photo of photosList">
-            <a href="#" class="profile-link">
+            <a href="" (click)="$event.preventDefault();" class="profile-link">
               <div class="image-overlay-container">
                 <app-photo [photo]="photo" [size]="'tb'"></app-photo>
                 <div class="image-overlay"></div>
@@ -128,7 +128,7 @@
             </a>
           </div>
         </div>
-        <a href="">
+        <a href="" (click)="$event.preventDefault();">
           <span i18n="@@general.view-all">View all</span>
         </a>
       </div>

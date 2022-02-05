@@ -26,16 +26,16 @@ export class AvatarComponent implements OnInit {
   }
 
   getAvatar(): string {
-    if (!this.user || !this.user.profilePhotoId) {
+    if (!this.user || !this.user.profilePhoto) {
       return this.photoService.getDefaultAvatar();
     }
     if (this.size == AvatarComponent.THUMBNAIL) {
-      return this.photoService.getPhotoThumbnail(this.user.profilePhotoId);
+      return this.photoService.getPhotoThumbnail(this.user.profilePhoto.photoId);
     }
     if (this.size == AvatarComponent.THUMBNAIL_MINI) {
-      return this.photoService.getPhotoThumbnailMini(this.user.profilePhotoId);
+      return this.photoService.getPhotoThumbnailMini(this.user.profilePhoto.photoId);
     }
-    return this.photoService.getPhoto(this.user.profilePhotoId);
+    return this.photoService.getPhoto(this.user.profilePhoto.photoId);
   }
 
   getSizeClass(): string {
