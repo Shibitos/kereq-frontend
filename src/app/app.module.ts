@@ -31,6 +31,11 @@ import { RangePlaceholderComponent } from './components/range-placeholder/range-
 import { SliderComponent } from './components/slider/slider.component';
 import { ChatbarComponent } from './components/chatbar/chatbar.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { EditProfileImageComponent } from './components/edit-profile-image/edit-profile-image.component';
+import {ImageCropperModule} from "ngx-image-cropper";
+import {AvatarComponent} from "./components/avatar/avatar.component";
+import {PhotoComponent} from "./components/photo/photo.component";
 
 @NgModule({
   declarations: [
@@ -52,7 +57,11 @@ import { CommentComponent } from './components/comment/comment.component';
     RangePlaceholderComponent,
     SliderComponent,
     ChatbarComponent,
-    CommentComponent
+    CommentComponent,
+    EditProfileComponent,
+    EditProfileImageComponent,
+    AvatarComponent,
+    PhotoComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +75,7 @@ import { CommentComponent } from './components/comment/comment.component';
     DlDateTimeDateModule, //TODO: ng bootstrap
     DlDateTimePickerModule,
     NgbModule,
+    ImageCropperModule,
     NpnSliderModule //TODO: change for better
   ],
   providers: [

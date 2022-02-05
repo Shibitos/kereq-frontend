@@ -1,0 +1,92 @@
+<div class="col-12 card-container">
+
+  <div class="card">
+    <div class="card-body pt-4">
+      <h2 i18n="@@profile.edit-profile">Edit profile</h2>
+      <list-content-loader *ngIf="!userLoaded || !componentLoaded"></list-content-loader>
+
+      <div *ngIf="userLoaded && componentLoaded">
+        <div class="row card-body">
+          <div class="col-md-8 p-0">
+            <form [formGroup]="userForm.form" (ngSubmit)="onProfileSubmit()">
+              <p *ngFor="let error of userForm.errors">
+                <ngb-alert type="danger" (closed)="userForm.closeError(error.id)">{{ error.message }}</ngb-alert>
+              </p>
+
+              <div class="form-group">
+                <label i18n="@@user.form.first-name">First name</label>
+                <input type="text" [ngClass]="{ 'is-invalid': userForm.submitted && f['firstName'].errors }" [readOnly]="!modifyProfileMode" class="form-control" formControlName="firstName" i18n-placeholder="@@user.form.first-name" placeholder="First name">
+                <div *ngIf="userForm.submitted && f['firstName'].errors" class="invalid-feedback">
+                  <ngx-form-error [control]="f['firstName']"></ngx-form-error>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label i18n="@@user.form.last-name">Last name</label>
+                <input type="text" [ngClass]="{ 'is-invalid': userForm.submitted && f['lastName'].errors }" [readOnly]="!modifyProfileMode" class="form-control" formControlName="lastName" i18n-placeholder="@@user.form.last-name" placeholder="Last name">
+                <div *ngIf="userForm.submitted && f['lastName'].errors" class="invalid-feedback">
+                  <ngx-form-error [control]="f['lastName']"></ngx-form-error>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label i18n="@@user.form.country">Country</label>
+                <select [ngClass]="{ 'is-invalid': userForm.submitted && f['country'].errors }" [attr.disabled]="!modifyProfileMode ? '' : null" class="form-select" formControlName="country">
+                  <option value="" i18n="@@user.form.choose-country" disabled>Choose country</option>
+                  <option *ngFor="let country of countries" [ngValue]="country.code">
+                    <span [innerHTML]="country.value"></span>
+                  </option>
+                </select>
+                <div *ngIf="userForm.submitted && f['country'].errors" class="invalid-feedback">
+                  <ngx-form-error [control]="f['country']"></ngx-form-error>
+                </div>
+              </div>
+
+              <button *ngIf="!modifyProfileMode" class="btn btn-primary mt-2" i18n="@@common.modify" (click)="modifyProfileModeOn()">Modify</button>
+              <button type="submit" *ngIf="modifyProfileMode" [disabled]="userForm.loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.save">Save</button>
+            </form>
+          </div>
+          <div class="col-md-4 text-center">
+            <app-avatar [user]="user" [size]="'xl'"></app-avatar>
+            <br>
+            <a (click)="$event.preventDefault();editProfileImageModalOpen()" href="">
+              <i class="bi bi-pencil-square"></i>
+              <span i18n="@@sites.edit-profile-image">Edit profile image</span>
+            </a>
+          </div>
+          <div class="col-md-12">
+            <app-edit-profile-image #editProfileImageModal></app-edit-profile-image>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-12 card-container">
+  <div class="card">
+    <div class="card-body pt-4">
+      <h2 i18n="@@profile.edit-biography">Edit biography</h2>
+      <list-content-loader *ngIf="!userLoaded || !componentLoaded"></list-content-loader>
+
+      <div *ngIf="userLoaded && componentLoaded">
+        <form [formGroup]="biographyForm.form" (ngSubmit)="onBiographySubmit()">
+          <p *ngFor="let error of biographyForm.errors">
+            <ngb-alert type="danger" (closed)="biographyForm.closeError(error.id)">{{ error.message }}</ngb-alert>
+          </p>
+
+          <div class="form-group">
+            <label i18n="@@user.form.biography">Biography</label>
+            <textarea type="text" [ngClass]="{ 'is-invalid': biographyForm.submitted && f['firstName'].errors }" [readOnly]="!modifyBiographyMode" class="form-control" formControlName="biography" i18n-placeholder="@@user.form.biography-name" placeholder="Biography" [ngModel]="user.biography"></textarea>
+            <div *ngIf="biographyForm.submitted && f['biography'].errors" class="invalid-feedback">
+              <ngx-form-error [control]="f['biography']"></ngx-form-error>
+            </div>
+          </div>
+
+          <button *ngIf="!modifyBiographyMode" class="btn btn-primary mt-2" i18n="@@common.modify" (click)="modifyBiographyModeOn()">Modify</button>
+          <button type="submit" *ngIf="modifyBiographyMode" [disabled]="biographyForm.loading ? true : null" class="btn btn-primary mt-2" i18n="@@common.save">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

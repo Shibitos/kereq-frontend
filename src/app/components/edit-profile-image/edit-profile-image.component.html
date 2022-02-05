@@ -1,0 +1,42 @@
+<ng-template #modal>
+  <div class="modal-header">
+    <h5 class="modal-title" i18n="@@profile.edit-image">Edit profile image</h5>
+  </div>
+  <div class="modal-body position-relative">
+    <app-loading *ngIf="loading"></app-loading>
+    <input type="file" (change)="fileChangeEvent($event)" accept="image/*" />
+    <div class="text-center mt-2">
+      <p *ngIf="error">
+        <ngb-alert type="danger" (closed)="closeError()">{{ error }}</ngb-alert>
+      </p>
+      <h5 i18n="@@profile.edit-image-select-area" *ngIf="selectedFile">Select area</h5>
+      <div style="display: block; height: 500px; text-align: center">
+
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="4 / 4"
+          [cropperMinWidth]="minSize"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()"></image-cropper>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button"
+            class="btn btn-primary"
+            (click)="upload()"
+            [disabled]="loading || !changedSinceLastFail">
+      <span i18n="@@general.upload">Upload</span>
+    </button>
+    <button type="button"
+            class="btn btn-outline-secondary"
+            (click)="close()"
+            [disabled]="loading">
+      <span i18n="@@general.close">Close</span>
+    </button>
+  </div>
+</ng-template>

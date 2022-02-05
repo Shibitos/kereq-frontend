@@ -10,6 +10,9 @@ import {Comment} from "../../models/comment.model";
 import {LikeType} from "../../enums/like-type.enum";
 import {PostService} from "../../services/post.service";
 import {PostStatistics} from "../../models/post-statistics.model";
+import {User} from "../../models/user.model";
+import {AuthService} from "../../services/auth.service";
+import {PhotoService} from "../../services/photo.service";
 
 @Component({
   selector: 'app-post',
@@ -19,6 +22,7 @@ import {PostStatistics} from "../../models/post-statistics.model";
 export class PostComponent implements OnInit {
 
   unsubscribe$: Subject<void> = new Subject<void>();
+  loggedUser: User;
 
   @Input()
   post: Post;
@@ -34,7 +38,9 @@ export class PostComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private postService: PostService,
-    private commentService: CommentService) { }
+    private commentService: CommentService, private authService: AuthService, public photoService: PhotoService) {
+    this.authService.currentUser.subscribe(u => this.loggedUser = u);
+  }
 
   ngOnInit(): void {
     this.commentForm.form = this.formBuilder.group({
@@ -73,6 +79,9 @@ export class PostComponent implements OnInit {
       .subscribe(
         (comment: Comment) => {
           this.commentForm.onFinish();
+          if (!this.commentsList) {
+            this.commentsList = [];
+          }
           this.commentsList.push(comment);
         },
         errorData => {

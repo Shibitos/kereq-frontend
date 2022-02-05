@@ -2,11 +2,11 @@
 
   <div class="card">
     <div class="card-body pt-4 d-flex align-items-center">
-      <img src="assets/img/default-avatar.png" alt="Profile" class="pull-left rounded-circle">
+      <app-avatar [user]="user" [size]="'lg'"></app-avatar>
       <list-content-loader *ngIf="!userLoaded"></list-content-loader>
       <div class="ps-2" *ngIf="userLoaded">
         <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-        <a href="" (click)="$event.preventDefault()" *ngIf="isOwner()">
+        <a [routerLink]="'/profile/' + user.id + '/edit'" *ngIf="isOwner()">
           <i class="bi bi-pencil-square"></i>
           <span i18n="@@sites.edit-profile">Edit profile</span>
         </a>
@@ -23,10 +23,20 @@
         <div class="card-body pt-4">
           <h2 i18n="@@profile.about">About</h2>
           <list-content-loader *ngIf="!userLoaded"></list-content-loader>
-          <p *ngIf="userLoaded">
+          <div *ngIf="userLoaded">
             <span i18n="@@profile.from">From</span>: {{ user.country }}<br>
-            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:mm:ss" }}
-          </p>
+            <span i18n="@@profile.joined">Joined</span>: {{ user.joinDate  | date: "dd/MM/yyyy HH:mm:ss" }}<br><br>
+            <div *ngIf="user.biography">
+              <h2 i18n="@@user.biography">Biography</h2>
+              <p [innerHTML]="user.biography"></p>
+            </div>
+            <div *ngIf="isOwner()">
+              <a [routerLink]="'/profile/' + user.id + '/edit'">
+                <i class="bi bi-pencil-square"></i>
+                <span i18n="@@sites.edit-biography">Edit biography</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -64,7 +74,7 @@
               <div class="col" *ngFor="let friend of friendsList">
                 <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
                   <div class="image-overlay-container">
-                    <img src="assets/img/default-avatar.png" class="img-thumbnail">
+                    <app-avatar [user]="friend.friend" [size]="'tb'"></app-avatar>
                     <div class="image-overlay"></div>
                   </div>
                   {{ friend.friend.firstName }} {{ friend.friend.lastName }}
@@ -87,9 +97,41 @@
   <div class="card">
     <div class="card-body pt-4">
       <h2 i18n="@@profile.media">Media</h2>
-      <p>
-        Lorem ipsum dolores sit amet.
-      </p>
+
+      <div *ngIf="!photosLoaded">
+        <div class="row row-cols-auto">
+          <div class="col photo-sm" *ngFor="let item of [].constructor(16)">
+            <content-loader viewBox="0 0 128 128">
+              <svg:rect x="0" y="0" rx="33" ry="33" width="128" height="128" />
+            </content-loader>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="photosLoaded && !photosList.length">
+        <div *ngIf="isOwner()">
+          <span i18n="@@profile.no-photos-owner">You have no photos at moment</span><br>
+        </div>
+        <div *ngIf="!isOwner()">
+          <span i18n="@@profile.no-photos">This user has no photos at moment</span><br>
+        </div>
+      </div>
+
+      <div *ngIf="photosLoaded && photosList.length">
+        <div class="row row-cols-auto">
+          <div class="col" *ngFor="let photo of photosList">
+            <a href="" (click)="$event.preventDefault();" class="profile-link">
+              <div class="image-overlay-container">
+                <app-photo [photo]="photo" [size]="'tb'"></app-photo>
+                <div class="image-overlay"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <a href="" (click)="$event.preventDefault();">
+          <span i18n="@@general.view-all">View all</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>
