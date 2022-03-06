@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user.model";
 import {PageUtil} from "../../utils/page.util";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
-import {UserService} from "../../services/user.service";
 import {first, takeUntil} from "rxjs/operators";
 import {PostService} from "../../services/post.service";
 import {Post} from "../../models/post.model";

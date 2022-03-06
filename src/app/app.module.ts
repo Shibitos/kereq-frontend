@@ -25,17 +25,18 @@ import {LoadingComponent} from './components/loading/loading.component';
 import {NpnSliderModule} from "npn-slider";
 import {ModalComponent} from './components/modal/modal.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import { AsyncDateFormatComponent } from './components/async-date-format/async-date-format.component';
-import { PostComponent } from './components/post/post.component';
-import { RangePlaceholderComponent } from './components/range-placeholder/range-placeholder.component';
-import { SliderComponent } from './components/slider/slider.component';
-import { ChatbarComponent } from './components/chatbar/chatbar.component';
-import { CommentComponent } from './components/comment/comment.component';
-import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
-import { EditProfileImageComponent } from './components/edit-profile-image/edit-profile-image.component';
+import {AsyncDateFormatComponent} from './components/async-date-format/async-date-format.component';
+import {PostComponent} from './components/post/post.component';
+import {RangePlaceholderComponent} from './components/range-placeholder/range-placeholder.component';
+import {SliderComponent} from './components/slider/slider.component';
+import {ChatbarComponent} from './components/chatbar/chatbar.component';
+import {CommentComponent} from './components/comment/comment.component';
+import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
+import {EditProfileImageComponent} from './components/edit-profile-image/edit-profile-image.component';
 import {ImageCropperModule} from "ngx-image-cropper";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {PhotoComponent} from "./components/photo/photo.component";
+import {CommunicatorService} from "./services/communicator.service";
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import {PhotoComponent} from "./components/photo/photo.component";
     NpnSliderModule //TODO: change for better
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
+    CommunicatorService
   ],
   bootstrap: [AppComponent]
 })

@@ -14,6 +14,6 @@ export class DictionaryService {
   constructor(private http: HttpClient) {}
 
   getDictionaryValues(code: string): Observable<DictionaryItem[]> {
-    return this.http.get<DictionaryItem[]>(environment.baseUrl + this.dictUrl + code);
+    return this.http.get<DictionaryItem[]>(environment.backendUrl + this.dictUrl + code);
   }
 }

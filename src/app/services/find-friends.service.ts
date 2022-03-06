@@ -17,22 +17,22 @@ export class FindFriendsService {
   }
 
   getMyAd(): Observable<FindFriendsAd> {
-    return this.http.get<FindFriendsAd>(environment.baseUrl + this.ffUrl);
+    return this.http.get<FindFriendsAd>(environment.backendUrl + this.ffUrl);
   }
 
   addAd(ad: FindFriendsAd): Observable<any> {
-    return this.http.post(environment.baseUrl + this.ffUrl, ad);
+    return this.http.post(environment.backendUrl + this.ffUrl, ad);
   }
 
   modifyAd(ad: FindFriendsAd): Observable<any> {
-    return this.http.put(environment.baseUrl + this.ffUrl, ad);
+    return this.http.put(environment.backendUrl + this.ffUrl, ad);
   }
 
   removeAd(): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.ffUrl);
+    return this.http.delete(environment.backendUrl + this.ffUrl);
   }
 
   browseAds(page: Page): Observable<any> {
-    return this.http.get<FindFriendsAd>(environment.baseUrl + this.ffUrl + 'browse?' + page.generateQueryParams());
+    return this.http.get<FindFriendsAd>(environment.backendUrl + this.ffUrl + 'browse?' + page.generateQueryParams());
   }
 }

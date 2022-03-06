@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -15,14 +15,14 @@ export class PhotoService {
   }
 
   getPhoto(photoId: string) {
-    return environment.baseUrl + this.imagesUrl + 'og/' + photoId;
+    return environment.backendUrl + this.imagesUrl + 'og/' + photoId;
   }
 
   getPhotoThumbnail(photoId: string) {
-    return environment.baseUrl + this.imagesUrl + 'tb/' + photoId;
+    return environment.backendUrl + this.imagesUrl + 'tb/' + photoId;
   }
 
   getPhotoThumbnailMini(photoId: string) {
-    return environment.baseUrl + this.imagesUrl + 'tbm/' + photoId;
+    return environment.backendUrl + this.imagesUrl + 'tbm/' + photoId;
   }
 }

@@ -20,43 +20,47 @@ export class UserService {
   }
 
   inviteFriend(userId: number): Observable<any> {
-    return this.http.post(environment.baseUrl + this.friendsUrl + 'invitations/' + userId, null);
+    return this.http.post(environment.backendUrl + this.friendsUrl + 'invitations/' + userId, null);
   }
 
   getFriends(page: Page, userId?: number): Observable<any> {
-    return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + (userId ? userId : '') + '?' + page.generateQueryParams());
+    return this.http.get<Friendship[]>(environment.backendUrl + this.friendsUrl + (userId ? userId : '') + '?' + page.generateQueryParams());
+  }
+
+  getFriendsOnline(page: Page, userId?: number): Observable<any> {
+    return this.http.get<Friendship[]>(environment.backendUrl + this.friendsUrl + (userId ? userId : '') + 'online?' + page.generateQueryParams());
   }
 
   getPhotos(page: Page, userId?: number): Observable<any> {
-    return this.http.get<Photo[]>(environment.baseUrl + this.profileUrl + userId + '/photos' + '?' + page.generateQueryParams());
+    return this.http.get<Photo[]>(environment.backendUrl + this.profileUrl + userId + '/photos' + '?' + page.generateQueryParams());
   }
 
   getInvitations(page: Page): Observable<any> {
-    return this.http.get<Friendship[]>(environment.baseUrl + this.friendsUrl + 'invitations' + '?' + page.generateQueryParams());
+    return this.http.get<Friendship[]>(environment.backendUrl + this.friendsUrl + 'invitations' + '?' + page.generateQueryParams());
   }
 
   acceptInvitation(userId: number): Observable<any> {
-    return this.http.post(environment.baseUrl + this.friendsUrl + 'accept/' + userId, null);
+    return this.http.post(environment.backendUrl + this.friendsUrl + 'accept/' + userId, null);
   }
 
   rejectInvitation(userId: number): Observable<any> {
-    return this.http.post(environment.baseUrl + this.friendsUrl + 'reject/' + userId, null);
+    return this.http.post(environment.backendUrl + this.friendsUrl + 'reject/' + userId, null);
   }
 
   removeFriend(userId: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.friendsUrl + userId);
+    return this.http.delete(environment.backendUrl + this.friendsUrl + userId);
   }
 
   getUser(userId: number): Observable<User> {
-    return this.http.get<User>(environment.baseUrl + 'profile/' + userId);
+    return this.http.get<User>(environment.backendUrl + 'profile/' + userId);
   }
 
   modifyUser(user: User): Observable<any> {
-    return this.http.patch(environment.baseUrl + 'profile', user);
+    return this.http.patch(environment.backendUrl + 'profile', user);
   }
 
   modifyUserBiography(user: User): Observable<any> {
-    return this.http.post(environment.baseUrl + 'profile/biography', user);
+    return this.http.post(environment.backendUrl + 'profile/biography', user);
   }
 
   uploadProfileImage(image: File, croppedSize: number, croppedPosX: number, croppedPosY: number): Observable<any> {
@@ -66,7 +70,7 @@ export class UserService {
     formData.append('posX', croppedPosX.toString());
     formData.append('posY', croppedPosY.toString());
 
-    return this.http.post(environment.baseUrl + 'profile/image', formData, {
+    return this.http.post(environment.backendUrl + 'profile/image', formData, {
       reportProgress: true,
       responseType: 'json'
     });

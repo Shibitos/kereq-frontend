@@ -1,4 +1,19 @@
 <h4>Chat with friends</h4>
 <hr class="bg-danger mt-1 border-2 border-top border-dark">
+<div class="position-relative">
+  <app-loading *ngIf="!friendsOnlinePageTool.loaded"></app-loading>
 
-<p class="fst-italic">Nobody is online</p>
+  <p *ngIf="friendsOnlinePageTool.loaded && !friendsOnlineList.length" class="fst-italic">Nobody is online</p>
+
+  <div *ngIf="friendsOnlinePageTool.loaded && friendsOnlineList.length" class="fst-italic">
+    <div class="col" *ngFor="let friend of friendsOnlineList">
+      <a [routerLink]="'/profile/' + friend.friend.id" class="profile-link">
+        <div class="image-overlay-container">
+          <app-avatar [user]="friend.friend" [size]="'tb'"></app-avatar>
+          <div class="image-overlay"></div>
+        </div>
+        {{ friend.friend.firstName }} {{ friend.friend.lastName }}
+      </a>
+    </div>
+  </div>
+</div>

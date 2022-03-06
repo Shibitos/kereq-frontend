@@ -1,5 +1,5 @@
 import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
-import {takeUntil, Observable, Subject} from "rxjs";
+import {Observable, Subject, takeUntil} from "rxjs";
 import {formatDate} from "@angular/common";
 
 @Component({

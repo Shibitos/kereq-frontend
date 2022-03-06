@@ -19,34 +19,34 @@ export class CommentService {
   }
 
   addComment(postId: number, comment: Comment): Observable<any> {
-    return this.http.post(environment.baseUrl + this.postsUrl + postId + this.commentsUrl, comment);
+    return this.http.post(environment.backendUrl + this.postsUrl + postId + this.commentsUrl, comment);
   }
 
   modifyPost(postId: number, comment: Comment): Observable<any> {
-    return this.http.put(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + comment.id, comment);
+    return this.http.put(environment.backendUrl + this.postsUrl + postId + this.commentsUrl + '/' + comment.id, comment);
   }
 
   removePost(postId: number, commentId: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.postsUrl + postId + this.commentsUrl);
+    return this.http.delete(environment.backendUrl + this.postsUrl + postId + this.commentsUrl);
   }
 
   getPostComments(page: Page, postId?: number): Observable<any> {
-    return this.http.get<Post>(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '?' + page.generateQueryParams());
+    return this.http.get<Post>(environment.backendUrl + this.postsUrl + postId + this.commentsUrl + '?' + page.generateQueryParams());
   }
 
   like(postId: number, commentId: number): Observable<any> {
-    return this.http.post(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/like', null);
+    return this.http.post(environment.backendUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/like', null);
   }
 
   removeLike(postId: number, commentId: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/like');
+    return this.http.delete(environment.backendUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/like');
   }
 
   dislike(postId: number, commentId: number): Observable<any> {
-    return this.http.post(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/dislike', null);
+    return this.http.post(environment.backendUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/dislike', null);
   }
 
   removeDislike(postId: number, commentId: number): Observable<any> {
-    return this.http.delete(environment.baseUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/dislike');
+    return this.http.delete(environment.backendUrl + this.postsUrl + postId + this.commentsUrl + '/' + commentId + '/dislike');
   }
 }

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AsyncDateFormatComponent } from './async-date-format.component';
+import {AsyncDateFormatComponent} from './async-date-format.component';
 
 describe('AsyncDateFormatPipeComponent', () => {
   let component: AsyncDateFormatComponent;

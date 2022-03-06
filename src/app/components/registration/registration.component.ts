@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {first, takeUntil} from "rxjs/operators";
 import MatchValidator from "../../utils/matchValidator";
 import {NgxFormErrorConfig} from "ngx-form-error";
-import {HttpStatusCode} from "@angular/common/http";
 import {DictionaryService} from "../../services/dictionary.service";
 import {DictionaryItem} from "../../models/dictionary-item.model";
 import {Gender} from "../../enums/gender.enum";

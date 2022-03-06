@@ -6,7 +6,7 @@ import {FindFriendsAd} from "../../models/find-friends-ad.model";
 import {FindFriendsService} from "../../services/find-friends.service";
 import {UserService} from "../../services/user.service";
 import {PageUtil} from "../../utils/page.util";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {Gender} from "../../enums/gender.enum";
 import {first, takeUntil} from "rxjs/operators";
 import {ModalConfig} from "../modal/modal.config";

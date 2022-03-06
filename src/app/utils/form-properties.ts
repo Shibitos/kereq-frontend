@@ -1,7 +1,7 @@
 import {FormGroup} from "@angular/forms";
 import {HttpStatusCode} from "@angular/common/http";
 import {ApiError} from "../models/api-error";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 export class FormProperties {
   form: FormGroup;

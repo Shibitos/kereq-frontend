@@ -2,11 +2,10 @@ import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {CropperPosition, ImageCroppedEvent} from "ngx-image-cropper";
 import {UserService} from "../../services/user.service";
-import {catchError, first, takeUntil} from "rxjs/operators";
-import {Subject} from "rxjs";
+import {catchError, takeUntil} from "rxjs/operators";
+import {Subject, throwError} from "rxjs";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../models/user.model";
-import {throwError} from "rxjs";
 
 @Component({
   selector: 'app-edit-profile-image',
