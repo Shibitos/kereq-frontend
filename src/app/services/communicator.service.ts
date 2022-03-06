@@ -81,6 +81,7 @@ export class CommunicatorService {
     if (this.connected) {
       if (this.subscribedDestinations.indexOf(destination) < 0) {
         this.stompClient.subscribe(destination, callback);
+        this.subscribedDestinations.push(destination);
       }
     } else {
       console.error("Subscription before WS connection");
