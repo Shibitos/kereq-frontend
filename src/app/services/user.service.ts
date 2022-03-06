@@ -27,8 +27,12 @@ export class UserService {
     return this.http.get<Friendship[]>(environment.backendUrl + this.friendsUrl + (userId ? userId : '') + '?' + page.generateQueryParams());
   }
 
-  getFriendsOnline(page: Page, userId?: number): Observable<any> {
-    return this.http.get<Friendship[]>(environment.backendUrl + this.friendsUrl + (userId ? userId : '') + 'online?' + page.generateQueryParams());
+  getFriendship(friendId: number): Observable<any> {
+    return this.http.get<Friendship>(environment.backendUrl + this.friendsUrl + '/with/' + friendId);
+  }
+
+  getFriendsOnlineFirst(page: Page, userId?: number): Observable<any> {
+    return this.http.get<Friendship[]>(environment.backendUrl + this.friendsUrl + (userId ? userId : '') + 'online-first?' + page.generateQueryParams());
   }
 
   getPhotos(page: Page, userId?: number): Observable<any> {

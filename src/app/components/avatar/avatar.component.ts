@@ -13,6 +13,9 @@ export class AvatarComponent implements OnInit {
   user: User;
 
   @Input()
+  classes: string = '';
+
+  @Input()
   size: string;
 
   constructor(public photoService: PhotoService) { }

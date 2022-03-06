@@ -4,6 +4,12 @@ import {PageUtil} from "../../utils/page.util";
 import {Subject} from "rxjs";
 import {Friendship} from "../../models/friendship.model";
 import {UserService} from "../../services/user.service";
+import {Message} from "stompjs";
+import {User} from "../../models/user.model";
+import {AuthService} from "../../services/auth.service";
+import {ConnectionEvent} from "../../models/connection-event.model";
+import {takeUntil} from "rxjs/operators";
+import {ConnectionType} from "../../enums/connection-type.enum";
 
 @Component({
   selector: 'app-chatbar',
@@ -14,13 +20,25 @@ export class ChatbarComponent implements OnInit {
 
   unsubscribe$: Subject<void> = new Subject<void>();
 
-  friendsOnlineList: Friendship[] = [];
-  friendsOnlinePageTool: PageUtil<Friendship>;
+  loggedUser: User;
 
-  constructor(private communicatorService: CommunicatorService, private userService: UserService) { }
+  friendsList: Friendship[] = [];
+  friendsPageTool: PageUtil<Friendship>;
+
+  constructor(private communicatorService: CommunicatorService,
+              private userService: UserService,
+              private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.friendsOnlinePageTool = new PageUtil<Friendship>(this.userService.getFriendsOnline.bind(this.userService), this.friendsOnlineList, 20);
+    this.authService.currentUser.subscribe(u => {
+      if (u.id) {
+        this.loggedUser = u;
+        this.communicatorService.onConnection(() => {
+            this.communicatorService.addSubscription('/user/queue/connections', this.onConnectionEvent.bind(this));
+        });
+      }
+    });
+    this.friendsPageTool = new PageUtil<Friendship>(this.userService.getFriendsOnlineFirst.bind(this.userService), this.friendsList, 30);
   }
 
   ngOnDestroy(){
@@ -30,8 +48,45 @@ export class ChatbarComponent implements OnInit {
   }
 
   destroyPageTool() {
-    if (this.friendsOnlinePageTool) {
-      this.friendsOnlinePageTool.destroy();
+    if (this.friendsPageTool) {
+      this.friendsPageTool.destroy();
+    }
+  }
+
+  onConnectionEvent(message: Message) {
+    var connectionEvent: ConnectionEvent = JSON.parse(message.body);
+    if (connectionEvent.type == ConnectionType.CONNECTED) {
+      this.markOnline(connectionEvent.userId);
+    } else if (connectionEvent.type == ConnectionType.DISCONNECTED) {
+      this.markOffline(connectionEvent.userId);
+    } else {
+      console.error("Unknown connection type");
+    }
+  }
+
+  markOnline(userId: number) {
+    var friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
+    if (friendshipIndex > -1 && !this.friendsList[friendshipIndex].friend.online) {
+      var splice = this.friendsList.splice(friendshipIndex, 1);
+      splice[0].friend.online = true;
+      this.friendsList.unshift(splice[0]);
+    } else {
+      this.userService.getFriendship(userId).pipe(takeUntil(this.unsubscribe$)).subscribe(friendship => {
+        this.friendsList.unshift(friendship);
+      });
+    }
+  }
+
+  markOffline(userId: number) {
+    var friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
+    if (friendshipIndex > -1 && this.friendsList[friendshipIndex].friend.online) {
+      var firstOfflineIndex = this.friendsList.findIndex(friendship => !friendship.friend.online);
+      this.friendsList[friendshipIndex].friend.online = false;
+      if (firstOfflineIndex > friendshipIndex) {
+        var element = this.friendsList[friendshipIndex];
+        this.friendsList.splice(friendshipIndex, 1);
+        this.friendsList.splice(firstOfflineIndex, 0, element);
+      }
     }
   }
 }

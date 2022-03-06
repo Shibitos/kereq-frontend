@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as Stomp from 'stompjs';
-import {Client} from 'stompjs';
+import {Client, Message} from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import {AuthService} from "./auth.service";
 import {User} from "../models/user.model";
@@ -13,8 +13,10 @@ import {environment} from "../../environments/environment";
 })
 export class CommunicatorService {
 
+  connectedSubject: Subject<void> = new Subject<void>();
   unsubscribe$: Subject<void> = new Subject<void>();
 
+  private subscribedDestinations: string[] = [];
   private connected: boolean = false;
   private stompClient: Client;
   private retryCounter: number = 0;
@@ -34,9 +36,20 @@ export class CommunicatorService {
   }
 
   ngOnDestroy(){
-    console.log("test");
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  isConnected() {
+    return this.connected;
+  }
+
+  onConnection(callback: () => void) {
+    this.connectedSubject.subscribe(() => {
+      if (this.connected) {
+        callback();
+      }
+    })
   }
 
   connect() {
@@ -45,6 +58,7 @@ export class CommunicatorService {
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({ 'Authorization': `Bearer ${this.authService.getToken()}` }, () => {
         this.connected = true;
+        this.connectedSubject.next();
       }, () => {
         if (this.retryCounter < this.maxRetryCount) {
           this.retryCounter += 1;
@@ -58,7 +72,18 @@ export class CommunicatorService {
     if (this.connected) {
       this.stompClient.disconnect(() => {
         this.connected = false;
+        this.subscribedDestinations = [];
       });
+    }
+  }
+
+  addSubscription(destination: string, callback: (message: Message) => any) {
+    if (this.connected) {
+      if (this.subscribedDestinations.indexOf(destination) < 0) {
+        this.stompClient.subscribe(destination, callback);
+      }
+    } else {
+      console.error("Subscription before WS connection");
     }
   }
 }
