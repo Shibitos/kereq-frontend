@@ -59,6 +59,8 @@ export class ChatbarComponent implements OnInit {
       this.markOnline(connectionEvent.userId);
     } else if (connectionEvent.type == ConnectionType.DISCONNECTED) {
       this.markOffline(connectionEvent.userId);
+    } else if (connectionEvent.type == ConnectionType.REMOVAL) {
+      this.remove(connectionEvent.userId);
     } else {
       console.error("Unknown connection type");
     }
@@ -87,6 +89,13 @@ export class ChatbarComponent implements OnInit {
         this.friendsList.splice(friendshipIndex, 1);
         this.friendsList.splice(firstOfflineIndex, 0, element);
       }
+    }
+  }
+
+  remove(userId: number) {
+    var friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
+    if (friendshipIndex > -1) {
+        this.friendsList.splice(friendshipIndex, 1);
     }
   }
 }

@@ -1,4 +1,5 @@
 export enum ConnectionType {
   CONNECTED = 'CONNECT',
-  DISCONNECTED = 'DISCONNECT'
+  DISCONNECTED = 'DISCONNECT',
+  REMOVAL = 'REMOVAL'
 };

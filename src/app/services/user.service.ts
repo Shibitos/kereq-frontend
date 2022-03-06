@@ -28,7 +28,7 @@ export class UserService {
   }
 
   getFriendship(friendId: number): Observable<any> {
-    return this.http.get<Friendship>(environment.backendUrl + this.friendsUrl + '/with/' + friendId);
+    return this.http.get<Friendship>(environment.backendUrl + this.friendsUrl + 'with/' + friendId);
   }
 
   getFriendsOnlineFirst(page: Page, userId?: number): Observable<any> {
