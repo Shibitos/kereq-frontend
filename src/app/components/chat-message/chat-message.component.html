@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <div class="col-auto p-0" *ngIf="!isIncoming">
+      <app-avatar [user]="author" [size]="'tbm'"></app-avatar>
+    </div>
+
+    <div class="col p-0">
+
+      <div class="bubble-container">
+        <div class="bubble " [class]="!isIncoming ? 'bubble-left' : 'bubble-right'" data- data-bs-toggle="tooltip" [title]="message.sendDate | date: 'dd/MM/yyyy HH:mm:ss' ">
+          <p [innerHTML]="message.content"></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-auto p-0" *ngIf="isIncoming">
+      <app-avatar [user]="author" [size]="'tbm'"></app-avatar>
+    </div>
+  </div>
+</div>

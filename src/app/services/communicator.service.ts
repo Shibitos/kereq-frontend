@@ -54,7 +54,7 @@ export class CommunicatorService {
 
   connect() {
     if (!this.connected && this.authService.isLoggedIn) {
-      var socket = new SockJS(environment.communicatorUrl + this.websocketEndpoint);
+      let socket = new SockJS(environment.communicatorUrl + this.websocketEndpoint);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({ 'Authorization': `Bearer ${this.authService.getToken()}` }, () => {
         this.connected = true;
@@ -85,6 +85,14 @@ export class CommunicatorService {
       }
     } else {
       console.error("Subscription before WS connection");
+    }
+  }
+
+  sendMessage(destination: string, object: any) {
+    if (this.connected) {
+      this.stompClient.send(destination, {}, JSON.stringify(object));
+    } else {
+      console.error("Send before WS connection");
     }
   }
 }

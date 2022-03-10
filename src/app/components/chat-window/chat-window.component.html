@@ -1,0 +1,36 @@
+<div class="chat-window-container">
+  <div class="chat-window-header">
+    <div class="row">
+      <div class="pe-0" style="width: 48px;">
+        <app-avatar [user]="recipient" [size]="'tbm'" [classes]="recipient.online ? 'border border-success' : ''"></app-avatar>
+      </div>
+      <div class="col pe-0 pt-1">
+        <h4 class="mb-0">{{ recipient.firstName }} {{ recipient.lastName }}</h4>
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn-close p-2 pt-3" aria-label="Close" (click)="close();"></button>
+      </div>
+    </div>
+  </div>
+  <div class="chat-window-body">
+
+    <div class="chat-messages-container">
+      <div *ngFor="let message of chatMessages" class="mt-1">
+        <app-chat-message [author]="message.senderId === loggedUser.id ? loggedUser : recipient" [message]="message" [isIncoming]="message.senderId === loggedUser.id"></app-chat-message>
+      </div>
+    </div>
+
+    <div class="message-form p-2">
+      <form [formGroup]="messageForm.form" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col p-0 ps-2 pe-2">
+            <input type="text" [ngClass]="{ 'is-invalid': messageForm.submitted && f['content'].errors }" class="form-control" formControlName="content" i18n-placeholder="@@common.write-here" placeholder="Write here">
+          </div>
+          <div class="col-auto p-0 pe-2">
+            <button type="submit" class="btn btn-primary" i18n="@@common.send">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

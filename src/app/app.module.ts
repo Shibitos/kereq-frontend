@@ -37,6 +37,9 @@ import {ImageCropperModule} from "ngx-image-cropper";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {PhotoComponent} from "./components/photo/photo.component";
 import {CommunicatorService} from "./services/communicator.service";
+import { ChatWindowComponent } from './components/chat-window/chat-window.component';
+import { ChatWindowContainerComponent } from './components/chat-window-container/chat-window-container.component';
+import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,10 @@ import {CommunicatorService} from "./services/communicator.service";
     EditProfileComponent,
     EditProfileImageComponent,
     AvatarComponent,
-    PhotoComponent
+    PhotoComponent,
+    ChatWindowComponent,
+    ChatWindowContainerComponent,
+    ChatMessageComponent
   ],
   imports: [
     BrowserModule,

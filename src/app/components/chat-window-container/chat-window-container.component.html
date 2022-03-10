@@ -1,0 +1,5 @@
+<div class="chat-window-main-container row justify-content-end pe-4">
+  <div *ngFor="let recipient of recipients" class="chat-window-container p-0 ms-2">
+    <app-chat-window [recipient]="recipient"></app-chat-window>
+  </div>
+</div>

@@ -10,6 +10,7 @@ import {AuthService} from "../../services/auth.service";
 import {ConnectionEvent} from "../../models/connection-event.model";
 import {takeUntil} from "rxjs/operators";
 import {ConnectionType} from "../../enums/connection-type.enum";
+import {ChatWindowEventService} from "../../services/chat-window-event.service";
 
 @Component({
   selector: 'app-chatbar',
@@ -27,7 +28,8 @@ export class ChatbarComponent implements OnInit {
 
   constructor(private communicatorService: CommunicatorService,
               private userService: UserService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private chatWindowEventService: ChatWindowEventService) { }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(u => {
@@ -54,7 +56,7 @@ export class ChatbarComponent implements OnInit {
   }
 
   onConnectionEvent(message: Message) {
-    var connectionEvent: ConnectionEvent = JSON.parse(message.body);
+    let connectionEvent: ConnectionEvent = JSON.parse(message.body);
     if (connectionEvent.type == ConnectionType.CONNECTED) {
       this.markOnline(connectionEvent.userId);
     } else if (connectionEvent.type == ConnectionType.DISCONNECTED) {
@@ -67,9 +69,9 @@ export class ChatbarComponent implements OnInit {
   }
 
   markOnline(userId: number) {
-    var friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
+    let friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
     if (friendshipIndex > -1 && !this.friendsList[friendshipIndex].friend.online) {
-      var splice = this.friendsList.splice(friendshipIndex, 1);
+      let splice = this.friendsList.splice(friendshipIndex, 1);
       splice[0].friend.online = true;
       this.friendsList.unshift(splice[0]);
     } else {
@@ -80,12 +82,12 @@ export class ChatbarComponent implements OnInit {
   }
 
   markOffline(userId: number) {
-    var friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
+    let friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
     if (friendshipIndex > -1 && this.friendsList[friendshipIndex].friend.online) {
-      var firstOfflineIndex = this.friendsList.findIndex(friendship => !friendship.friend.online);
+      let firstOfflineIndex = this.friendsList.findIndex(friendship => !friendship.friend.online);
       this.friendsList[friendshipIndex].friend.online = false;
       if (firstOfflineIndex > friendshipIndex) {
-        var element = this.friendsList[friendshipIndex];
+        let element = this.friendsList[friendshipIndex];
         this.friendsList.splice(friendshipIndex, 1);
         this.friendsList.splice(firstOfflineIndex, 0, element);
       }
@@ -93,9 +95,13 @@ export class ChatbarComponent implements OnInit {
   }
 
   remove(userId: number) {
-    var friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
+    let friendshipIndex = this.friendsList.findIndex(friendship => friendship.friend.id === userId);
     if (friendshipIndex > -1) {
         this.friendsList.splice(friendshipIndex, 1);
     }
+  }
+
+  openChatWindow(friend: User) {
+    this.chatWindowEventService.openWindow(friend);
   }
 }

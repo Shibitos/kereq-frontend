@@ -1,0 +1,63 @@
+$bubble-left-bgcolor: #0099e6;
+$bubble-right-bgcolor: #2db554;
+
+.bubble-container {
+  width: 100%;
+  clear: both;
+  float: none; display: inline-block;
+}
+
+.bubble {
+  position: relative;
+  color: #FFFFFF;
+  //text-align: center;
+  max-width: 80%;
+  min-width: 20%;
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 0 10px 3px 10px;
+
+  p {
+    word-break: break-all;
+    white-space: normal;
+  }
+}
+
+.bubble-left {
+  background: $bubble-left-bgcolor;
+  margin-left: 20px;
+  float: left;
+}
+
+.bubble-left:after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  z-index: 1;
+  border-style: solid;
+  border-color: transparent $bubble-left-bgcolor;
+  border-width: 7px 12px 7px 0;
+  top: 12px;
+  left: -12px;
+}
+
+.bubble-right {
+  background: $bubble-right-bgcolor;
+  margin-right: 20px;
+  float: right;
+}
+
+.bubble-right:after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  z-index: 1;
+  border-style: solid;
+  border-color: transparent $bubble-right-bgcolor;
+  border-width: 7px 0 7px 12px;
+  top: 12px;//50%
+  right: -12px;
+  //margin-top: -12px;
+}

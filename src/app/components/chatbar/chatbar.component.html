@@ -11,7 +11,7 @@
   <div *ngIf="friendsPageTool.loaded && friendsList.length" class="container p-0">
     <div class="row" *ngFor="let friendship of friendsList">
       <div class="pe-0" style="width: 48px;">
-        <a [routerLink]="'/profile/' + friendship.friend.id" class="profile-link">
+        <a href="" (click)="$event.preventDefault();openChatWindow(friendship.friend)" class="profile-link">
           <div class="image-overlay-container">
             <app-avatar [user]="friendship.friend" [size]="'tbm'" [classes]="friendship.friend.online ? 'border border-success' : ''"></app-avatar>
             <div class="image-overlay"></div>
@@ -20,7 +20,7 @@
       </div>
       <div class="col-auto pe-0">
         <div class="">
-          <a [routerLink]="'/profile/' + friendship.friend.id" class="profile-link">
+          <a href="" (click)="$event.preventDefault();openChatWindow(friendship.friend)" class="profile-link">
             <h5 class="mb-0">{{ friendship.friend.firstName }} {{ friendship.friend.lastName }}</h5>
           </a>
           <i>
