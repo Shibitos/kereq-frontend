@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {User} from "../../models/user.model";
 import {CommunicatorService} from "../../services/communicator.service";
 import {Message} from "stompjs";
@@ -23,8 +23,15 @@ export class ChatWindowComponent implements OnInit {
   @Input()
   recipient: User;
 
+  @ViewChild('messageContainerRef')
+  private messageContainerRef: ElementRef;
+
+  @ViewChildren('messagesRef')
+  private messagesRef: QueryList<any>;
+
   chatMessages: ChatMessage[] = [];
   chatMessagesPageTool: PageUtil<ChatMessage>;
+  firstScrolled: boolean = false;
 
   messageForm: FormProperties = new FormProperties();
 
@@ -51,7 +58,18 @@ export class ChatWindowComponent implements OnInit {
       ]]
     });
     this.chatMessagesPageTool = new PageUtil<ChatMessage>(this.communicatorService.getMessagesWith.bind(this.communicatorService), this.chatMessages, 20, this.recipient.id, false, this.filterSortMessages.bind(this));
-    //TODO: scroll down
+
+  }
+
+  ngAfterViewInit() {
+    this.messagesRef.changes.subscribe(this.scrollToBottom.bind(this));
+  }
+
+  scrollToBottom(): void {
+    if (!this.firstScrolled) {
+      this.messageContainerRef.nativeElement.scrollTop = this.messageContainerRef.nativeElement.scrollHeight;
+      this.firstScrolled = true;
+    }
   }
 
   onMessage(message: Message) {
