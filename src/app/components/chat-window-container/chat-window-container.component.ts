@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommunicatorService} from "../../services/communicator.service";
 import {User} from "../../models/user.model";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";

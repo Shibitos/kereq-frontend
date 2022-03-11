@@ -13,6 +13,27 @@ body, app-root {
   //display: none;
 }
 
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #858386 #edf2f9;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 16px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #edf2f9;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #858386;
+  border-radius: 10px;
+  border: 3px solid #edf2f9;
+}
+
 a {
   font-size: 15px;
   text-decoration: none;

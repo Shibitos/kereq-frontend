@@ -13,8 +13,13 @@
     </div>
   </div>
   <div class="chat-window-body">
-
-    <div class="chat-messages-container">
+    <div class="position-relative" *ngIf="!chatMessagesPageTool.loaded || chatMessagesPageTool.loading" class="container">
+      <app-loading></app-loading>
+    </div>
+    <div class="chat-messages-container" *ngIf="chatMessagesPageTool.loaded">
+      <div *ngIf="!chatMessagesPageTool.stopLoading" class="text-center">
+        <a href="" (click)="$event.preventDefault();loadMore()" i18n="@@general.load-more">Load more</a>
+      </div>
       <div *ngFor="let message of chatMessages" class="mt-1">
         <app-chat-message [author]="message.senderId === loggedUser.id ? loggedUser : recipient" [message]="message" [isIncoming]="message.senderId === loggedUser.id"></app-chat-message>
       </div>

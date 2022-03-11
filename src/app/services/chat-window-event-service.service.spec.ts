@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { ChatWindowEventService } from './chat-window-event.service';
+import {ChatWindowEventService} from './chat-window-event.service';
 
 describe('ChatWindowEventServiceService', () => {
   let service: ChatWindowEventService;

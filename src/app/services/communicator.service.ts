@@ -7,6 +7,11 @@ import {User} from "../models/user.model";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {environment} from "../../environments/environment";
+import {Observable} from "rxjs";
+import {Page} from "../utils/page";
+import {Friendship} from "../models/friendship.model";
+import {HttpClient} from "@angular/common/http";
+import {ChatMessage} from "../models/chat-message.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +28,10 @@ export class CommunicatorService {
   private maxRetryCount: number = 3;
   private retryDelay: number = 2000;
 
-  private websocketEndpoint: string = 'websocket-service/ws';
+  private websocketEndpoint: string = 'ws';
+  private chatEndpoint: string = 'chat';
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private http: HttpClient) {
     this.authService.currentUser.pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
       if (!user.id) {
         this.disconnect();
@@ -94,5 +100,9 @@ export class CommunicatorService {
     } else {
       console.error("Send before WS connection");
     }
+  }
+
+  getMessagesWith(page: Page, recipientId?: number): Observable<any> {
+    return this.http.get<ChatMessage[]>(environment.communicatorUrl + this.chatEndpoint + '/messages/' + (recipientId ? recipientId : '') + '?' + page.generateQueryParams());
   }
 }

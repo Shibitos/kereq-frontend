@@ -2,14 +2,14 @@ import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../models/user.model";
 import {CommunicatorService} from "../../services/communicator.service";
 import {Message} from "stompjs";
-import {ConnectionEvent} from "../../models/connection-event.model";
-import {ConnectionType} from "../../enums/connection-type.enum";
 import {ChatMessage} from "../../models/chat-message.model";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
 import {FormProperties} from "../../utils/form-properties";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";
+import {PageUtil} from "../../utils/page.util";
+import {Post} from "../../models/post.model";
 
 @Component({
   selector: 'app-chat-window',
@@ -24,6 +24,7 @@ export class ChatWindowComponent implements OnInit {
   recipient: User;
 
   chatMessages: ChatMessage[] = [];
+  chatMessagesPageTool: PageUtil<ChatMessage>;
 
   messageForm: FormProperties = new FormProperties();
 
@@ -34,14 +35,12 @@ export class ChatWindowComponent implements OnInit {
               private chatWindowEventService: ChatWindowEventService) { }
 
   //TODO: if message event and minimized, add unread count. If maximized and scrolled clear unread count. Show unread count as red circle with number.
+  //TODO: add button to scroll down while browsing, light it when new unread message.
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(u => {
       if (u.id) {
         this.loggedUser = u;
-        // this.communicatorService.onConnection(() => {
-        //         //   this.communicatorService.addSubscription('/user/queue/messages-inbox', this.onMessage.bind(this));
-        //         // });
         this.communicatorService.addSubscription('/user/queue/messages-inbox', this.onMessage.bind(this));
       }
     });
@@ -51,11 +50,12 @@ export class ChatWindowComponent implements OnInit {
         Validators.maxLength(400)
       ]]
     });
+    this.chatMessagesPageTool = new PageUtil<ChatMessage>(this.communicatorService.getMessagesWith.bind(this.communicatorService), this.chatMessages, 20, this.recipient.id, false, this.filterSortMessages.bind(this));
+    //TODO: scroll down
   }
 
   onMessage(message: Message) {
     let chatMessage: ChatMessage = JSON.parse(message.body);
-    console.log("Got mess", chatMessage);
     if (chatMessage.senderId !== this.recipient.id && chatMessage.recipientId !== this.recipient.id) {
       return;
     }
@@ -82,6 +82,7 @@ export class ChatWindowComponent implements OnInit {
     this.communicatorService.sendMessage("/messages-outbox", chatMessage);
     this.messageForm.reset(); //TODO: success check stomp?
     //TODO: early save?
+    //TODO: scroll down
   }
 
   onSubmit() {
@@ -105,6 +106,19 @@ export class ChatWindowComponent implements OnInit {
     if (this.recipient.id) {
       this.chatWindowEventService.closeWindow(this.recipient.id);
     }
+  }
+
+  loadMore() {
+    this.chatMessagesPageTool.loadMore();
+  }
+
+  private filterSortMessages() {
+    let filtered = this.chatMessages.filter((value, index, self) =>
+      index === self.findIndex((t: ChatMessage) => t.id === value.id)
+    );
+    filtered.sort((a: ChatMessage, b: ChatMessage) => new Date(a.sendDate).getTime() - new Date(b.sendDate).getTime());
+    this.chatMessages.length = 0;
+    this.chatMessages.push(...filtered);
   }
 
   get f() {
