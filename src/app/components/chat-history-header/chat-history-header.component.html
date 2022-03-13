@@ -9,7 +9,7 @@
       <span i18n="@chat-header.unread-messages">You have {{ unreadMessagesCount }} unread messages</span>
     </li>
     <div class="form-group p-2 pt-0">
-      <input type="text" class="form-control" i18n-placeholder="@@chat-header.filter-placeholder" placeholder="Write here to filter" />
+      <input type="text" class="form-control"  [(ngModel)]="filterTerm" i18n-placeholder="@@chat-header.filter-placeholder"placeholder="Write here to filter" />
     </div>
     <li>
       <hr class="dropdown-divider">
@@ -20,7 +20,7 @@
         <app-loading></app-loading>
       </div>
       <div *ngIf="conversationsPageTool.loaded">
-        <div *ngFor="let conversation of conversations">
+        <div *ngFor="let conversation of conversations | filter:filterConversations:filterTerm">
           <li class="message-item">
             <a href="#">
               <div class="me-2">

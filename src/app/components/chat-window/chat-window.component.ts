@@ -1,7 +1,6 @@
 import {Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {User} from "../../models/user.model";
 import {CommunicatorService} from "../../services/communicator.service";
-import {Message} from "stompjs";
 import {ChatMessage} from "../../models/chat-message.model";
 import {UserService} from "../../services/user.service";
 import {AuthService} from "../../services/auth.service";
@@ -9,7 +8,6 @@ import {FormProperties} from "../../utils/form-properties";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";
 import {PageUtil} from "../../utils/page.util";
-import {Post} from "../../models/post.model";
 
 @Component({
   selector: 'app-chat-window',

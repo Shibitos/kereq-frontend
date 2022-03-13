@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChatHistoryHeaderComponent } from './chat-history-header.component';
+import {ChatHistoryHeaderComponent} from './chat-history-header.component';
 
 describe('ChatHistoryHeaderComponent', () => {
   let component: ChatHistoryHeaderComponent;

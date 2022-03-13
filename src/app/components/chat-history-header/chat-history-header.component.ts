@@ -18,6 +18,7 @@ export class ChatHistoryHeaderComponent implements OnInit {
 
   loggedUser: User;
   unreadMessagesCount: number = 3;
+  filterTerm: string;
 
   conversations: Conversation[] = [];
   conversationsTemp: Conversation[] = [];
@@ -79,6 +80,16 @@ export class ChatHistoryHeaderComponent implements OnInit {
 
   sortConversations() {
     this.conversations.sort((a: Conversation, b: Conversation) => new Date(b.lastMessage.sendDate).getTime() - new Date(a.lastMessage.sendDate).getTime());
+  }
+
+  filterConversations(conversations: Conversation[], term: string) {
+    return (conversations || []).filter(conversation => {
+      let regexp = new RegExp(term, 'gi');
+      //regexp.test(conversation.recipient.firstName);
+      //regexp.test(conversation.recipient.lastName);
+      //console.log(conversation.recipient, regexp.test(conversation.recipient.firstName), regexp.test(conversation.recipient.lastName));
+      return regexp.test(conversation.recipient.firstName) || regexp.test(conversation.recipient.lastName);
+    });
   }
 
   private static getShortMessageContent(content: string) : string {

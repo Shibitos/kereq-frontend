@@ -4,7 +4,6 @@ import {PageUtil} from "../../utils/page.util";
 import {Subject} from "rxjs";
 import {Friendship} from "../../models/friendship.model";
 import {UserService} from "../../services/user.service";
-import {Message} from "stompjs";
 import {User} from "../../models/user.model";
 import {AuthService} from "../../services/auth.service";
 import {ConnectionEvent} from "../../models/connection-event.model";

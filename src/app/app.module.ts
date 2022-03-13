@@ -9,7 +9,7 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {LogoutComponent} from './components/logout/logout.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {JWTInterceptor} from "./interceptors/jwt-interceptor.service";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {WallComponent} from './components/wall/wall.component';
 import {MenuComponent} from './components/menu/menu.component';
@@ -40,7 +40,8 @@ import {CommunicatorService} from "./services/communicator.service";
 import {ChatWindowComponent} from './components/chat-window/chat-window.component';
 import {ChatWindowContainerComponent} from './components/chat-window-container/chat-window-container.component';
 import {ChatMessageComponent} from './components/chat-message/chat-message.component';
-import { ChatHistoryHeaderComponent } from './components/chat-history-header/chat-history-header.component';
+import {ChatHistoryHeaderComponent} from './components/chat-history-header/chat-history-header.component';
+import {FilterPipe} from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ChatHistoryHeaderComponent } from './components/chat-history-header/cha
     ChatWindowComponent,
     ChatWindowContainerComponent,
     ChatMessageComponent,
-    ChatHistoryHeaderComponent
+    ChatHistoryHeaderComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -85,6 +87,7 @@ import { ChatHistoryHeaderComponent } from './components/chat-history-header/cha
     DlDateTimePickerModule,
     NgbModule,
     ImageCropperModule,
+    FormsModule,
     NpnSliderModule //TODO: change for better
   ],
   providers: [
