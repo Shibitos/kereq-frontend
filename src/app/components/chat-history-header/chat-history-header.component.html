@@ -19,7 +19,7 @@
       <div *ngIf="!conversationsPageTool.loaded">
         <app-loading></app-loading>
       </div>
-      <div *ngIf="conversationsPageTool.loaded">
+      <div class="conversations-main-container" *ngIf="conversationsPageTool.loaded">
         <div *ngFor="let conversation of conversations | filter:filterConversations:filterTerm">
           <li class="message-item">
             <a href="" (click)="$event.preventDefault();openChatWindow(conversation.recipient);dropdownLink.click()">

@@ -24,10 +24,15 @@
   background-color: #f6f9ff;
 }
 
-.conversation-container {
+.conversations-main-container {
+  max-height: 500px;
+  overflow-y: auto;
 
-  p {
-    word-break: break-all;
-    white-space: normal;
+  .conversation-container {
+    p {
+      word-break: break-all;
+      white-space: normal;
+    }
   }
+
 }
