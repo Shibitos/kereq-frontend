@@ -7,8 +7,6 @@ import {User} from "../../models/user.model";
 import {AuthService} from "../../services/auth.service";
 import {UserCacheService} from "../../services/user-cache.service";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";
-import {NgbDropdownToggle} from "@ng-bootstrap/ng-bootstrap";
-import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-chat-history-header',
