@@ -40,6 +40,7 @@ import {CommunicatorService} from "./services/communicator.service";
 import {ChatWindowComponent} from './components/chat-window/chat-window.component';
 import {ChatWindowContainerComponent} from './components/chat-window-container/chat-window-container.component';
 import {ChatMessageComponent} from './components/chat-message/chat-message.component';
+import { ChatHistoryHeaderComponent } from './components/chat-history-header/chat-history-header.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import {ChatMessageComponent} from './components/chat-message/chat-message.compo
     PhotoComponent,
     ChatWindowComponent,
     ChatWindowContainerComponent,
-    ChatMessageComponent
+    ChatMessageComponent,
+    ChatHistoryHeaderComponent
   ],
   imports: [
     BrowserModule,

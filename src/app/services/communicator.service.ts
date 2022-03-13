@@ -12,6 +12,7 @@ import {Page} from "../utils/page";
 import {Friendship} from "../models/friendship.model";
 import {HttpClient} from "@angular/common/http";
 import {ChatMessage} from "../models/chat-message.model";
+import {ConnectionEvent} from "../models/connection-event.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,13 @@ import {ChatMessage} from "../models/chat-message.model";
 export class CommunicatorService {
 
   connectedSubject: Subject<void> = new Subject<void>();
+  chatBarInitialized: Subject<void> = new Subject<void>();
+  connectionsSubject: Subject<ConnectionEvent> = new Subject<ConnectionEvent>();
+  messagesSubject: Subject<ChatMessage> = new Subject<ChatMessage>();
   unsubscribe$: Subject<void> = new Subject<void>();
 
-  private subscribedDestinations: string[] = [];
+  private subscribedDestinations: Map<string, string[]> = new Map<string, string[]>();
+
   private connected: boolean = false;
   private stompClient: Client;
   private retryCounter: number = 0;
@@ -46,16 +51,12 @@ export class CommunicatorService {
     this.unsubscribe$.complete();
   }
 
-  isConnected() {
-    return this.connected;
-  }
-
   onConnection(callback: () => void) {
     this.connectedSubject.subscribe(() => {
       if (this.connected) {
         callback();
       }
-    })
+    });
   }
 
   connect() {
@@ -64,6 +65,7 @@ export class CommunicatorService {
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect({ 'Authorization': `Bearer ${this.authService.getToken()}` }, () => {
         this.connected = true;
+        this.registerSubscriptions();
         this.connectedSubject.next();
       }, () => {
         if (this.retryCounter < this.maxRetryCount) {
@@ -78,20 +80,24 @@ export class CommunicatorService {
     if (this.connected) {
       this.stompClient.disconnect(() => {
         this.connected = false;
-        this.subscribedDestinations = [];
+        this.subscribedDestinations.clear();
       });
     }
   }
 
-  addSubscription(destination: string, callback: (message: Message) => any) {
-    if (this.connected) {
-      if (this.subscribedDestinations.indexOf(destination) < 0) {
-        this.stompClient.subscribe(destination, callback);
-        this.subscribedDestinations.push(destination);
-      }
-    } else {
-      console.error("Subscription before WS connection");
-    }
+  onConnectionEvent(message: Message) {
+    let connectionEvent: ConnectionEvent = JSON.parse(message.body);
+    this.connectionsSubject.next(connectionEvent);
+  }
+
+  registerSubscriptions() {
+    this.addSubscription('/user/queue/connections', this.onConnectionEvent.bind(this));
+    this.addSubscription('/user/queue/messages-inbox', this.onMessage.bind(this));
+  }
+
+  onMessage(message: Message) {
+    let chatMessage: ChatMessage = JSON.parse(message.body);
+    this.messagesSubject.next(chatMessage);
   }
 
   sendMessage(destination: string, object: any) {
@@ -104,5 +110,17 @@ export class CommunicatorService {
 
   getMessagesWith(page: Page, recipientId?: number): Observable<any> {
     return this.http.get<ChatMessage[]>(environment.communicatorUrl + this.chatEndpoint + '/messages/' + (recipientId ? recipientId : '') + '?' + page.generateQueryParams());
+  }
+
+  getChatHistory(page: Page): Observable<any> {
+    return this.http.get<ChatMessage[]>(environment.communicatorUrl + this.chatEndpoint + '/history?' + page.generateQueryParams());
+  }
+
+  private addSubscription(destination: string, callback: (message: Message) => any) {
+    if (this.connected) {
+      this.stompClient.subscribe(destination, callback);
+    } else {
+      console.error("Subscription before WS connection");
+    }
   }
 }

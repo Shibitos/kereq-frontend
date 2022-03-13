@@ -14,7 +14,7 @@ export class PageUtil<T> {
   stopLoading = false;
   loading = false;
 
-  constructor(private loadFunc: (p: Page, param?: number) => Observable<any>, private container: T[], pageSize: number, param?: number, lazyInit?: boolean, private onLoadEventCallback?: () => void) { //TODO: hide func there? load more button not hiding after hiding all
+  constructor(private loadFunc: (p: Page, param?: number) => Observable<any>, private container: T[], pageSize: number, param?: number, lazyInit?: boolean, private onLoadEventCallback?: (arg0?: any) => void) { //TODO: hide func there? load more button not hiding after hiding all
     this.page = new Page();
     this.page.pageSize = pageSize;
     if (param) {
@@ -40,7 +40,7 @@ export class PageUtil<T> {
       this.loaded = true;
       this.loading = false;
       if (this.onLoadEventCallback) {
-        this.onLoadEventCallback();
+        this.onLoadEventCallback(!a.empty ? a.content : undefined);
       }
     }, (err: any) => {
       this.loading = false;
@@ -79,7 +79,7 @@ export class PageUtil<T> {
         }
         this.loading = false;
         if (this.onLoadEventCallback) {
-          this.onLoadEventCallback();
+          this.onLoadEventCallback(!a.empty ? a.content : undefined);
         }
       }, (err: any) => {
         this.loading = false;

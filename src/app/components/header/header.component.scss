@@ -134,31 +134,6 @@
 .header-nav .notifications .notification-item:hover {
   background-color: #f6f9ff;
 }
-.header-nav .messages .message-item {
-  padding: 15px 10px;
-  transition: 0.3s;
-}
-.header-nav .messages .message-item a {
-  display: flex;
-}
-.header-nav .messages .message-item img {
-  margin: 0 20px 0 10px;
-  max-height: 40px;
-}
-.header-nav .messages .message-item h4 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #444444;
-}
-.header-nav .messages .message-item p {
-  font-size: 13px;
-  margin-bottom: 3px;
-  color: #919191;
-}
-.header-nav .messages .message-item:hover {
-  background-color: #f6f9ff;
-}
 .header-nav .profile {
   min-width: 240px;
   padding-bottom: 0;
@@ -196,7 +171,10 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   border: 0;
-  box-shadow: 0 2px 5px 0 rgba(82, 63, 105, 0.2);
+  //box-shadow: 0 2px 5px 0 rgba(82, 63, 105, 0.2);
+
+  box-shadow: 0 0 1px 1px rgb(0 0 0 / 20%);
+  min-width: 20rem;
 }
 @media (max-width: 480px) {
   .dropdown-menu {
@@ -243,8 +221,9 @@
     top: -7px;
     right: 20px;
     transform: rotate(45deg);
-    border-top: 1px solid #eaedf1;
-    border-left: 1px solid #eaedf1;
+
+    border-top: 1px solid rgb(0 0 0 / 20%);
+    border-left: 1px solid rgb(0 0 0 / 20%);
   }
 }
 @-webkit-keyframes dropdown-animate {

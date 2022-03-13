@@ -48,7 +48,7 @@ export class ChatWindowComponent implements OnInit {
     this.authService.currentUser.subscribe(u => {
       if (u.id) {
         this.loggedUser = u;
-        this.communicatorService.addSubscription('/user/queue/messages-inbox', this.onMessage.bind(this));
+        this.communicatorService.messagesSubject.subscribe(this.onMessage.bind(this));
       }
     });
     this.messageForm.form = this.formBuilder.group({
@@ -72,8 +72,7 @@ export class ChatWindowComponent implements OnInit {
     }
   }
 
-  onMessage(message: Message) {
-    let chatMessage: ChatMessage = JSON.parse(message.body);
+  onMessage(chatMessage: ChatMessage) {
     if (chatMessage.senderId !== this.recipient.id && chatMessage.recipientId !== this.recipient.id) {
       return;
     }

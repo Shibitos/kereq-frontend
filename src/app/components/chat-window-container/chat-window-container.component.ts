@@ -39,9 +39,7 @@ export class ChatWindowContainerComponent implements OnInit {
   }
 
   openWindow(recipient: User) {
-    console.log("łopen2", this.recipients);
     if (this.recipients.findIndex(r => r.id === recipient.id) === -1) {
-      console.log("łopen3");
       this.recipients.push(recipient);
     }
   }

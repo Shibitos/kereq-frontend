@@ -11,6 +11,7 @@ import {ConnectionEvent} from "../../models/connection-event.model";
 import {takeUntil} from "rxjs/operators";
 import {ConnectionType} from "../../enums/connection-type.enum";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";
+import {UserCacheService} from "../../services/user-cache.service";
 
 @Component({
   selector: 'app-chatbar',
@@ -29,18 +30,19 @@ export class ChatbarComponent implements OnInit {
   constructor(private communicatorService: CommunicatorService,
               private userService: UserService,
               private authService: AuthService,
-              private chatWindowEventService: ChatWindowEventService) { }
+              private chatWindowEventService: ChatWindowEventService,
+              private userCacheService: UserCacheService) { }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(u => {
       if (u.id) {
         this.loggedUser = u;
         this.communicatorService.onConnection(() => {
-            this.communicatorService.addSubscription('/user/queue/connections', this.onConnectionEvent.bind(this));
+            this.communicatorService.connectionsSubject.subscribe(this.onConnectionEvent.bind(this));
         });
       }
     });
-    this.friendsPageTool = new PageUtil<Friendship>(this.userService.getFriendsOnlineFirst.bind(this.userService), this.friendsList, 30);
+    this.friendsPageTool = new PageUtil<Friendship>(this.userService.getFriendsOnlineFirst.bind(this.userService), this.friendsList, 30, undefined, false, this.updateUserCache.bind(this));
   }
 
   ngOnDestroy(){
@@ -55,8 +57,7 @@ export class ChatbarComponent implements OnInit {
     }
   }
 
-  onConnectionEvent(message: Message) {
-    let connectionEvent: ConnectionEvent = JSON.parse(message.body);
+  onConnectionEvent(connectionEvent: ConnectionEvent) {
     if (connectionEvent.type == ConnectionType.CONNECTED) {
       this.markOnline(connectionEvent.userId);
     } else if (connectionEvent.type == ConnectionType.DISCONNECTED) {
@@ -103,5 +104,10 @@ export class ChatbarComponent implements OnInit {
 
   openChatWindow(friend: User) {
     this.chatWindowEventService.openWindow(friend);
+  }
+
+  updateUserCache(friendships: Friendship[]) {
+    friendships.forEach(friendship => this.userCacheService.addUser(friendship.friend));
+    this.communicatorService.chatBarInitialized.next();
   }
 }

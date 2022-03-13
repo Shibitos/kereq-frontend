@@ -46,6 +46,7 @@
     "@angular/compiler12": "npm:@angular/compiler@12.0.0",
     "@angular/localize": "~13.0.0",
     "@types/jasmine": "~3.10.0",
+    "@types/jquery": "^3.5.14",
     "@types/node": "^12.11.1",
     "@types/sockjs-client": "^1.5.1",
     "@types/stompjs": "^2.3.5",

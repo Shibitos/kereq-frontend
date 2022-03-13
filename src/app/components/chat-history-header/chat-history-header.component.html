@@ -1,0 +1,51 @@
+<div id="chat-history-dropdown">
+  <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+    <i class="bi bi-chat-left-text"></i>
+    <span class="badge bg-success badge-number" *ngIf="unreadMessagesCount > 0">{{ unreadMessagesCount }}</span>
+  </a>
+
+  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+    <li class="dropdown-header">
+      <span i18n="@chat-header.unread-messages">You have {{ unreadMessagesCount }} unread messages</span>
+    </li>
+    <div class="form-group p-2 pt-0">
+      <input type="text" class="form-control" i18n-placeholder="@@chat-header.filter-placeholder" placeholder="Write here to filter" />
+    </div>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+
+    <div class="position-relative">
+      <div *ngIf="!conversationsPageTool.loaded">
+        <app-loading></app-loading>
+      </div>
+      <div *ngIf="conversationsPageTool.loaded">
+        <div *ngFor="let conversation of conversations">
+          <li class="message-item">
+            <a href="#">
+              <div class="me-2">
+                <app-avatar [user]="conversation.recipient" [size]="'tbm'"></app-avatar>
+              </div>
+              <div class="conversation-container">
+                <h4>{{ conversation.recipient?.firstName }} {{ conversation.recipient?.lastName }}</h4>
+                <p [innerHTML]="conversation.lastMessageContentShort"></p>
+                <p>
+                  <app-async-date-format [date]="conversation.lastMessage.sendDate"></app-async-date-format>
+                </p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+        </div>
+        <div *ngIf="!conversationsPageTool.stopLoading" class="text-center">
+<!--          TODO: test-->
+          <a href="" (click)="$event.preventDefault();conversationsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
+        </div>
+      </div>
+    </div>
+
+  </ul>
+
+</div>

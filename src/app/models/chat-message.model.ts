@@ -4,4 +4,5 @@ export class ChatMessage {
   recipientId: number;
   content: string;
   sendDate: Date;
+  conversationId: string;
 }
