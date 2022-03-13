@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ChatMessage} from "../../models/chat-message.model";
 import {PageUtil} from "../../utils/page.util";
 import {Conversation} from "../../models/conversation.model";
@@ -6,7 +6,6 @@ import {CommunicatorService} from "../../services/communicator.service";
 import {User} from "../../models/user.model";
 import {AuthService} from "../../services/auth.service";
 import {UserCacheService} from "../../services/user-cache.service";
-import {AsyncDateFormatComponent} from "../async-date-format/async-date-format.component";
 
 @Component({
   selector: 'app-chat-history-header',
@@ -85,7 +84,8 @@ export class ChatHistoryHeaderComponent implements OnInit {
 
   filterConversations(conversations: Conversation[], term: string) {
     return (conversations || []).filter(conversation => {
-      return new RegExp(term, 'gi').test(conversation.recipient.firstName) || new RegExp(term, 'gi').test(conversation.recipient.lastName);
+      let fullName = conversation.recipient.firstName + ' ' + conversation.recipient.lastName;
+      return new RegExp(term, 'gi').test(fullName);
     });
   }
 

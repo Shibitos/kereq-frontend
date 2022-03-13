@@ -30,7 +30,6 @@
                 <h4>{{ conversation.recipient?.firstName }} {{ conversation.recipient?.lastName }}</h4>
                 <p [innerHTML]="conversation.lastMessageContentShort"></p>
                 <p>
-                  {{ conversation.lastMessage.sendDate | date:'dd/MM/yyyy HH:mm:ss' }}
                   <app-async-date-format [date]="conversation.lastMessage.sendDate"></app-async-date-format>
                 </p>
               </div>
