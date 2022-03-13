@@ -6,6 +6,9 @@ import {CommunicatorService} from "../../services/communicator.service";
 import {User} from "../../models/user.model";
 import {AuthService} from "../../services/auth.service";
 import {UserCacheService} from "../../services/user-cache.service";
+import {ChatWindowEventService} from "../../services/chat-window-event.service";
+import {NgbDropdownToggle} from "@ng-bootstrap/ng-bootstrap";
+import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-chat-history-header',
@@ -24,7 +27,10 @@ export class ChatHistoryHeaderComponent implements OnInit {
   conversationsTemp: Conversation[] = [];
   conversationsPageTool: PageUtil<Conversation>;
 
-  constructor(private authService: AuthService, private communicatorService: CommunicatorService, private userCacheService: UserCacheService) { }
+  constructor(private authService: AuthService,
+              private communicatorService: CommunicatorService,
+              private chatWindowEventService: ChatWindowEventService,
+              private userCacheService: UserCacheService) { }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(u => {
@@ -87,6 +93,10 @@ export class ChatHistoryHeaderComponent implements OnInit {
       let fullName = conversation.recipient.firstName + ' ' + conversation.recipient.lastName;
       return new RegExp(term, 'gi').test(fullName);
     });
+  }
+
+  openChatWindow(recipient: User) {
+    this.chatWindowEventService.openWindow(recipient);
   }
 
   private static getShortMessageContent(content: string) : string {

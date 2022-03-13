@@ -1,5 +1,5 @@
-<div id="chat-history-dropdown">
-  <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+<div>
+  <a #dropdownLink class="nav-link nav-icon" href="" data-bs-toggle="dropdown" data-bs-auto-close="outside">
     <i class="bi bi-chat-left-text"></i>
     <span class="badge bg-success badge-number" *ngIf="unreadMessagesCount > 0">{{ unreadMessagesCount }}</span>
   </a>
@@ -22,7 +22,7 @@
       <div *ngIf="conversationsPageTool.loaded">
         <div *ngFor="let conversation of conversations | filter:filterConversations:filterTerm">
           <li class="message-item">
-            <a href="#">
+            <a href="" (click)="$event.preventDefault();openChatWindow(conversation.recipient);dropdownLink.click()">
               <div class="me-2">
                 <app-avatar [user]="conversation.recipient" [size]="'tbm'"></app-avatar>
               </div>
