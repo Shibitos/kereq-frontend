@@ -67,6 +67,12 @@ export class ChatWindowComponent implements OnInit {
     if (!this.firstScrolled) {
       this.messageContainerRef.nativeElement.scrollTop = this.messageContainerRef.nativeElement.scrollHeight;
       this.firstScrolled = true;
+    } else {
+      let currentScroll = this.messageContainerRef.nativeElement.scrollTop;
+      let maxScroll = this.messageContainerRef.nativeElement.scrollHeight - this.messageContainerRef.nativeElement.clientHeight;
+      if ((currentScroll / maxScroll) > 0.6) {
+        this.messageContainerRef.nativeElement.scrollTop = maxScroll;
+      }
     }
   }
 
