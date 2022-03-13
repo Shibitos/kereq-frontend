@@ -1,6 +1,7 @@
 import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {Observable, Subject, takeUntil} from "rxjs";
 import {formatDate} from "@angular/common";
+import Timeout = NodeJS.Timeout;
 
 @Component({
   selector: 'app-async-date-format',
@@ -11,6 +12,7 @@ export class AsyncDateFormatComponent implements OnInit {
   dateObservable$: Observable<string>;
   unsubscribe$: Subject<void> = new Subject<void>();
   dateFormatted: string;
+  interval: Timeout;
 
   @Input()
   date: Date;
@@ -24,6 +26,20 @@ export class AsyncDateFormatComponent implements OnInit {
   constructor(@Inject(LOCALE_ID) public locale: string) {}
 
   ngOnInit() {
+    this.init();
+  }
+
+  ngOnChanges() {
+    this.init();
+  }
+
+  ngOnDestroy(){
+    this.destroy();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  init() {
     this.dateObservable$ = Observable.create((observer: any) => {
       const formattedDate = formatDate(this.date, this.dateFormat, this.locale);
       const now = new Date();
@@ -33,11 +49,11 @@ export class AsyncDateFormatComponent implements OnInit {
         return;
       }
       observer.next($localize`:@@common.just-now:just now`);
-      const interval = setInterval(() => {
+      this.interval = setInterval(() => {
         observer.next(formattedDate);
       }, this.justNowTime);
 
-      return () => clearInterval(interval);
+      return () => clearInterval(this.interval);
     });
 
     this.dateObservable$
@@ -45,8 +61,8 @@ export class AsyncDateFormatComponent implements OnInit {
       .subscribe((value: string) => this.dateFormatted = value);
   }
 
-  ngOnDestroy(){
+  destroy() {
+    clearInterval(this.interval);
     this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 }

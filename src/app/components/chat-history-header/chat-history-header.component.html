@@ -9,7 +9,7 @@
       <span i18n="@chat-header.unread-messages">You have {{ unreadMessagesCount }} unread messages</span>
     </li>
     <div class="form-group p-2 pt-0">
-      <input type="text" class="form-control"  [(ngModel)]="filterTerm" i18n-placeholder="@@chat-header.filter-placeholder"placeholder="Write here to filter" />
+      <input type="text" class="form-control"  [(ngModel)]="filterTerm" i18n-placeholder="@@chat-header.filter-placeholder" placeholder="Write here to filter" />
     </div>
     <li>
       <hr class="dropdown-divider">
@@ -30,6 +30,7 @@
                 <h4>{{ conversation.recipient?.firstName }} {{ conversation.recipient?.lastName }}</h4>
                 <p [innerHTML]="conversation.lastMessageContentShort"></p>
                 <p>
+                  {{ conversation.lastMessage.sendDate | date:'dd/MM/yyyy HH:mm:ss' }}
                   <app-async-date-format [date]="conversation.lastMessage.sendDate"></app-async-date-format>
                 </p>
               </div>
