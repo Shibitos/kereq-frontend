@@ -7,11 +7,16 @@
 }
 
 .chat-window-header {
-  height: 44px;
+  height: 52px;
   width: 100%;
   background-color: dodgerblue;
   box-shadow: 0 0 1px 1px rgb(0 0 0 / 40%);
   padding: 2px;
+  color: white;
+
+  .online {
+    color: #2db554;
+  }
 }
 
 .chat-window-body {

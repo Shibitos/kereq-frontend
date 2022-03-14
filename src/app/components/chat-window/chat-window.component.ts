@@ -8,8 +8,7 @@ import {FormProperties} from "../../utils/form-properties";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";
 import {PageUtil} from "../../utils/page.util";
-import {Subject} from "rxjs";
-import {Subscription} from "rxjs";
+import {Subject, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-window',
