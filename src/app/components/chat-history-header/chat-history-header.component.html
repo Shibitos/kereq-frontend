@@ -6,7 +6,7 @@
 
   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
     <li class="dropdown-header">
-      <span i18n="@chat-header.unread-messages">You have {{ unreadMessagesCount }} unread messages</span>
+      <span i18n="@chat-history-header.unread-messages">You have {{ unreadMessagesCount }} unread messages</span>
     </li>
     <div class="form-group p-2 pt-0">
       <input type="text" class="form-control"  [(ngModel)]="filterTerm" i18n-placeholder="@@chat-header.filter-placeholder" placeholder="Write here to filter" />
@@ -15,13 +15,16 @@
       <hr class="dropdown-divider">
     </li>
 
-    <div class="position-relative">
+    <div class="chat-history-container">
       <div *ngIf="!conversationsPageTool.loaded">
         <app-loading></app-loading>
       </div>
-      <div class="conversations-main-container" *ngIf="conversationsPageTool.loaded">
+      <div *ngIf="conversationsPageTool.loaded && !conversations">
+        <span i18n="@chat-history-header.empty-history">You have no conversations</span>
+      </div>
+      <div class="conversations-main-container" *ngIf="conversationsPageTool.loaded && conversations">
         <div *ngFor="let conversation of conversations | filter:filterConversations:filterTerm">
-          <li class="message-item">
+          <li class="message-item" [class]="(!conversation.lastMessage.read && conversation.lastMessage.senderId != loggedUser.id) ? 'message-unread' : 'message-read'">
             <a href="" (click)="$event.preventDefault();openChatWindow(conversation.recipient);dropdownLink.click()">
               <div class="me-2">
                 <app-avatar [user]="conversation.recipient" [size]="'tbm'"></app-avatar>
@@ -40,7 +43,6 @@
           </li>
         </div>
         <div *ngIf="!conversationsPageTool.stopLoading" class="text-center">
-<!--          TODO: test-->
           <a href="" (click)="$event.preventDefault();conversationsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
         </div>
       </div>

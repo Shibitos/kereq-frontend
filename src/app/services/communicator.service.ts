@@ -11,16 +11,26 @@ import {Page} from "../utils/page";
 import {HttpClient} from "@angular/common/http";
 import {ChatMessage} from "../models/chat-message.model";
 import {ConnectionEvent} from "../models/connection-event.model";
+import {ChatMessageEventType} from "../enums/chat-message-event-type.enum";
+import {ChatMessageEvent} from "../models/chat-message-event.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommunicatorService {
 
+  public static MESSAGES_OUTBOX_DESTINATION = '/messages-outbox';
+  public static MESSAGES_EVENT_DESTINATION = '/messages-event';
+
+  public static MESSAGES_INBOX_DESTINATION = '/user/queue/messages-inbox';
+  public static CONNECTIONS_DESTINATION = '/user/queue/connections';
+
   connectedSubject: Subject<void> = new Subject<void>();
   chatBarInitialized: Subject<void> = new Subject<void>();
   connectionsSubject: Subject<ConnectionEvent> = new Subject<ConnectionEvent>();
   messagesSubject: Subject<ChatMessage> = new Subject<ChatMessage>();
+  messageReadSubject: Subject<ChatMessage> = new Subject<ChatMessage>();
+
   unsubscribe$: Subject<void> = new Subject<void>();
 
   private subscribedDestinations: Map<string, string[]> = new Map<string, string[]>();
@@ -89,8 +99,8 @@ export class CommunicatorService {
   }
 
   registerSubscriptions() {
-    this.addSubscription('/user/queue/connections', this.onConnectionEvent.bind(this));
-    this.addSubscription('/user/queue/messages-inbox', this.onMessage.bind(this));
+    this.addSubscription(CommunicatorService.CONNECTIONS_DESTINATION, this.onConnectionEvent.bind(this));
+    this.addSubscription(CommunicatorService.MESSAGES_INBOX_DESTINATION, this.onMessage.bind(this));
   }
 
   onMessage(message: Message) {
@@ -98,11 +108,24 @@ export class CommunicatorService {
     this.messagesSubject.next(chatMessage);
   }
 
-  sendMessage(destination: string, object: any) {
+  sendMessage(destination: string, object: any): boolean {
     if (this.connected) {
       this.stompClient.send(destination, {}, JSON.stringify(object));
+      return true;
     } else {
       console.error("Send before WS connection");
+    }
+    return false;
+  }
+
+  markMessageRead(message: ChatMessage) {
+    let messageEvent = new ChatMessageEvent();
+    messageEvent.messageId = message.id;
+    messageEvent.type = ChatMessageEventType.READ;
+    if (this.sendMessage(CommunicatorService.MESSAGES_EVENT_DESTINATION, messageEvent)) {
+      this.messageReadSubject.next(message);
+    } else {
+      console.error('Error sending message read event');
     }
   }
 

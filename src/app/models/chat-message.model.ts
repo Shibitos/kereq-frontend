@@ -5,4 +5,5 @@ export class ChatMessage {
   content: string;
   sendDate: Date;
   conversationId: string;
+  read: boolean;
 }

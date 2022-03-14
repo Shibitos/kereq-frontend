@@ -20,19 +20,35 @@
   margin-bottom: 3px;
   color: #919191;
 }
-.messages .message-item:hover {
-  background-color: #f6f9ff;
-}
 
-.conversations-main-container {
-  max-height: 500px;
-  overflow-y: auto;
-
-  .conversation-container {
-    p {
-      word-break: break-all;
-      white-space: normal;
-    }
+.messages {
+  .message-unread {
+    background-color: #dcf1ff;
   }
 
+  .message-unread:hover {
+    background-color: #dcf1ff;
+  }
+
+  .message-read:hover {
+    background-color: #f6f9ff;
+  }
+}
+
+.chat-history-container {
+  position: relative;
+  min-height: 200px;
+
+  .conversations-main-container {
+    max-height: 500px;
+    overflow-y: auto;
+
+    .conversation-container {
+      p {
+        word-break: break-all;
+        white-space: normal;
+      }
+    }
+
+  }
 }

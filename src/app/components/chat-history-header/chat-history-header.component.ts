@@ -18,7 +18,7 @@ export class ChatHistoryHeaderComponent implements OnInit {
   private static MAX_CONTENT_SHORT_LENGTH: number = 55;
 
   loggedUser: User;
-  unreadMessagesCount: number = 3;
+  unreadMessagesCount: number = 0;
   filterTerm: string;
 
   conversations: Conversation[] = [];
@@ -38,7 +38,12 @@ export class ChatHistoryHeaderComponent implements OnInit {
       }
     });
     this.conversationsPageTool = new PageUtil<Conversation>(this.communicatorService.getChatHistory.bind(this.communicatorService), this.conversationsTemp, 10, undefined, true, this.parseSortConversations.bind(this));
-    this.communicatorService.chatBarInitialized.subscribe(() => this.conversationsPageTool.init());
+    this.communicatorService.chatBarInitialized.subscribe(this.init.bind(this));
+    this.communicatorService.messageReadSubject.subscribe(this.onMessageRead.bind(this));
+  }
+
+  init() {
+    this.conversationsPageTool.init();
   }
 
   parseSortConversations(conversations: Conversation[]) {
@@ -61,6 +66,7 @@ export class ChatHistoryHeaderComponent implements OnInit {
       }
       this.conversations.push(conversation);
     });
+    this.calculateUnreadMessagesCount();
     this.sortConversations();
   }
 
@@ -79,7 +85,25 @@ export class ChatHistoryHeaderComponent implements OnInit {
       conversation.lastMessageContentShort = ChatHistoryHeaderComponent.getShortMessageContent(chatMessage.content);
       this.conversations.push(conversation);
     }
+    this.calculateUnreadMessagesCount();
     this.sortConversations();
+  }
+
+  onMessageRead(chatMessage: ChatMessage) {
+    let convIndex = this.conversations.findIndex(con => con.id === chatMessage.conversationId);
+    if (convIndex > -1) {
+      this.conversations[convIndex].lastMessage.read = true;
+      this.calculateUnreadMessagesCount();
+    }
+  }
+
+  calculateUnreadMessagesCount() {
+    this.unreadMessagesCount = 0;
+    for (let conversation of this.conversations) {
+      if (conversation.lastMessage.senderId !== this.loggedUser.id && !conversation.lastMessage.read) {
+        this.unreadMessagesCount += 1;
+      }
+    }
   }
 
   sortConversations() {

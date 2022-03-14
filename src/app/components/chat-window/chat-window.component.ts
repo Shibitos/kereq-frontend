@@ -8,6 +8,8 @@ import {FormProperties} from "../../utils/form-properties";
 import {FormBuilder, Validators} from "@angular/forms";
 import {ChatWindowEventService} from "../../services/chat-window-event.service";
 import {PageUtil} from "../../utils/page.util";
+import {Subject} from "rxjs";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-chat-window',
@@ -15,6 +17,9 @@ import {PageUtil} from "../../utils/page.util";
   styleUrls: ['./chat-window.component.scss']
 })
 export class ChatWindowComponent implements OnInit {
+
+  unsubscribe$: Subject<void> = new Subject<void>();
+  messageSubscription: Subscription;
 
   loggedUser: User;
 
@@ -46,7 +51,7 @@ export class ChatWindowComponent implements OnInit {
     this.authService.currentUser.subscribe(u => {
       if (u.id) {
         this.loggedUser = u;
-        this.communicatorService.messagesSubject.subscribe(this.onMessage.bind(this));
+        this.messageSubscription = this.communicatorService.messagesSubject.subscribe(this.onMessage.bind(this));
       }
     });
     this.messageForm.form = this.formBuilder.group({
@@ -55,7 +60,7 @@ export class ChatWindowComponent implements OnInit {
         Validators.maxLength(400)
       ]]
     });
-    this.chatMessagesPageTool = new PageUtil<ChatMessage>(this.communicatorService.getMessagesWith.bind(this.communicatorService), this.chatMessages, 20, this.recipient.id, false, this.filterSortMessages.bind(this));
+    this.chatMessagesPageTool = new PageUtil<ChatMessage>(this.communicatorService.getMessagesWith.bind(this.communicatorService), this.chatMessages, 20, this.recipient.id, false, this.onMessagesLoad.bind(this));
 
   }
 
@@ -87,6 +92,9 @@ export class ChatWindowComponent implements OnInit {
       } else {
         this.chatMessages.splice(insertIndex, 0, chatMessage);
       }
+      if (!chatMessage.read && chatMessage.senderId != this.loggedUser.id) {
+        this.communicatorService.markMessageRead(chatMessage);
+      }
     } else {
       console.log("Chat: duplicated message", chatMessage.id);
     }
@@ -100,10 +108,9 @@ export class ChatWindowComponent implements OnInit {
     }
     chatMessage.senderId = this.loggedUser.id;
     chatMessage.recipientId = this.recipient.id;
-    this.communicatorService.sendMessage("/messages-outbox", chatMessage);
+    this.communicatorService.sendMessage(CommunicatorService.MESSAGES_OUTBOX_DESTINATION, chatMessage);
     this.messageForm.reset(); //TODO: success check stomp?
     //TODO: early save?
-    //TODO: scroll down
   }
 
   onSubmit() {
@@ -125,6 +132,7 @@ export class ChatWindowComponent implements OnInit {
 
   close() {
     if (this.recipient.id) {
+      this.messageSubscription.unsubscribe();
       this.chatWindowEventService.closeWindow(this.recipient.id);
     }
   }
@@ -133,7 +141,16 @@ export class ChatWindowComponent implements OnInit {
     this.chatMessagesPageTool.loadMore();
   }
 
-  private filterSortMessages() {
+  onMessagesLoad(chatMessages: ChatMessage[]) {
+    for (let chatMessage of chatMessages) {
+      if (!chatMessage.read && chatMessage.senderId != this.loggedUser.id) {
+        this.communicatorService.markMessageRead(chatMessage);
+      }
+    }
+    this.filterSortMessages();
+  }
+
+  filterSortMessages() {
     let filtered = this.chatMessages.filter((value, index, self) =>
       index === self.findIndex((t: ChatMessage) => t.id === value.id)
     );
