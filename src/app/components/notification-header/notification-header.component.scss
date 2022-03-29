@@ -1,0 +1,54 @@
+.notifications .notification-item {
+  padding: 15px 10px;
+  transition: 0.3s;
+}
+.notifications .notification-item a {
+  display: flex;
+}
+.notifications .notification-item img {
+  margin: 0 20px 0 10px;
+  max-height: 40px;
+}
+.notifications .notification-item h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #444444;
+}
+.notifications .notification-item p {
+  font-size: 13px;
+  margin-bottom: 3px;
+  color: #919191;
+}
+
+.notifications {
+  .notification-unread {
+    background-color: #dcf1ff;
+  }
+
+  .notification-unread:hover {
+    background-color: #dcf1ff;
+  }
+
+  .notification-read:hover {
+    background-color: #f6f9ff;
+  }
+}
+
+.notifications-history-container {
+  position: relative;
+  min-height: 200px;
+
+  .notifications-main-container {
+    max-height: 500px;
+    overflow-y: auto;
+
+    .notification-container {
+      p {
+        word-break: break-all;
+        white-space: normal;
+      }
+    }
+
+  }
+}

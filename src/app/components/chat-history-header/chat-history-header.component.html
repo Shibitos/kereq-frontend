@@ -19,10 +19,10 @@
       <div *ngIf="!conversationsPageTool.loaded">
         <app-loading></app-loading>
       </div>
-      <div *ngIf="conversationsPageTool.loaded && !conversations">
+      <div *ngIf="conversationsPageTool.loaded && conversations.length == 0" class="text-center">
         <span i18n="@chat-history-header.empty-history">You have no conversations</span>
       </div>
-      <div class="conversations-main-container" *ngIf="conversationsPageTool.loaded && conversations">
+      <div class="conversations-main-container" *ngIf="conversationsPageTool.loaded && conversations.length > 0">
         <div *ngFor="let conversation of conversations | filter:filterConversations:filterTerm">
           <li class="message-item" [class]="(!conversation.lastMessage.read && conversation.lastMessage.senderId != loggedUser.id) ? 'message-unread' : 'message-read'">
             <a href="" (click)="$event.preventDefault();openChatWindow(conversation.recipient);dropdownLink.click()">

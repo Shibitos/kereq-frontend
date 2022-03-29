@@ -13,23 +13,33 @@ import {ChatMessage} from "../models/chat-message.model";
 import {ConnectionEvent} from "../models/connection-event.model";
 import {ChatMessageEventType} from "../enums/chat-message-event-type.enum";
 import {ChatMessageEvent} from "../models/chat-message-event.model";
+import {NotificationModel} from "../models/notification.model";
+import {NotificationEventType} from "../enums/notification-event-type.enum";
+import {NotificationEvent} from "../models/notification-event.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommunicatorService {
 
+  public static MESSAGES_INBOX_DESTINATION = '/user/queue/messages-inbox';
   public static MESSAGES_OUTBOX_DESTINATION = '/messages-outbox';
   public static MESSAGES_EVENT_DESTINATION = '/messages-event';
 
-  public static MESSAGES_INBOX_DESTINATION = '/user/queue/messages-inbox';
+  public static NOTIFICATIONS_INBOX_DESTINATION = '/user/queue/notifications-inbox';
+  public static NOTIFICATIONS_EVENT_DESTINATION = '/notifications-event';
+
   public static CONNECTIONS_DESTINATION = '/user/queue/connections';
 
   connectedSubject: Subject<void> = new Subject<void>();
   chatBarInitialized: Subject<void> = new Subject<void>();
   connectionsSubject: Subject<ConnectionEvent> = new Subject<ConnectionEvent>();
+
   messagesSubject: Subject<ChatMessage> = new Subject<ChatMessage>();
   messageReadSubject: Subject<ChatMessage> = new Subject<ChatMessage>();
+
+  notificationsSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
+  notificationReadSubject: Subject<NotificationModel> = new Subject<NotificationModel>();
 
   unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -43,6 +53,7 @@ export class CommunicatorService {
 
   private websocketEndpoint: string = 'ws';
   private chatEndpoint: string = 'chat';
+  private notificationsEndpoint: string = 'notifications';
 
   constructor(private authService: AuthService, private http: HttpClient) {
     this.authService.currentUser.pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
@@ -101,6 +112,7 @@ export class CommunicatorService {
   registerSubscriptions() {
     this.addSubscription(CommunicatorService.CONNECTIONS_DESTINATION, this.onConnectionEvent.bind(this));
     this.addSubscription(CommunicatorService.MESSAGES_INBOX_DESTINATION, this.onMessage.bind(this));
+    this.addSubscription(CommunicatorService.NOTIFICATIONS_INBOX_DESTINATION, this.onNotification.bind(this));
   }
 
   onMessage(message: Message) {
@@ -135,6 +147,26 @@ export class CommunicatorService {
 
   getChatHistory(page: Page): Observable<any> {
     return this.http.get<ChatMessage[]>(environment.communicatorUrl + this.chatEndpoint + '/history?' + page.generateQueryParams());
+  }
+
+  onNotification(message: Message) {
+    let notification: NotificationModel = JSON.parse(message.body);
+    this.notificationsSubject.next(notification);
+  }
+
+  markNotificationRead(notification: NotificationModel) {
+    let notificationEvent = new NotificationEvent();
+    notificationEvent.notificationId = notification.id;
+    notificationEvent.type = NotificationEventType.READ;
+    if (this.sendMessage(CommunicatorService.NOTIFICATIONS_EVENT_DESTINATION, notificationEvent)) {
+      this.notificationReadSubject.next(notification);
+    } else {
+      console.error('Error sending notification read event');
+    }
+  }
+
+  getNotificationsHistory(page: Page): Observable<any> {
+    return this.http.get<NotificationModel[]>(environment.communicatorUrl + this.notificationsEndpoint + '/?' + page.generateQueryParams());
   }
 
   private addSubscription(destination: string, callback: (message: Message) => any) {

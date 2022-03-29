@@ -48,17 +48,7 @@ export class ChatHistoryHeaderComponent implements OnInit {
 
   parseSortConversations(conversations: Conversation[]) {
     conversations.forEach(conversation => {
-      let recipientId = (conversation.firstUserId == this.loggedUser.id) ? conversation.secondUserId : conversation.firstUserId;
-      let recipient = this.userCacheService.getUser(recipientId);
-      if (recipient) {
-        recipient.then(rec => {
-          if (rec) {
-            conversation.recipient = rec;
-          }
-        });
-      } else {
-        console.error('User not found', recipientId);
-      }
+      this.loadConversationRecipientUser(conversation);
       conversation.lastMessageContentShort = ChatHistoryHeaderComponent.getShortMessageContent(conversation.lastMessage.content);
       let convIndex = this.conversations.findIndex(con => con.id === conversation.id);
       if (convIndex > -1) {
@@ -68,6 +58,20 @@ export class ChatHistoryHeaderComponent implements OnInit {
     });
     this.calculateUnreadMessagesCount();
     this.sortConversations();
+  }
+
+  loadConversationRecipientUser(conversation: Conversation) {
+    let recipientId = (conversation.firstUserId == this.loggedUser.id) ? conversation.secondUserId : conversation.firstUserId;
+    let recipient = this.userCacheService.getUser(recipientId);
+    if (recipient) {
+      recipient.then(rec => {
+        if (rec) {
+          conversation.recipient = rec;
+        }
+      });
+    } else {
+      console.error('User not found', recipientId);
+    }
   }
 
   onMessage(chatMessage: ChatMessage) {
@@ -83,6 +87,7 @@ export class ChatHistoryHeaderComponent implements OnInit {
       conversation.secondUserId = Math.max(chatMessage.senderId, chatMessage.recipientId);
       conversation.lastMessage = chatMessage;
       conversation.lastMessageContentShort = ChatHistoryHeaderComponent.getShortMessageContent(chatMessage.content);
+      this.loadConversationRecipientUser(conversation);
       this.conversations.push(conversation);
     }
     this.calculateUnreadMessagesCount();

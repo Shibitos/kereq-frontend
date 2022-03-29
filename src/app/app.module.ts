@@ -42,6 +42,7 @@ import {ChatWindowContainerComponent} from './components/chat-window-container/c
 import {ChatMessageComponent} from './components/chat-message/chat-message.component';
 import {ChatHistoryHeaderComponent} from './components/chat-history-header/chat-history-header.component';
 import {FilterPipe} from './pipes/filter.pipe';
+import {NotificationHeaderComponent} from './components/notification-header/notification-header.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import {FilterPipe} from './pipes/filter.pipe';
     ChatWindowContainerComponent,
     ChatMessageComponent,
     ChatHistoryHeaderComponent,
-    FilterPipe
+    FilterPipe,
+    NotificationHeaderComponent
   ],
   imports: [
     BrowserModule,
