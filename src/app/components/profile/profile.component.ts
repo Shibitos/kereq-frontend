@@ -13,6 +13,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 import {filter, takeUntil} from "rxjs/operators";
 import {PhotoService} from "../../services/photo.service";
 import {Photo} from "../../models/photo.model";
+import {UserCacheService} from "../../services/user-cache.service";
 
 @Component({
   selector: 'app-profile',
@@ -41,7 +42,8 @@ export class ProfileComponent implements OnInit {
               private userService: UserService,
               private postService: PostService,
               private activatedRoute: ActivatedRoute,
-              public photoService: PhotoService) {
+              public photoService: PhotoService,
+              private userCacheService: UserCacheService) {
   }
 
   ngOnInit(): void {
@@ -61,6 +63,7 @@ export class ProfileComponent implements OnInit {
       if (params['id']) {
         this.userService.getUser(params['id']).pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
           this.currentUserSubject.next(user);
+          this.userCacheService.addUser(user);
         });
       } else {
         this.authService.currentUser.pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {

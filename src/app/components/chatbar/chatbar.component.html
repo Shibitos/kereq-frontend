@@ -1,4 +1,35 @@
 <h4>Chat with friends</h4>
 <hr class="bg-danger mt-1 border-2 border-top border-dark">
+<div class="position-relative">
+  <app-loading *ngIf="!friendsPageTool.loaded"></app-loading>
 
-<p class="fst-italic">Nobody is online</p>
+  <p *ngIf="friendsPageTool.loaded && !friendsList.length" class="fst-italic">
+    <span i18n="@@profile.no-friends-owner">You have no friends at moment</span><br>
+    <a routerLink="/find-friends" i18n="@@profile.find-friends">Click here to find some</a>
+  </p>
+
+  <div *ngIf="friendsPageTool.loaded && friendsList.length" class="container p-0">
+    <div class="row" *ngFor="let friendship of friendsList">
+      <div class="pe-0" style="width: 48px;">
+        <a href="" (click)="$event.preventDefault();openChatWindow(friendship.friend)" class="profile-link">
+          <div class="image-overlay-container">
+            <app-avatar [user]="friendship.friend" [size]="'tbm'" [classes]="friendship.friend.online ? 'border border-success' : ''"></app-avatar>
+            <div class="image-overlay"></div>
+          </div>
+        </a>
+      </div>
+      <div class="col-auto pe-0">
+        <div class="">
+          <a href="" (click)="$event.preventDefault();openChatWindow(friendship.friend)" class="profile-link">
+            <h5 class="mb-0">{{ friendship.friend.firstName }} {{ friendship.friend.lastName }}</h5>
+          </a>
+          <i>
+            <span *ngIf="friendship.friend.online" i18n="@@user.online" class="text-success">online</span>
+            <span *ngIf="!friendship.friend.online" i18n="@@user.offline">offline</span>
+          </i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

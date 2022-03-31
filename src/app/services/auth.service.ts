@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   login(user: User): Observable<JWTToken> {
-    return this.http.post<JWTToken>(environment.baseUrl + 'auth/login', user).pipe(tap((res: JWTToken) => {
+    return this.http.post<JWTToken>(environment.backendUrl + 'auth/login', user).pipe(tap((res: JWTToken) => {
       localStorage.setItem(AuthService.TOKEN_NAME, res.access_token);
       localStorage.setItem(AuthService.REFRESH_TOKEN_NAME, res.refresh_token);
       this.getCurrentUser().subscribe((user: User) => {
@@ -40,7 +40,7 @@ export class AuthService {
   refreshToken(): Observable<JWTToken> {
     const request = { 'refreshToken': this.getRefreshToken() };
     let headers = new HttpHeaders().append(JWTInterceptor.HEADER_SKIP_AUTH, "1");
-    return this.http.post<JWTToken>(environment.baseUrl + 'auth/refresh-token', request, {headers}).pipe(tap((response: JWTToken) => {
+    return this.http.post<JWTToken>(environment.backendUrl + 'auth/refresh-token', request, {headers}).pipe(tap((response: JWTToken) => {
       this.saveTokens(response.access_token, response.refresh_token);
     }));
   }
@@ -59,15 +59,15 @@ export class AuthService {
   }
 
   register(user: User): Observable<any> {
-    return this.http.post(environment.baseUrl + 'auth/register', user);
+    return this.http.post(environment.backendUrl + 'auth/register', user);
   }
 
   confirmUser(token: string): Observable<any> {
-    return this.http.post(environment.baseUrl + 'auth/confirm', { token: token });
+    return this.http.post(environment.backendUrl + 'auth/confirm', { token: token });
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(environment.baseUrl + 'profile');
+    return this.http.get<User>(environment.backendUrl + 'profile');
   }
 
   logout() {

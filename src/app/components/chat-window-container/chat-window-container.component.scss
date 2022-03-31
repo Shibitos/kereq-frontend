@@ -1,0 +1,25 @@
+.chat-window-main-container {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 80%;
+  pointer-events: none;
+}
+
+@media (max-height: 1000px) {
+  .chat-window-main-container {
+    height: 320px;
+  }
+}
+
+@media (min-height: 1000px) {
+  .chat-window-main-container {
+    height: 600px;
+  }
+}
+
+.chat-window-container {
+  height: 100%;
+  width: 440px;
+  box-shadow: 0 0 1px 1px rgb(0 0 0 / 40%);
+}

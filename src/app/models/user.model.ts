@@ -13,4 +13,5 @@ export class User {
   country: string;
   joinDate: string;
   profilePhoto: Photo;
+  online: boolean;
 }

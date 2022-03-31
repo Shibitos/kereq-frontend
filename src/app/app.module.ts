@@ -9,7 +9,7 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {LogoutComponent} from './components/logout/logout.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {JWTInterceptor} from "./interceptors/jwt-interceptor.service";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './components/header/header.component';
 import {WallComponent} from './components/wall/wall.component';
 import {MenuComponent} from './components/menu/menu.component';
@@ -25,17 +25,24 @@ import {LoadingComponent} from './components/loading/loading.component';
 import {NpnSliderModule} from "npn-slider";
 import {ModalComponent} from './components/modal/modal.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import { AsyncDateFormatComponent } from './components/async-date-format/async-date-format.component';
-import { PostComponent } from './components/post/post.component';
-import { RangePlaceholderComponent } from './components/range-placeholder/range-placeholder.component';
-import { SliderComponent } from './components/slider/slider.component';
-import { ChatbarComponent } from './components/chatbar/chatbar.component';
-import { CommentComponent } from './components/comment/comment.component';
-import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
-import { EditProfileImageComponent } from './components/edit-profile-image/edit-profile-image.component';
+import {AsyncDateFormatComponent} from './components/async-date-format/async-date-format.component';
+import {PostComponent} from './components/post/post.component';
+import {RangePlaceholderComponent} from './components/range-placeholder/range-placeholder.component';
+import {SliderComponent} from './components/slider/slider.component';
+import {ChatbarComponent} from './components/chatbar/chatbar.component';
+import {CommentComponent} from './components/comment/comment.component';
+import {EditProfileComponent} from './components/edit-profile/edit-profile.component';
+import {EditProfileImageComponent} from './components/edit-profile-image/edit-profile-image.component';
 import {ImageCropperModule} from "ngx-image-cropper";
 import {AvatarComponent} from "./components/avatar/avatar.component";
 import {PhotoComponent} from "./components/photo/photo.component";
+import {CommunicatorService} from "./services/communicator.service";
+import {ChatWindowComponent} from './components/chat-window/chat-window.component';
+import {ChatWindowContainerComponent} from './components/chat-window-container/chat-window-container.component';
+import {ChatMessageComponent} from './components/chat-message/chat-message.component';
+import {ChatHistoryHeaderComponent} from './components/chat-history-header/chat-history-header.component';
+import {FilterPipe} from './pipes/filter.pipe';
+import {NotificationHeaderComponent} from './components/notification-header/notification-header.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +68,13 @@ import {PhotoComponent} from "./components/photo/photo.component";
     EditProfileComponent,
     EditProfileImageComponent,
     AvatarComponent,
-    PhotoComponent
+    PhotoComponent,
+    ChatWindowComponent,
+    ChatWindowContainerComponent,
+    ChatMessageComponent,
+    ChatHistoryHeaderComponent,
+    FilterPipe,
+    NotificationHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -76,10 +89,12 @@ import {PhotoComponent} from "./components/photo/photo.component";
     DlDateTimePickerModule,
     NgbModule,
     ImageCropperModule,
+    FormsModule,
     NpnSliderModule //TODO: change for better
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
+    CommunicatorService
   ],
   bootstrap: [AppComponent]
 })

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Subject,takeUntil} from "rxjs";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-login',

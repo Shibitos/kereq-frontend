@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RangePlaceholderComponent } from './range-placeholder.component';
+import {RangePlaceholderComponent} from './range-placeholder.component';
 
 describe('RangePlaceholderComponent', () => {
   let component: RangePlaceholderComponent;

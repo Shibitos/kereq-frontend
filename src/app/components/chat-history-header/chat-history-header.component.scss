@@ -1,0 +1,54 @@
+.messages .message-item {
+  padding: 15px 10px;
+  transition: 0.3s;
+}
+.messages .message-item a {
+  display: flex;
+}
+.messages .message-item img {
+  margin: 0 20px 0 10px;
+  max-height: 40px;
+}
+.messages .message-item h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #444444;
+}
+.messages .message-item p {
+  font-size: 13px;
+  margin-bottom: 3px;
+  color: #919191;
+}
+
+.messages {
+  .message-unread {
+    background-color: #dcf1ff;
+  }
+
+  .message-unread:hover {
+    background-color: #dcf1ff;
+  }
+
+  .message-read:hover {
+    background-color: #f6f9ff;
+  }
+}
+
+.chat-history-container {
+  position: relative;
+  min-height: 200px;
+
+  .conversations-main-container {
+    max-height: 500px;
+    overflow-y: auto;
+
+    .conversation-container {
+      p {
+        word-break: break-all;
+        white-space: normal;
+      }
+    }
+
+  }
+}

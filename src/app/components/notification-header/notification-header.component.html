@@ -1,0 +1,52 @@
+<div>
+  <a #dropdownLink class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+    <i class="bi bi-bell"></i>
+    <span class="badge bg-primary badge-number" *ngIf="unreadNotificationsCount > 0">{{ unreadNotificationsCount }}</span>
+  </a>
+
+  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+    <li class="dropdown-header">
+      <span i18n="@chat-history-header.unread-notifications">You have {{ unreadNotificationsCount }} unread notifications</span>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+
+    <div class="notifications-history-container">
+      <div *ngIf="!notificationsPageTool.loaded">
+        <app-loading></app-loading>
+      </div>
+      <div *ngIf="notificationsPageTool.loaded && notifications.length == 0" class="text-center">
+        <span i18n="@notification-history-header.empty-history">You have no notifications</span>
+      </div>
+      <div class="notifications-main-container" *ngIf="notificationsPageTool.loaded && notifications.length > 0">
+        <div *ngIf="unreadNotificationsCount > 0" class="text-center">
+          <a href="" (click)="$event.preventDefault();markAllRead()" i18n="@@general.mark-all-read">Mark all read</a>
+        </div>
+        <div *ngFor="let notification of notifications">
+          <a href="" (click)="$event.preventDefault();markRead(notification);dropdownLink.click()">
+            <li class="notification-item" [class]="!notification.read ? 'notification-unread' : 'notification-read'">
+              <div class="me-2">
+                <app-avatar *ngIf="notification.sourceUser" [user]="notification.sourceUser" [size]="'tbm'"></app-avatar>
+                <i *ngIf="!notification.sourceUser" class="bi bi-info-circle text-primary"></i>
+              </div>
+              <div class="notification-container">
+                <h4>{{ notification.title }}</h4>
+                <p [innerHTML]="notification.content"></p>
+                <p>
+                  <app-async-date-format [date]="notification.date"></app-async-date-format>
+                </p>
+              </div>
+            </li>
+          </a>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+        </div>
+        <div *ngIf="!notificationsPageTool.stopLoading" class="text-center">
+          <a href="" (click)="$event.preventDefault();notificationsPageTool.loadMore()" i18n="@@general.load-more">Load more</a>
+        </div>
+      </div>
+    </div>
+  </ul>
+</div>

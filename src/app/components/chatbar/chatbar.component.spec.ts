@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChatbarComponent } from './chatbar.component';
+import {ChatbarComponent} from './chatbar.component';
 
 describe('ChatbarComponent', () => {
   let component: ChatbarComponent;
